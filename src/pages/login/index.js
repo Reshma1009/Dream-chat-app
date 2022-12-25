@@ -34,7 +34,7 @@ const Login = () => {
               className="w-full bg-gray-100 py-4 pl-3 rounded-md border-none focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
             />
           </div>
-          <button className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-orange-300 hover:text-primary">
+          <button className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary">
             {" "}
             Login
           </button>
