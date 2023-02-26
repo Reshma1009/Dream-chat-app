@@ -6,9 +6,10 @@ import { RiSettings5Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { TbBellRinging } from "react-icons/tb";
 import { ImUserPlus } from "react-icons/im";
-const Sidebar = () => {
+import { Link, NavLink } from "react-router-dom";
+const Sidebar = ({active}) => {
   return (
-    <div className="">
+    <div className="fixed w-[24%] left-0 top-0">
       <div
         style={{
           backgroundImage: 'url("images/top-curve-bg.png")',
@@ -19,24 +20,32 @@ const Sidebar = () => {
         className="pb-12 px-7"
       >
         <div className="max-w-[180px]">
-          <img src="images/logo.png" alt="" className="pt-5" />
+          <Link to="/">
+            <img src="images/logo.png" alt="" className="pt-5" />
+          </Link>
         </div>
         <div className="flex gap-5 justify-between py-7 items-center ">
           <div className="relative">
-            <BsChatText
-              className="text-white text-2xl  "
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Message"
-            />
+            <Link to="/message">
+              <BsChatText
+                className={`${
+                  active == "message" ? "bg-red-500" : "bg-green-500"
+                } text-white text-2xl `}
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Message"
+              />
+            </Link>
           </div>
           <div className="relative">
-            <FiEdit
-              className="text-white text-2xl "
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Groups"
-            />
+            <Link to="/group">
+              <FiEdit
+                className="text-white text-2xl "
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Groups"
+              />
+            </Link>
           </div>
           <div className="relative">
             <BiGroup
