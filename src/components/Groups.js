@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 
 const Groups = () => {
@@ -7,7 +7,7 @@ const Groups = () => {
     setToggleTab(index);
   };
   return (
-    <div className="grid grid-cols-12 gap-6">
+    <div className="grid grid-cols-12 h-screen">
       <div className="col-span-3 relative">
         <div className="h-[180px]">
           <Sidebar />
@@ -36,9 +36,7 @@ const Groups = () => {
               </button>
             </div>
             <div>
-              <div
-                className={` ${toggleTab==1? "block" : "hidden"}  `}
-              >
+              <div className={` ${toggleTab == 1 ? "block" : "hidden"}  `}>
                 <h2>Content 1</h2>
                 <hr />
                 <p>
@@ -47,14 +45,10 @@ const Groups = () => {
                   facilis quo nihil vel voluptatum?
                 </p>
               </div>
-              <div
-                className={` ${toggleTab==2? "block" : "hidden"}  `}
-              >
+              <div className={` ${toggleTab == 2 ? "block" : "hidden"}  `}>
                 <h2>Content 2</h2>
                 <hr />
-                <p>
-                  from 2
-                </p>
+                <p>from 2</p>
               </div>
             </div>
           </div>
