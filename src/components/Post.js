@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Flex from "./Flex";
 import Images from "./Images";
 import { BsThreeDots } from "react-icons/bs";
@@ -15,7 +15,7 @@ const Post = ({ content, profilePic, name, postPic }) => {
         <div className="">
           <Images imgSrc={profilePic} className="rounded-full" />
         </div>
-        <div >
+        <div>
           <h3>{name}</h3>
         </div>
         <div className="ml-auto ">

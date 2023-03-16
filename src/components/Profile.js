@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Flex from "./Flex";
 import Images from "./Images";
 import { MdCloudUpload } from "react-icons/md";
 import Accordion from "./Accordian";
 
 const Profile = () => {
-   const items = [
-     { title: "Info", content: "Content for item 1" },
-   ];
-   const items2 = [
-     { title: "Settings", content: "Content for item 1" },
-   ];
+  const items = [{ title: "Info", content: { email: "Email Address" } }];
+  const items2 = [
+    {
+      title: "Settings",
+      content: { editName: "Display Name", editBio: "Edit Your Bio" },
+    },
+  ];
   return (
     <>
       <Flex className="items-center flex flex-col pt-10">
@@ -27,7 +28,6 @@ const Profile = () => {
         <p className="font-pophins font-medium text-xl">Display Bio</p>
       </Flex>
       <div className="border-black border-b border-solid mb-5 pb-5 px-5">
-       
         <Accordion items={items} />
       </div>
       <div className="px-5">

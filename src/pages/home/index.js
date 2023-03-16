@@ -1,5 +1,4 @@
-import React from "react";
-import Message from "../../components/Message";
+import React,{useState,useEffect} from "react";
 import Post from "../../components/Post";
 import Profile from "../../components/Profile";
 import Sidebar from "../../components/Sidebar";
