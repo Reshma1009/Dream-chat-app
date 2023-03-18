@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../../components/Sidebar";
 
 const Groups = () => {
   const [toggleTab, setToggleTab] = useState(1);
@@ -24,7 +24,7 @@ const Groups = () => {
                 } text-white inline-block py-2 px-5 rounded-md font-medium font-pophins text-lg mr-3`}
               >
                 {" "}
-                Member{" "}
+                Other Group{" "}
               </button>
               <button
                 onClick={() => handleToggle(2)}
@@ -32,7 +32,7 @@ const Groups = () => {
                   toggleTab == 2 ? "bg-blue-500" : "bg-red-500"
                 } text-white inline-block py-2 px-5 rounded-md font-medium font-pophins text-lg mr-3`}
               >
-                Create Group{" "}
+                Create Group
               </button>
             </div>
             <div>

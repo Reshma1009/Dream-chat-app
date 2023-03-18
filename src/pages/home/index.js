@@ -6,7 +6,7 @@ import UserList from "../../components/UserList";
 
 const Home = () => {
   return (
-    <div className="grid grid-cols-12 h-screen">
+    <div className="grid grid-cols-12 h-screen overflow-hidden">
       <div className="col-span-3 relative">
         <div className="h-[180px]">
           <Sidebar />
@@ -16,7 +16,7 @@ const Home = () => {
         </div>
       </div>
       <div
-        className="col-span-6 pt-5 h-full overflow-x-hidden "
+        className="col-span-6 pt-5 "
         style={{
           backgroundImage: 'url("images/bg-color.png")',
           backgroundPosition: "center",
@@ -24,8 +24,10 @@ const Home = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="">
-          {" "}
+        <div>
+          <input type="text" />
+        </div>
+        <div className="h-[100vh] overflow-x-hidden ">
           <Post
             name={"name"}
             profilePic="images/profile.png"
@@ -57,6 +59,7 @@ const Home = () => {
             content="Post Content"
           />
         </div>
+       
       </div>
       <div className="col-span-3">
         <Profile />

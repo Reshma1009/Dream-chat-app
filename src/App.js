@@ -1,5 +1,4 @@
 import React from "react";
-import Message from "./components/Message";
 import Registation from "./pages/registation";
 import Login from "./pages/login";
 import {
@@ -10,7 +9,8 @@ import {
 } from "react-router-dom";
 import UserList from "./components/UserList";
 import Home from "./pages/home";
-import Groups from "./components/Groups";
+import Groups from "./pages/group/Groups";
+import Message from "./pages/message/Message";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     path: "/message",
     element: <Message />,
   },
-  
+
   {
     path: "/group",
     element: <Groups />,

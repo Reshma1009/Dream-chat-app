@@ -9,7 +9,7 @@ import { ImUserPlus } from "react-icons/im";
 import { Link, NavLink } from "react-router-dom";
 const Sidebar = ({active}) => {
   return (
-    <div className="fixed w-[25%] left-0 top-0">
+    <div className=" max-w-full left-0 top-0">
       <div
         style={{
           backgroundImage: 'url("images/top-curve-bg.png")',
