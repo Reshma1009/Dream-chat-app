@@ -16,8 +16,11 @@ const Groups = () => {
         <div className="h-[180px]">
           <Sidebar active="group" />
         </div>
-        <div className="pl-8">
-          <p> Create Groups</p>
+        <div className="pl-8 pr-5">
+          <p className="font-pophins font-bold text-2xl text-primary mb-5 border-primary border-b border-solid pb-3">
+            {" "}
+            Groups
+          </p>
           <div>
             {/* Tab Button */}
             <div>
@@ -45,13 +48,13 @@ const Groups = () => {
             </div>
             <div>
               <div className={` ${toggleTab == 1 ? "block" : "hidden"}  `}>
-                <h2>Group Lists</h2>
-                <hr />
+                <h2 className="mb-5 border-primary border-b border-solid pb-3 font-pophins font-medium text-xl text-primary my-5">
+                  Groups you've joined
+                </h2>
+
                 <GroupLists />
               </div>
               <div className={` ${toggleTab == 2 ? "block" : "hidden"}  `}>
-                <h2>Content 2</h2>
-                <hr />
                 <div>
                   <p className="font-pophins text-lg my-3">Grpup Name</p>
                   <input
@@ -68,6 +71,9 @@ const Groups = () => {
                     className="w-full bg-gray-100 py-4 pl-3 rounded-md border-none focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
                   />
                 </div>
+                <button className="bg-primary py-4 px-3 text-white font-pophins text-lg rounded-md w-full mt-5 inline-block">
+                  Create Group
+                </button>
               </div>
             </div>
           </div>
