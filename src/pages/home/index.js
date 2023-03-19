@@ -9,7 +9,7 @@ const Home = () => {
     <div className="grid grid-cols-12 h-screen overflow-hidden">
       <div className="col-span-3 relative">
         <div className="h-[180px]">
-          <Sidebar />
+          <Sidebar active="home"/>
         </div>
         <div className="pl-8">
           <UserList />
@@ -59,7 +59,7 @@ const Home = () => {
             content="Post Content"
           />
         </div>
-       
+
       </div>
       <div className="col-span-3">
         <Profile />

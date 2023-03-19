@@ -3,11 +3,13 @@ import Flex from "./Flex";
 import Images from "./Images";
 import Search from "./Search";
 
-const Friends = () => {
+const BlockUser = () => {
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
-      <h2 className="font-pophins font-bold text-2xl text-primary mb-5">Friends</h2>
+      <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
+        Block Users
+      </h2>
       <div className="overflow-y-scroll overflow-x-hidden">
         <Flex
           className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
@@ -25,7 +27,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -45,7 +47,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -65,7 +67,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -85,7 +87,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -105,7 +107,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -125,7 +127,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -145,7 +147,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -165,7 +167,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -185,7 +187,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -205,7 +207,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -225,7 +227,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -245,7 +247,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -265,7 +267,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -285,7 +287,7 @@ const Friends = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Message
+              Unblock
             </button>
           </div>
         </Flex>
@@ -294,4 +296,4 @@ const Friends = () => {
   );
 };
 
-export default Friends;
+export default BlockUser;

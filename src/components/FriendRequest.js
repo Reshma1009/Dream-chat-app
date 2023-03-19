@@ -3,11 +3,11 @@ import Flex from "./Flex";
 import Images from "./Images";
 import Search from "./Search";
 
-const UserList = () => {
+const FriendRequest = () => {
   return (
     <div className="h-[100vh] overflow-y-auto">
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
-        All Users
+        Friend Request
       </h2>
       <Search placeholder={`search here for users`} />
 
@@ -27,7 +27,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -47,7 +47,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -67,7 +67,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -87,7 +87,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -107,7 +107,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -127,7 +127,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -147,7 +147,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -167,7 +167,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -187,7 +187,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -207,7 +207,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -227,7 +227,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -247,7 +247,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -267,7 +267,7 @@ const UserList = () => {
         </div>
         <div className="grow text-right">
           <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-            Add Friend
+            Accept
           </button>
         </div>
       </Flex>
@@ -275,4 +275,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default FriendRequest;

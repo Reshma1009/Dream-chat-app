@@ -11,6 +11,7 @@ import UserList from "./components/UserList";
 import Home from "./pages/home";
 import Groups from "./pages/group/Groups";
 import Message from "./pages/message/Message";
+import FriendReq from "./pages/friendReq.js/FriendReq";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/group",
     element: <Groups />,
+  },
+  {
+    path: "/request",
+    element: <FriendReq />,
   },
 ]);
 function App() {

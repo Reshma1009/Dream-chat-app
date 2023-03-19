@@ -2,8 +2,7 @@ import React from "react";
 import { BsTriangleFill } from "react-icons/bs";
 const Chat = () => {
   return (
-    // {/* <div className="h-[700px] overflow-y-scroll overflow-x-hidden"> */}
-    <div className="h-[78vh] overflow-y-scroll overflow-x-hidden pr-10 ">
+    <div className="">
       <div className="text-left max-w-[85%]">
         <div className="mb-7">
           <div className="bg-[#F1F1F1] px-5 py-3 inline-block rounded-lg relative">
@@ -148,7 +147,6 @@ const Chat = () => {
         </div> */}
       {/* Send video End */}
     </div>
-    // </div>
   );
 };
 
