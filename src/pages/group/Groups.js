@@ -4,6 +4,7 @@ import MyGroups from "../../components/MyGroups";
 import AllGroupList from "../../components/AllGroupList";
 import Profile from "../../components/Profile";
 import Sidebar from "../../components/Sidebar";
+import JoinedGroups from "../../components/JoinedGroup";
 
 const Groups = () => {
   const [toggleTab, setToggleTab] = useState(1);
@@ -52,23 +53,23 @@ const Groups = () => {
                   Groups you've joined
                 </h2>
 
-                <GroupLists />
+                <JoinedGroups />
               </div>
               <div className={` ${toggleTab == 2 ? "block" : "hidden"}  `}>
                 <div>
                   <p className="font-pophins text-lg my-3">Grpup Name</p>
                   <input
                     type="text"
-                    placeholder="Enter your mail"
-                    className="w-full bg-gray-100 py-4 pl-3 rounded-md border-none focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
+                    placeholder="Group Name"
+                    className="w-full border border-solid bg-gray-100 py-4 pl-3 rounded-md focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
                   />
                 </div>
                 <div>
                   <p className="font-pophins text-lg my-3">Group TagLine</p>
                   <input
                     type="text"
-                    placeholder="Enter your mail"
-                    className="w-full bg-gray-100 py-4 pl-3 rounded-md border-none focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
+                    placeholder="Group Tagline"
+                    className="w-full border border-solid bg-gray-100 py-4 pl-3 rounded-md focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
                   />
                 </div>
                 <button className="bg-primary py-4 px-3 text-white font-pophins text-lg rounded-md w-full mt-5 inline-block">
@@ -90,7 +91,7 @@ const Groups = () => {
       >
         <div>
           <MyGroups />
-          <AllGroupList />
+          <GroupLists />
         </div>
       </div>
       <div className="col-span-3">

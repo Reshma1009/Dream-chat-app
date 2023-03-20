@@ -7,6 +7,11 @@ import Flex from "../../components/Flex";
 import Images from "../../components/Images";
 import Chat from "../../components/Chat";
 import AllGroupList from "../../components/AllGroupList";
+import { BsFillCameraFill, BsFillMicFill } from "react-icons/bs";
+import { BiHappy } from "react-icons/bi";
+import { RiSendPlaneFill } from "react-icons/ri";
+import { ImAttachment } from "react-icons/im";
+
 const Message = () => {
   return (
     <div className="flex h-screen overflow-hidden ">
@@ -16,11 +21,9 @@ const Message = () => {
         </div>
         <div className="">
           <div>
-
             <AllGroupList />
           </div>
           <div>
-
             <Friends />
           </div>
         </div>
@@ -57,8 +60,20 @@ const Message = () => {
         </div>
         {/* Messageing End */}
         {/* Input Text Area End */}
-        <div>
-          <input type="text" />
+        <div className="flex items-center gap-x-5 p-5 pb-2 relative">
+          <input
+            type="text"
+            className="w-[100%] p-3 rounded-lg outline-primary"
+          />
+          <div className="flex gap-x-5 absolute right-[110px]">
+            <BsFillCameraFill className="text-primary text-2xl" />
+            <BiHappy className="text-primary text-2xl" />
+            <ImAttachment className="text-primary text-2xl" />
+            <BsFillMicFill className="text-primary text-2xl" />
+          </div>
+          <button className="bg-primary px-5 py-3 rounded-lg">
+            <RiSendPlaneFill className="text-white text-2xl" />
+          </button>
         </div>
         {/* Input Text Area End */}
       </div>

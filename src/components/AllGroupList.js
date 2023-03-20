@@ -5,7 +5,7 @@ import Search from "./Search";
 
 const AllGroupList = () => {
   return (
-    <div className="flex flex-col overflow-hidden h-[50vh] shadow-2xl p-7 pt-0">
+    <div className="flex flex-col overflow-hidden h-[40vh] shadow-2xl p-7 pt-0">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         All Groups
@@ -27,7 +27,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -47,7 +47,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -67,7 +67,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -87,7 +87,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -107,7 +107,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -127,7 +127,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -147,7 +147,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -167,7 +167,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -187,7 +187,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -207,7 +207,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -227,7 +227,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -247,7 +247,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -267,7 +267,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>
@@ -287,7 +287,7 @@ const AllGroupList = () => {
           </div>
           <div className="grow text-right">
             <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-              Join Request
+              Message
             </button>
           </div>
         </Flex>

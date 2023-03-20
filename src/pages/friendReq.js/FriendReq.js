@@ -18,7 +18,7 @@ const FriendReq = () => {
         </div>
       </div>
       <div
-        className="col-span-6 pt-5 "
+        className="col-span-6 "
         style={{
           backgroundImage: 'url("images/bg-color.png")',
           backgroundPosition: "center",

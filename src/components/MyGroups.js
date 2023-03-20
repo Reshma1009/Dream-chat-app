@@ -5,7 +5,7 @@ import Search from "./Search";
 
 const MyGroups = () => {
   return (
-    <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
+    <div className="flex flex-col overflow-hidden h-[55vh]  p-7 pb-0">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         My Groups
