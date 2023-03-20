@@ -7,6 +7,27 @@ import Sidebar from "../../components/Sidebar";
 import JoinedGroups from "../../components/JoinedGroup";
 
 const Groups = () => {
+  const [groupName, setGroupName] = useState("");
+  const [groupTagline, setGroupTagline] = useState("");
+  const [groupNameErr, setGroupNameErr] = useState("");
+  const [groupTaglineErr, setGroupTaglineErr] = useState("");
+  let handleGroupName = (e) => {
+    setGroupName(e.target.value);
+    setGroupNameErr("");
+  };
+  let handleGroupTagLine = (e) => {
+    setGroupTagline(e.target.value);
+    setGroupTaglineErr("");
+  };
+  let handleCreateGroup = () => {
+    if (!groupName) {
+      setGroupNameErr("Group Name Is Requried");
+    }
+    if (!groupTagline) {
+      setGroupTaglineErr("Group TagLine Is Requried");
+    }
+  };
+
   const [toggleTab, setToggleTab] = useState(1);
   let handleToggle = (index) => {
     setToggleTab(index);
@@ -59,20 +80,35 @@ const Groups = () => {
                 <div>
                   <p className="font-pophins text-lg my-3">Grpup Name</p>
                   <input
+                    onChange={handleGroupName}
                     type="text"
                     placeholder="Group Name"
                     className="w-full border border-solid bg-gray-100 py-4 pl-3 rounded-md focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
                   />
+                  {groupNameErr && (
+                    <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
+                      {groupNameErr}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <p className="font-pophins text-lg my-3">Group TagLine</p>
                   <input
+                    onChange={handleGroupTagLine}
                     type="text"
                     placeholder="Group Tagline"
                     className="w-full border border-solid bg-gray-100 py-4 pl-3 rounded-md focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
                   />
+                  {groupTaglineErr && (
+                    <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
+                      {groupTaglineErr}
+                    </p>
+                  )}
                 </div>
-                <button className="bg-primary py-4 px-3 text-white font-pophins text-lg rounded-md w-full mt-5 inline-block">
+                <button
+                  onClick={handleCreateGroup}
+                  className="bg-primary py-4 px-3 text-white font-pophins text-lg rounded-md w-full mt-5 inline-block"
+                >
                   Create Group
                 </button>
               </div>

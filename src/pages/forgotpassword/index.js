@@ -1,6 +1,22 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [emailErr, setEmailErr] = useState("");
+  let handleEmail = (e) => {
+    setEmail(e.target.value);
+    setEmailErr("");
+  };
+
+  let handleSubmit = () => {
+    if (!email) {
+      setEmailErr("Email Is Requried");
+    } else {
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        setEmailErr("You have entered an invalid email address!");
+      }
+    }
+  };
   return (
     <div className="flex justify-center items-center h-screen w-full">
       <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
@@ -23,17 +39,28 @@ const ForgotPassword = () => {
               Enter your email to get a password reset link
             </p>
             <input
+              onChange={handleEmail}
               type="text"
               placeholder="Enter your mail"
-              className="w-full bg-gray-100 py-4 pl-3 rounded-md border-none focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
+              className="w-full bg-gray-100 py-4 pl-3 rounded-md border-solid border  focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
             />
+            {emailErr && (
+              <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
+                {emailErr}
+              </p>
+            )}
           </div>
-          <button className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary">
+          <button
+            onClick={handleSubmit}
+            className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
+          >
             {" "}
             Reset Password
           </button>
           <p className="text-primary font-semibold text-right">
-            Remember your password?
+            <Link to="/login">Remember your password?
+            </Link>
+
           </p>
         </div>
       </div>
