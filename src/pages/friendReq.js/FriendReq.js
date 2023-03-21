@@ -5,8 +5,9 @@ import Sidebar from "../../components/Sidebar";
 import FriendRequest from "../../components/FriendRequest";
 import BlockUser from "../../components/BlockUser";
 import AllFriends from "../../components/AllFriends";
-
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 const FriendReq = () => {
+ 
   return (
     <div className="grid grid-cols-12 h-screen overflow-hidden">
       <div className="col-span-3 relative">

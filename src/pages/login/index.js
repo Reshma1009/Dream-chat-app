@@ -14,7 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { usersInformation } from "../../slices/userSlices";
 const Login = () => {
   const auth = getAuth();
-   const db = getDatabase();
+  const db = getDatabase();
   const provider = new GoogleAuthProvider();
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -65,7 +65,8 @@ const Login = () => {
           toast.success("Login Successfull. Please Wait For Redriction.");
           setEmail("");
           setPassword("");
-
+          dispatch(usersInformation(user));
+          localStorage.setItem("userRegistationIfo", JSON.stringify(user));
           setTimeout(() => {
             navigate("/");
           }, 2500);
@@ -100,110 +101,114 @@ const Login = () => {
     });
   };
   return (
-    <div className="flex justify-center items-center h-screen w-full">
-      <ToastContainer position="bottom-center" theme="dark" />
-      <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
-        <div
-          style={{
-            backgroundImage: 'url("images/top-curve-bg.png")',
-            backgroundPosition: "center",
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-          }}
-          className=" text-center rounded-xl min-h-[165px]"
-        >
-          <h1 className="text-white font-pophins text-3xl text-center pt-7">
-            <img src="images/logo.png" alt="" className="m-auto" />
-          </h1>
-        </div>
-        <div className="px-8 p-5 pt-0">
-          <div>
-            <p className="font-pophins text-lg my-3">Email</p>
-            <input
-              value={email}
-              onChange={handleEmail}
-              type="text"
-              placeholder="Enter your mail"
-              className="w-full bg-gray-100 py-4 pl-3 rounded-md border-solid border focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
-            />
-            {emailErr && (
-              <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
-                {emailErr}
-              </p>
-            )}
+    <>
+      <div className="flex justify-center items-center h-screen w-full">
+        <ToastContainer position="bottom-center" theme="dark" />
+        <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
+          <div
+            style={{
+              backgroundImage: 'url("images/top-curve-bg.png")',
+              backgroundPosition: "center",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+            }}
+            className=" text-center rounded-xl min-h-[165px]"
+          >
+            <h1 className="text-white font-pophins text-3xl text-center pt-7">
+              <img src="images/logo.png" alt="" className="m-auto" />
+            </h1>
           </div>
-          <div>
-            <p className="font-pophins text-lg my-3">Create Password</p>
-            <div className="relative">
+          <div className="px-8 p-5 pt-0">
+            <div>
+              <p className="font-pophins text-lg my-3">Email</p>
               <input
-                value={password}
-                onChange={handlePassword}
-                type={showPassIcon ? "text" : "password"}
-                placeholder="Enter your password"
+                value={email}
+                onChange={handleEmail}
+                type="text"
+                placeholder="Enter your mail"
                 className="w-full bg-gray-100 py-4 pl-3 rounded-md border-solid border focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
               />
-              {showPassIcon ? (
-                <AiFillEye
-                  onClick={() => setShowPassIcon(!showPassIcon)}
-                  className="absolute top-1/2 -translate-y-1/2 right-4 "
-                />
-              ) : (
-                <AiFillEyeInvisible
-                  onClick={() => setShowPassIcon(!showPassIcon)}
-                  className="absolute top-1/2 -translate-y-1/2 right-4 "
-                />
+              {emailErr && (
+                <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
+                  {emailErr}
+                </p>
               )}
             </div>
-            {passwordErr && (
-              <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
-                {passwordErr}
-              </p>
-            )}
-          </div>
-          {loading ? (
-            <div className="w-full h-[50px] text-center bg-primary text-white font-pophins text-base py-0 rounded-md my-5 hover:bg-secondary hover:text-primary flex justify-center items-center">
-              <FallingLines
-                color="#fff"
-                width="70"
-                visible={true}
-                ariaLabel="falling-lines-loading"
-              />
+            <div>
+              <p className="font-pophins text-lg my-3">Create Password</p>
+              <div className="relative">
+                <input
+                  value={password}
+                  onChange={handlePassword}
+                  type={showPassIcon ? "text" : "password"}
+                  placeholder="Enter your password"
+                  className="w-full bg-gray-100 py-4 pl-3 rounded-md border-solid border focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
+                />
+                {showPassIcon ? (
+                  <AiFillEye
+                    onClick={() => setShowPassIcon(!showPassIcon)}
+                    className="absolute top-1/2 -translate-y-1/2 right-4 "
+                  />
+                ) : (
+                  <AiFillEyeInvisible
+                    onClick={() => setShowPassIcon(!showPassIcon)}
+                    className="absolute top-1/2 -translate-y-1/2 right-4 "
+                  />
+                )}
+              </div>
+              {passwordErr && (
+                <p className="font-pophins text-sm bg-red-500 p-2 rounded-md text-white my-3">
+                  {passwordErr}
+                </p>
+              )}
             </div>
-          ) : (
+            {loading ? (
+              <div className="w-full h-[50px] text-center bg-primary text-white font-pophins text-base py-0 rounded-md my-5 hover:bg-secondary hover:text-primary flex justify-center items-center">
+                <FallingLines
+                  color="#fff"
+                  width="70"
+                  visible={true}
+                  ariaLabel="falling-lines-loading"
+                />
+              </div>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
+              >
+                {" "}
+                Login
+              </button>
+            )}
+            <p className="text-primary font-semibold text-right">
+              <Link to="/forgotpassword">Forgot Password?</Link>
+            </p>
+
+            <div className="relative my-5">
+              <hr />
+              <p className="absolute top-[-12px] bg-white px-4 left-[50%]">
+                or
+              </p>
+            </div>
             <button
-              onClick={handleSubmit}
-              className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
+              onClick={handleGoogleLogin}
+              className="w-full text-center bg-red-500 text-white font-pophins text-base py-2.5 rounded-md my-5"
             >
               {" "}
-              Login
+              Login with Google
             </button>
-          )}
-          <p className="text-primary font-semibold text-right">
-            <Link to="/forgotpassword">Forgot Password?</Link>
-          </p>
-
-          <div className="relative my-5">
-            <hr />
-            <p className="absolute top-[-12px] bg-white px-4 left-[50%]">or</p>
-          </div>
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full text-center bg-red-500 text-white font-pophins text-base py-2.5 rounded-md my-5"
-          >
-            {" "}
-            Login with Google
-          </button>
-          <div className="text-center">
-            <p>
-              Don’t have an account?{" "}
-              <Link to="/registation" className="text-primary font-semibold">
-                Register
-              </Link>
-            </p>
+            <div className="text-center">
+              <p>
+                Don’t have an account?{" "}
+                <Link to="/registation" className="text-primary font-semibold">
+                  Register
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

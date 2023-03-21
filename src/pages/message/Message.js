@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/Sidebar";
 import UserList from "../../components/UserList";
 import Friends from "../../components/Friends";
@@ -11,8 +11,10 @@ import { BsFillCameraFill, BsFillMicFill } from "react-icons/bs";
 import { BiHappy } from "react-icons/bi";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { ImAttachment } from "react-icons/im";
-
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { useSelector } from "react-redux";
 const Message = () => {
+
   return (
     <div className="flex h-screen overflow-hidden ">
       <div className="relative w-[500px]">

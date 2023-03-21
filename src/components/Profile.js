@@ -4,7 +4,9 @@ import Images from "./Images";
 import { MdCloudUpload } from "react-icons/md";
 import Accordion from "./Accordian";
 import Modal from "./Modal";
+import { useSelector, useDispatch } from "react-redux";
 const Profile = () => {
+   let data = useSelector((state) => state.allUserSInfo.userInfo);
     const [isOpen, setIsOpen] = useState(false);
 
     function toggleModal() {
@@ -22,13 +24,16 @@ const Profile = () => {
       <Flex className="items-center flex flex-col pt-10">
         <div className="relative mb-5 group">
           <div className="w-[150px] h-[150px]">
-            <Images imgSrc="images/avatar.jpg" className="rounded-full" />
+            <Images
+              imgSrc={data && data.photoURL}
+              className="rounded-full w-full"
+            />
           </div>
           <div
             onClick={toggleModal}
             className=" transition-all opacity-0 group-hover:opacity-100 absolute w-full h-full bg-[rgba(0,0,0,.4)] rounded-full top-0 left-0 flex justify-center items-center ease-out duration-[.4s] "
           >
-            <MdCloudUpload className="text-4xl text-primary" />
+            <MdCloudUpload className="text-4xl text-white" />
           </div>
         </div>
         {isOpen && (
@@ -39,7 +44,9 @@ const Profile = () => {
             </div>
           </Modal>
         )}
-        <h2 className="text-3xl font-bold font-pophins mb-5">Display Name</h2>
+        <h2 className="text-3xl font-bold font-pophins mb-5">
+          {data && data.displayName}
+        </h2>
         <p className="font-pophins font-medium text-xl">Display Bio</p>
       </Flex>
       <div className="border-black border-b border-solid mb-5 pb-5 px-5">

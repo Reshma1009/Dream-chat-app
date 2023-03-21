@@ -5,6 +5,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  sendEmailVerification,
 } from "firebase/auth";
 import { getDatabase, ref, set, push } from "firebase/database";
 import { ToastContainer, toast } from "react-toastify";
@@ -75,9 +76,9 @@ const Registation = () => {
               toast.success("Registation Successfull. Please Verify Your Email");
               setName("");
               setEmail("");
-              setPassword("");
-              dispatch(usersInformation(user));
-              localStorage.setItem("userRegistationIfo", JSON.stringify(user));
+              setPassword( "" );
+              sendEmailVerification(auth.currentUser);
+              
               setTimeout(() => {
                 navigate("/login");
               }, 2500);

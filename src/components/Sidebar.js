@@ -6,9 +6,17 @@ import { RiSettings5Line } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { AiOutlineHome } from "react-icons/ai";
 import { TbBellRinging } from "react-icons/tb";
-import { ImUserPlus } from "react-icons/im";
-import { Link, NavLink } from "react-router-dom";
-const Sidebar = ({ active }) => {
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { usersInformation } from "../slices/userSlices"
+const Sidebar = ( { active } ) => {
+  let navigate = useNavigate();
+  let dispatch= useDispatch()
+  let handleLogOut = () => {
+    navigate( "/login" );
+    dispatch( usersInformation( null ) );
+    localStorage.removeItem("userRegistationIfo");
+  };
   return (
     <div className=" max-w-full left-0 top-0">
       <div
@@ -100,7 +108,7 @@ const Sidebar = ({ active }) => {
               title="Settings"
             />
           </div>
-          <div className="relative">
+          <div onClick={handleLogOut} className="relative cursor-pointer">
             <IoMdLogOut
               className="text-white text-2xl "
               data-bs-toggle="tooltip"
