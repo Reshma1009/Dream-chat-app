@@ -1,10 +1,25 @@
 import React, { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { getDatabase, ref, set, push } from "firebase/database";
+import { useDispatch } from "react-redux";
+import { InfinitySpin, FallingLines } from "react-loader-spinner";
+import { ToastContainer, toast } from "react-toastify";
+import { usersInformation } from "../../slices/userSlices";
 const Login = () => {
+  const auth = getAuth();
+   const db = getDatabase();
+  const provider = new GoogleAuthProvider();
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
   const [showPassIcon, setShowPassIcon] = useState(false);
-
+  let [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailErr, setEmailErr] = useState("");
@@ -41,9 +56,52 @@ const Login = () => {
         setPasswordErr("Need 8 to 16 characters");
       }
     }*/
+    if (email && password) {
+      setLoading(true);
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          toast.success("Login Successfull. Please Wait For Redriction.");
+          setEmail("");
+          setPassword("");
+
+          setTimeout(() => {
+            navigate("/");
+          }, 2500);
+          setLoading(false);
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          if (errorMessage.includes("auth/user-not-found")) {
+            setEmailErr("Email is invalid");
+          }
+          if (errorMessage.includes("auth/wrong-password")) {
+            setPasswordErr("Wrong Password");
+          }
+          setLoading(false);
+          // ..
+        });
+    }
+  };
+  let handleGoogleLogin = () => {
+    signInWithPopup(auth, provider).then((result) => {
+      // The signed-in user info.
+      const user = result.user;
+      console.log(user);
+      dispatch(usersInformation(user));
+      localStorage.setItem("userRegistationIfo", JSON.stringify(user));
+      navigate("/");
+      set(ref(db, "users/" + user.uid), {
+        userName: user.displayName,
+        email: user.email,
+        profile_picture: user.photoURL,
+      });
+    });
   };
   return (
     <div className="flex justify-center items-center h-screen w-full">
+      <ToastContainer position="bottom-center" theme="dark" />
       <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
         <div
           style={{
@@ -62,6 +120,7 @@ const Login = () => {
           <div>
             <p className="font-pophins text-lg my-3">Email</p>
             <input
+              value={email}
               onChange={handleEmail}
               type="text"
               placeholder="Enter your mail"
@@ -77,6 +136,7 @@ const Login = () => {
             <p className="font-pophins text-lg my-3">Create Password</p>
             <div className="relative">
               <input
+                value={password}
                 onChange={handlePassword}
                 type={showPassIcon ? "text" : "password"}
                 placeholder="Enter your password"
@@ -100,13 +160,24 @@ const Login = () => {
               </p>
             )}
           </div>
-          <button
-            onClick={handleSubmit}
-            className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
-          >
-            {" "}
-            Login
-          </button>
+          {loading ? (
+            <div className="w-full h-[50px] text-center bg-primary text-white font-pophins text-base py-0 rounded-md my-5 hover:bg-secondary hover:text-primary flex justify-center items-center">
+              <FallingLines
+                color="#fff"
+                width="70"
+                visible={true}
+                ariaLabel="falling-lines-loading"
+              />
+            </div>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
+            >
+              {" "}
+              Login
+            </button>
+          )}
           <p className="text-primary font-semibold text-right">
             <Link to="/forgotpassword">Forgot Password?</Link>
           </p>
@@ -115,7 +186,10 @@ const Login = () => {
             <hr />
             <p className="absolute top-[-12px] bg-white px-4 left-[50%]">or</p>
           </div>
-          <button className="w-full text-center bg-red-500 text-white font-pophins text-base py-2.5 rounded-md my-5">
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full text-center bg-red-500 text-white font-pophins text-base py-2.5 rounded-md my-5"
+          >
             {" "}
             Login with Google
           </button>

@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import firebaseConfig from "./firsebase.confige";
 import store from "./store";
+import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

@@ -1,7 +1,22 @@
 import React, { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { getDatabase, ref, set, push } from "firebase/database";
+import { ToastContainer, toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { usersInformation } from "../../slices/userSlices";
+import { InfinitySpin, FallingLines } from "react-loader-spinner";
 const Registation = () => {
+  const auth = getAuth();
+  const db = getDatabase();
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
+  let [loading, setLoading] = useState(false);
   const [showPassIcon, setShowPassIcon] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -47,10 +62,50 @@ const Registation = () => {
         setPasswordErr("Need 8 to 16 characters");
       }
     }*/
+    if (name && email && password) {
+      setLoading(true);
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: "images/avatar.jpg",
+          })
+            .then(() => {
+              toast.success("Registation Successfull. Please Verify Your Email");
+              setName("");
+              setEmail("");
+              setPassword("");
+              dispatch(usersInformation(user));
+              localStorage.setItem("userRegistationIfo", JSON.stringify(user));
+              setTimeout(() => {
+                navigate("/login");
+              }, 2500);
+              setLoading(false);
+            })
+            .then(() => {
+              set(ref(db, "users/" + user.uid), {
+                username: user.displayName,
+                email: user.email,
+                profile_picture: user.photoURL,
+              });
+            })
+            .catch((error) => {});
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          if (errorMessage.includes("auth/email-already-in-use")) {
+            setEmailErr("Email Exits");
+          }
+          setLoading(false);
+          // ..
+        });
+    }
   };
 
   return (
     <div className="flex justify-center items-center h-screen w-full">
+      <ToastContainer position="bottom-center" theme="dark" />
       <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
         <div
           style={{
@@ -69,6 +124,7 @@ const Registation = () => {
           <div>
             <p className="font-pophins text-lg my-3">Name</p>
             <input
+              value={name}
               onChange={handleName}
               type="text"
               placeholder="Enter your name"
@@ -84,7 +140,8 @@ const Registation = () => {
             <p className="font-pophins text-lg my-3">Email</p>
             <input
               onChange={handleEmail}
-              type="text"
+              type="email"
+              value={email}
               placeholder="Enter your mail"
               className="w-full border border-solid bg-gray-100 py-4 pl-3 rounded-md  focus:bg-white focus:border focus:border-solid focus:border-gray-300 outline-none"
             />
@@ -98,6 +155,7 @@ const Registation = () => {
             <p className="font-pophins text-lg my-3">Create Password</p>
             <div className="relative">
               <input
+                value={password}
                 onChange={handlePassword}
                 type={showPassIcon ? "text" : "password"}
                 placeholder="Enter your password"
@@ -121,17 +179,30 @@ const Registation = () => {
               </p>
             )}
           </div>
-          <button
-            onClick={handleSubmit}
-            className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
-          >
-            {" "}
-            Register
-          </button>
+          {loading ? (
+            <div className="w-full h-[50px] text-center bg-primary text-white font-pophins text-base py-0 rounded-md my-5 hover:bg-secondary hover:text-primary flex justify-center items-center">
+              <FallingLines
+                color="#fff"
+                width="70"
+                visible={true}
+                ariaLabel="falling-lines-loading"
+              />
+            </div>
+          ) : (
+            <button
+              onClick={handleSubmit}
+              className="w-full text-center bg-primary text-white font-pophins text-base py-2.5 rounded-md my-5 hover:bg-secondary hover:text-primary"
+            >
+              {" "}
+              Register
+            </button>
+          )}
           <div className="text-center">
             <p>
               Already have an account?{" "}
-              <Link to="/login" className="text-primary font-semibold">Login</Link>
+              <Link to="/login" className="text-primary font-semibold">
+                Login
+              </Link>
             </p>
           </div>
         </div>
