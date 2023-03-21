@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Flex from "./Flex";
 import Images from "./Images";
 import Search from "./Search";
-import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { getDatabase, ref, onValue, set, push,remove } from "firebase/database";
 import { useSelector } from "react-redux";
 const AllFriends = () => {
   const db = getDatabase();
@@ -17,13 +17,39 @@ const AllFriends = () => {
           data.uid == item.val().senderId ||
           data.uid == item.val().receiverId
         ) {
-          arr.push(item.val());
+          arr.push({...item.val(),friendId:item.key});
         }
       });
       setFriendList(arr);
     });
-  }, [] );
- 
+  }, []);
+  let handleBlock = (item) => {
+    // console.log(item);
+    if (data.uid == item.senderId) {
+      set(push(ref(db, "block")), {
+        whoBlockId: item.senderId,
+        whoBlockName: item.senderName,
+        whoBlockPhoto: item.senderPhoto,
+        blockId: item.receiverId,
+        blockName: item.receiverName,
+        blockPhoto: item.receiverPhoto,
+      } ).then( () => {
+      remove(ref(db, "friends/" + item.friendId));
+      } )
+    } else {
+      set(push(ref(db, "block")), {
+        whoBlockId: item.receiverId,
+        whoBlockName: item.receiverName,
+        whoBlockPhoto: item.receiverPhoto,
+        blockId: item.senderId,
+        blockName: item.senderName,
+        blockPhoto: item.senderPhoto,
+      }).then(() => {
+        remove(ref(db, "friends/" + item.friendId));
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -56,7 +82,10 @@ const AllFriends = () => {
               </p>
             </div>
             <div className="grow text-right">
-              <button className="bg-red-500 py-2 px-3 text-white font-pophins text-sm rounded-md ml-5">
+              <button
+                onClick={() => handleBlock(item)}
+                className="bg-red-500 py-2 px-3 text-white font-pophins text-sm rounded-md ml-5"
+              >
                 Block
               </button>
             </div>

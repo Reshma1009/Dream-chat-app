@@ -6,8 +6,8 @@ import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
 const FriendRequest = () => {
   const db = getDatabase();
-  let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
-  console.log("data",data.uid);
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
+
   const [friendRequest, setFriendRequest] = useState([]);
   useEffect(() => {
     const friendReqRef = ref(db, "friendRequest/");
@@ -22,7 +22,6 @@ const FriendRequest = () => {
     });
   }, []);
   let handleAcceptFrndReq = (item) => {
-    console.log("id",item.friendReqId);
     set(push(ref(db, "friends")), {
       ...item,
     });
@@ -33,10 +32,7 @@ const FriendRequest = () => {
     onValue(friendsRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        arr.push( item.val().senderId + item.val().receiverId );
-        console.log("Sender",item.val().senderId);
-        console.log("rec", item.val().receiverId);
-
+        arr.push(item.val().senderId + item.val().receiverId);
       });
       setFriendAList(arr);
     });
