@@ -53,6 +53,19 @@ const UserList = () => {
       setFriendList(arr);
     });
   }, []);
+  const [blockList, setBlockList] = useState([]);
+  useEffect(() => {
+    const blockRef = ref(db, "block");
+    onValue(blockRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        console.log("block",item.val());
+
+        arr.push(item.val().blockId + item.val().whoBlockId);
+      });
+      setBlockList(arr);
+    });
+  }, []);
   return (
     <div className="">
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
@@ -79,8 +92,13 @@ const UserList = () => {
               </p>
             </div>
             <div className="grow text-right">
-              {friendList.includes(data.uid + item.userId) ||
-              friendList.includes(item.userId + data.uid) ? (
+              {blockList.includes(data.uid + item.userId) ||
+              blockList.includes(item.userId + data.uid) ? (
+                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                  Block
+                </button>
+              ) : friendList.includes(data.uid + item.userId) ||
+                friendList.includes(item.userId + data.uid) ? (
                 <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
                   Friend
                 </button>

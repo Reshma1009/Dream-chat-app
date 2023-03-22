@@ -21,7 +21,8 @@ const FriendRequest = () => {
       setFriendRequest(arr);
     });
   }, []);
-  let handleAcceptFrndReq = (item) => {
+  let handleAcceptFrndReq = ( item ) => {
+    console.log(item);
     set(push(ref(db, "friends")), {
       ...item,
     });
