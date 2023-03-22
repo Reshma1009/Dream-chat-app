@@ -73,7 +73,8 @@ const UserList = () => {
       </h2>
       <Search placeholder={`search here for users`} />
       <div className="h-[100vh] overflow-y-auto">
-        {userList.map((item) => (
+        {userList.length==0? <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">No Block User Found</h1> :
+        userList.map((item) => (
           <Flex
             className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
           >

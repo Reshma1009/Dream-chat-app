@@ -21,7 +21,7 @@ const FriendRequest = () => {
       setFriendRequest(arr);
     });
   }, []);
-  let handleAcceptFrndReq = ( item ) => {
+  let handleAcceptFrndReq = (item) => {
     console.log(item);
     set(push(ref(db, "friends")), {
       ...item,
@@ -46,41 +46,47 @@ const FriendRequest = () => {
       <Search placeholder={`search here for users`} />
 
       <div className="h-[100vh] overflow-y-auto">
-        {friendRequest.map((item) => (
-          <Flex
-            className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
-          >
-            <div className="w-[50px] h-[50px] ">
-              <Images
-                imgSrc={item.senderPhoto}
-                className="rounded-full w-full"
-              />
-            </div>
-            <div>
-              <h3 className="text-heading font-semibold text-lg font-pophins">
-                {item.senderName}
-              </h3>
-              <p className="text-[#767676] font-normal text-sm font-pophins">
-                Hi Guys, How Are you
-              </p>
-            </div>
-            <div className="grow text-right">
-              {friendAList.includes(data.uid + item.senderId) ||
-              friendAList.includes(item.senderId + data.uid) ? (
-                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-                  Accepted
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleAcceptFrndReq(item)}
-                  className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
-                >
-                  Accept
-                </button>
-              )}
-            </div>
-          </Flex>
-        ))}
+        {friendRequest.length == 0 ? (
+          <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
+            No Friend Request Available
+          </h1>
+        ) : (
+          friendRequest.map((item) => (
+            <Flex
+              className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
+            >
+              <div className="w-[50px] h-[50px] ">
+                <Images
+                  imgSrc={item.senderPhoto}
+                  className="rounded-full w-full"
+                />
+              </div>
+              <div>
+                <h3 className="text-heading font-semibold text-lg font-pophins">
+                  {item.senderName}
+                </h3>
+                <p className="text-[#767676] font-normal text-sm font-pophins">
+                  Hi Guys, How Are you
+                </p>
+              </div>
+              <div className="grow text-right">
+                {friendAList.includes(data.uid + item.senderId) ||
+                friendAList.includes(item.senderId + data.uid) ? (
+                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Accepted
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAcceptFrndReq(item)}
+                    className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
+                  >
+                    Accept
+                  </button>
+                )}
+              </div>
+            </Flex>
+          ))
+        )}
       </div>
     </div>
   );

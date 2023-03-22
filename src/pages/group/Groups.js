@@ -5,8 +5,18 @@ import AllGroupList from "../../components/AllGroupList";
 import Profile from "../../components/Profile";
 import Sidebar from "../../components/Sidebar";
 import JoinedGroups from "../../components/JoinedGroup";
-
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set,
+  push,
+  remove,
+} from "firebase/database";
+import { useSelector } from "react-redux";
 const Groups = () => {
+  const db = getDatabase();
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [groupName, setGroupName] = useState("");
   const [groupTagline, setGroupTagline] = useState("");
   const [groupNameErr, setGroupNameErr] = useState("");
@@ -26,12 +36,22 @@ const Groups = () => {
     if (!groupTagline) {
       setGroupTaglineErr("Group TagLine Is Requried");
     }
+    set(push(ref(db, "createGroup")), {
+      groupName,
+      groupTagline,
+      adminId: data.uid,
+      admin: data.displayName,
+      adminPhoto: data.photoURL
+    } );
+    setGroupName( "" )
+    setGroupTagline("")
   };
 
   const [toggleTab, setToggleTab] = useState(1);
   let handleToggle = (index) => {
     setToggleTab(index);
   };
+
   return (
     <div className="grid grid-cols-12 h-screen overflow-hidden">
       <div className="col-span-3 relative">
@@ -80,6 +100,7 @@ const Groups = () => {
                 <div>
                   <p className="font-pophins text-lg my-3">Grpup Name</p>
                   <input
+                    value={groupName}
                     onChange={handleGroupName}
                     type="text"
                     placeholder="Group Name"
@@ -94,6 +115,7 @@ const Groups = () => {
                 <div>
                   <p className="font-pophins text-lg my-3">Group TagLine</p>
                   <input
+                    value={groupTagline}
                     onChange={handleGroupTagLine}
                     type="text"
                     placeholder="Group Tagline"
