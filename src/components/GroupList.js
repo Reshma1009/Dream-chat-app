@@ -21,13 +21,14 @@ const GroupLists = () => {
       let arr = [];
       snapshot.forEach((item) => {
         if (data.uid !== item.val().adminId) {
-          arr.push(item.val());
+          arr.push({ ...item.val(), groupId: item.key });
         }
       });
       setGroupList(arr);
     });
   }, []);
   let handleJoinGroup = (item) => {
+    // console.log("join", item);
     set(push(ref(db, "joinGroupReq")), {
       ...item,
       userName: data.displayName,
@@ -41,11 +42,35 @@ const GroupLists = () => {
     onValue(groupReqRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
+        // console.log("pending", item.val());
         arr.push(item.val().groupId + item.val().userId);
       });
       setReqGroupList(arr);
     });
   }, []);
+  const [rejectReqGroup, setRejectReqGroup] = useState([]);
+  useEffect(() => {
+    const rejectReqGroupRef = ref(db, "rejectGroupReq/");
+    onValue(rejectReqGroupRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        arr.push(item.val().groupId + item.val().userId);
+      });
+      setRejectReqGroup(arr);
+    });
+  }, []);
+  const [acceptedReq, setAcceptedReq] = useState([]);
+  useEffect(() => {
+    const acceptReqGroupRef = ref(db, "acceptGrpReq/");
+    onValue(acceptReqGroupRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        arr.push(item.val().groupId + item.val().userId);
+      });
+      setAcceptedReq(arr);
+    });
+  }, []);
+
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -80,8 +105,18 @@ const GroupLists = () => {
                 </p>
               </div>
               <div className="grow text-right">
-                {groupReqList.includes(data.uid + item.adminId) ||
-                groupReqList.includes(item.adminId + data.uid) ? (
+                {acceptedReq.includes(data.uid + item.groupId) ||
+                acceptedReq.includes(item.groupId + data.uid) ? (
+                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Member
+                  </button>
+                ) : rejectReqGroup.includes(data.uid + item.groupId) ||
+                  rejectReqGroup.includes(item.groupId + data.uid) ? (
+                  <button className="bg-red-500 py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Rejected
+                  </button>
+                ) : groupReqList.includes(data.uid + item.groupId) ||
+                  groupReqList.includes(item.groupId + data.uid) ? (
                   <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
                     Pending
                   </button>
