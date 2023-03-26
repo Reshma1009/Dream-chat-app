@@ -3,26 +3,69 @@ import Flex from "./Flex";
 import Images from "./Images";
 import Search from "./Search";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { activeUsersInfo } from "../slices/activeChatUsers";
+
 const Friends = () => {
   const db = getDatabase();
+  let dispatch = useDispatch();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [friendList, setFriendList] = useState([]);
-    useEffect(() => {
-      const friendsRef = ref(db, "friends/");
-      onValue(friendsRef, (snapshot) => {
-        let arr = [];
-        snapshot.forEach((item) => {
-          if (
-            data.uid == item.val().senderId ||
-            data.uid == item.val().receiverId
-          ) {
-            arr.push(item.val());
-          }
-        });
-        setFriendList(arr);
+  useEffect(() => {
+    const friendsRef = ref(db, "friends/");
+    onValue(friendsRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        if (
+          data.uid == item.val().senderId ||
+          data.uid == item.val().receiverId
+        ) {
+          arr.push(item.val());
+        }
       });
-    }, []);
+      setFriendList(arr);
+    });
+  }, []);
+  let handleSingleMessage = (item) => {
+    console.log(item);
+    if (data.uid == item.receiverId) {
+      dispatch(
+        activeUsersInfo({
+          name: item.senderName,
+          id: item.senderId,
+          status: "single",
+          profilePhoto: item.senderPhoto,
+        })
+      );
+      localStorage.setItem(
+        "activeChatUser",
+        JSON.stringify({
+          name: item.senderName,
+          id: item.senderId,
+          status: "single",
+          profilePhoto: item.senderPhoto,
+        })
+      );
+    } else {
+      dispatch(
+        activeUsersInfo({
+          name: item.receiverName,
+          id: item.receiverId,
+          status: "single",
+          profilePhoto: item.receiverPhoto,
+        })
+      );
+       localStorage.setItem(
+         "activeChatUser",
+         JSON.stringify({
+           name: item.receiverName,
+           id: item.receiverId,
+           status: "single",
+           profilePhoto: item.receiverPhoto,
+         })
+       );
+    }
+  };
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -60,7 +103,10 @@ const Friends = () => {
                 </p>
               </div>
               <div className="grow text-right">
-                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                <button
+                  onClick={() => handleSingleMessage(item)}
+                  className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
+                >
                   Message
                 </button>
               </div>

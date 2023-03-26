@@ -14,7 +14,55 @@ import { ImAttachment } from "react-icons/im";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
 const Message = () => {
-
+  const db = getDatabase();
+  const [message, setMessage] = useState("");
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
+  let activeChat = useSelector(
+    (state) => state.allActiveChatUsers.activeChatUsers
+  );
+  console.log(activeChat);
+  let handleMesage = (e) => {
+    setMessage(e.target.value);
+    // console.log(e.target.value);
+  };
+  let handleSendMessage = () => {
+    if (!message) {
+      console.log("write SomeThing");
+    } else {
+      if (activeChat && activeChat.status == "single") {
+        set(push(ref(db, "singleMessage")), {
+          whoSendId: data.uid,
+          whoSendName: data.displayName,
+          whoSendPhoto: data.photoURL,
+          whoReceiveId: activeChat.id,
+          whoReceiveName: activeChat.name,
+          whoReceivePhoto: activeChat.profilePhoto,
+          message,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+        }).then(() => {
+          setMessage("");
+        });
+      } else {
+        set(push(ref(db, "groupMessage")), {
+          whoSendId: data.uid,
+          whoSendName: data.displayName,
+          whoSendPhoto: data.photoURL,
+          whoReceiveId: activeChat.id,
+          adminId: activeChat.adminId,
+          whoReceiveName: activeChat.name,
+          whoReceivePhoto: activeChat.profilePhoto,
+          message,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}`,
+        }).then(() => {
+          setMessage("");
+        });
+      }
+    }
+  };
   return (
     <div className="flex h-screen overflow-hidden ">
       <div className="relative w-[500px]">
@@ -44,12 +92,14 @@ const Message = () => {
           <Flex className="flex gap-x-5 p-6 items-center">
             <div className="w-[90px] h-[90px]">
               <Images
-                imgSrc="images/profile.png"
+                imgSrc={activeChat && activeChat.profilePhoto}
                 className="rounded-full w-full"
               />
             </div>
             <div>
-              <p className="font-pophins text-xl font-medium">Display Name</p>
+              <p className="font-pophins text-xl font-medium">
+                {activeChat && activeChat.name}
+              </p>
               <p className="font-pophins text-base font-normal">Online</p>
             </div>
           </Flex>
@@ -64,6 +114,8 @@ const Message = () => {
         {/* Input Text Area End */}
         <div className="flex items-center gap-x-5 p-5 pb-2 relative">
           <input
+            onChange={handleMesage}
+            value={message}
             type="text"
             className="w-[100%] p-3 rounded-lg outline-primary"
           />
@@ -73,7 +125,10 @@ const Message = () => {
             <ImAttachment className="text-primary text-2xl" />
             <BsFillMicFill className="text-primary text-2xl" />
           </div>
-          <button className="bg-primary px-5 py-3 rounded-lg">
+          <button
+            onClick={handleSendMessage}
+            className="bg-primary px-5 py-3 rounded-lg"
+          >
             <RiSendPlaneFill className="text-white text-2xl" />
           </button>
         </div>

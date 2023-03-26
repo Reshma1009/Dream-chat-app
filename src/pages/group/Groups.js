@@ -75,7 +75,7 @@ const Groups = () => {
                 }  inline-block py-2 px-5 rounded-md font-medium font-pophins text-lg mr-3`}
               >
                 {" "}
-                Members{" "}
+                Joined Group{" "}
               </button>
               <button
                 onClick={() => handleToggle(2)}
