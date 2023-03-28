@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Modal({ onClick,titel, children }) {
+function Modal({ onClick, titel, children, sendImg, show }) {
   return (
     <>
       {/* The overlay */}
@@ -19,7 +19,7 @@ function Modal({ onClick,titel, children }) {
             &#8203;
           </span>
           <div
-            className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform  sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform  sm:my-8 sm:align-middle sm:max-w-[50%] sm:w-full"
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-headline"
@@ -40,6 +40,15 @@ function Modal({ onClick,titel, children }) {
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
               <span className="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
+                {show && (
+                  <button
+                    type="button"
+                    className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5 mr-3"
+                    onClick={sendImg}
+                  >
+                    Send
+                  </button>
+                )}
                 <button
                   type="button"
                   className="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5"
