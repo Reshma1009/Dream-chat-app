@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Sidebar from "../../components/Sidebar";
 import UserList from "../../components/UserList";
 import Friends from "../../components/Friends";
@@ -25,14 +25,28 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import EmojiPicker from "emoji-picker-react";
-const Message = () => {
+import ScrollToBottom from "react-scroll-to-bottom";
+// import { css } from "emotion";
+const Message = () =>{
   const auth = getAuth();
   const db = getDatabase();
   const [message, setMessage] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  const [img, setImg] = useState("");
+  const [ img, setImg ] = useState( "" );
+
+ const messagesEndRef = useRef(null);
+
+ const scrollToBottom = () => {
+   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+ };
+
+ useEffect(() => {
+   scrollToBottom();
+ }, [message]);
+
+
   function toggleModal() {
     setIsOpen(!isOpen);
     setImg("");
@@ -47,13 +61,19 @@ const Message = () => {
   // console.log(activeChat);
   let handleMesage = (e) => {
     setMessage(e.target.value);
-    // console.log(e.target.value);
+  };
+  let handleOnFocus = (e) => {
     setShowEmoji(false);
   };
   let handleSendEmoji = () => {
     setShowEmoji(!showEmoji);
+    // setMessage(message+);
+  };
+  let sendEmoji = (emoji) => {
+    setMessage(message + emoji.emoji);
   };
   let handleSendMessage = () => {
+    setShowEmoji(false);
     if (!message) {
       toast("write SomeThing");
     } else {
@@ -188,8 +208,11 @@ const Message = () => {
         {/* Name Info End*/}
         {/* Messageing Start */}
 
-        <div className="p-8  overflow-y-auto overflow-x-hidden scrollbar-hidden pt-5 flex-1">
+        <div
+          className={`  px-8  overflow-y-auto overflow-x-hidden scrollbar-hidden pt-5 flex-1 relative`}
+        >
           <Chat />
+
         </div>
         {/* Messageing End */}
         {/* Input Text Area End */}
@@ -197,6 +220,7 @@ const Message = () => {
           <div className="flex items-center gap-x-5 p-5 pb-2 relative">
             <input
               onChange={handleMesage}
+              onFocus={handleOnFocus}
               value={message}
               type="text"
               className="w-[100%] p-3 rounded-lg outline-primary"
@@ -204,22 +228,22 @@ const Message = () => {
             <div className="flex gap-x-5 absolute right-[110px]">
               <BsFillCameraFill
                 onClick={openCamera}
-                className="text-primary text-2xl"
+                className="text-primary text-2xl cursor-pointer"
               />
               <BiHappy
                 onClick={handleSendEmoji}
-                className="text-primary text-2xl"
+                className="text-primary text-2xl cursor-pointer"
               />
               {showEmoji && (
                 <div className="absolute top-[-465px] right-0">
-                  <EmojiPicker />
+                  <EmojiPicker onEmojiClick={(emoji) => sendEmoji(emoji)} />
                 </div>
               )}
               <ImAttachment
                 onClick={openFile}
-                className="text-primary text-2xl"
+                className="text-primary text-2xl cursor-pointer"
               />
-              <BsFillMicFill className="text-primary text-2xl" />
+              <BsFillMicFill className="text-primary text-2xl cursor-pointer" />
             </div>
             <button
               onClick={handleSendMessage}
@@ -235,15 +259,30 @@ const Message = () => {
             <div className="flex items-center gap-x-5 p-5 pb-2 relative">
               <input
                 onChange={handleMesage}
+                onFocus={handleOnFocus}
                 value={message}
                 type="text"
                 className="w-[100%] p-3 rounded-lg outline-primary"
               />
               <div className="flex gap-x-5 absolute right-[110px]">
-                <BsFillCameraFill className="text-primary text-2xl" />
-                <BiHappy className="text-primary text-2xl" />
-                <ImAttachment className="text-primary text-2xl" />
-                <BsFillMicFill className="text-primary text-2xl" />
+                <BsFillCameraFill
+                  onClick={openCamera}
+                  className="text-primary text-2xl cursor-pointer"
+                />
+                <BiHappy
+                  onClick={handleSendEmoji}
+                  className="text-primary text-2xl cursor-pointer"
+                />
+                {showEmoji && (
+                  <div className="absolute top-[-465px] right-0">
+                    <EmojiPicker onEmojiClick={(emoji) => sendEmoji(emoji)} />
+                  </div>
+                )}
+                <ImAttachment
+                  onClick={openFile}
+                  className="text-primary text-2xl cursor-pointer"
+                />
+                <BsFillMicFill className="text-primary text-2xl cursor-pointer" />
               </div>
               <button
                 onClick={handleSendMessage}

@@ -3,6 +3,7 @@ import { BsTriangleFill } from "react-icons/bs";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useSelector } from "react-redux";
 import ModalImage from "react-modal-image";
+import ScrollToBottom from "react-scroll-to-bottom";
 const Chat = () => {
   const db = getDatabase();
   let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
@@ -10,7 +11,7 @@ const Chat = () => {
   let activeChat = useSelector(
     (state) => state.allActiveChatUsers.activeChatUsers
   );
-  console.log( "adminid", activeChat);
+  // console.log( "adminid", activeChat);
   const [singleMessageList, setSingleMessageList] = useState([]);
   const [groupMessageList, setGroupMessageList] = useState([]);
   useEffect(() => {
@@ -55,7 +56,8 @@ const Chat = () => {
     });
   }, []);
   return (
-    <div className="">
+    
+    <div >
       {activeChat && activeChat.status == "single" ? (
         singleMessageList.map((item) =>
           item.whoSendId == data.uid ? (

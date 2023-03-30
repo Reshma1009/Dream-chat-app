@@ -30,10 +30,7 @@ const Home = () => {
     setVerify(true);
     dispatch(usersInformation(user));
     localStorage.setItem("userRegistationIfo", JSON.stringify(user));
-    } else {
-      // User is signed out
-      // ...
-    }
+    } 
   });
   useEffect(() => {
     if (!data) {
