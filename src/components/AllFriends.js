@@ -58,12 +58,12 @@ const AllFriends = () => {
   };
 
   return (
-    <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
+    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         All Friends
       </h2>
-      <div className="overflow-y-scroll overflow-x-hidden">
+      <div className="scrollbar-hidden overflow-y-scroll overflow-x-hidden">
         {friendList.length == 0 ? (
           <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
             No Friends Available

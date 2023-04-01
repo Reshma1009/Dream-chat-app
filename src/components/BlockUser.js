@@ -44,12 +44,12 @@ const BlockUser = () => {
     });
   };
   return (
-    <div className="flex flex-col overflow-hidden h-[50vh]  p-7 pt-0">
+    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7 pt-0">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         Block Users
       </h2>
-      <div className="overflow-y-scroll overflow-x-hidden">
+      <div className="scrollbar-hidden overflow-y-scroll overflow-x-hidden">
         {blockList.length == 0 ? (
           <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
             No Block User Available

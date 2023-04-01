@@ -7,7 +7,7 @@ import ScrollToBottom from "react-scroll-to-bottom";
 const Chat = () => {
   const db = getDatabase();
   let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
-  console.log("login",data);
+  // console.log("login",data);
   let activeChat = useSelector(
     (state) => state.allActiveChatUsers.activeChatUsers
   );
@@ -48,7 +48,7 @@ const Chat = () => {
     onValue(acceptReqGroupRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("meme", item.val());
+        // console.log("meme", item.val());
 
         arr.push(item.val().groupId + item.val().userId);
       });
@@ -56,8 +56,7 @@ const Chat = () => {
     });
   }, []);
   return (
-    
-    <div >
+    <div>
       {activeChat && activeChat.status == "single" ? (
         singleMessageList.map((item) =>
           item.whoSendId == data.uid ? (
@@ -65,9 +64,10 @@ const Chat = () => {
               <div className="text-right max-w-[85%] ml-auto">
                 <div className="mb-7 ">
                   <div className="bg-primary px-5 py-3 inline-block rounded-lg relative text-left">
-                    <p className="font-pop font-medium text-base text-white">
-                      {item.message}
-                    </p>
+                    <p
+                      dangerouslySetInnerHTML={{ __html: item.message }}
+                      className="font-pop font-medium text-base text-white"
+                    ></p>
                     <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                   </div>
                   <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
@@ -75,12 +75,10 @@ const Chat = () => {
                   </p>
                 </div>
               </div>
-            ) : (
+            ) : item.image ? (
               <div className="text-right max-w-[85%] ml-auto">
                 <div className="mb-7 ">
                   <div className="bg-primary px-5 py-3 inline-block rounded-lg relative text-left">
-                    {/* <img className="w-[200px]" src={item.image} alt="" />
-                     */}
                     <div className="w-[200px]">
                       <ModalImage small={item.image} large={item.image} />
                     </div>
@@ -92,14 +90,24 @@ const Chat = () => {
                   </p>
                 </div>
               </div>
+            ) : (
+              <div className="mb-7 text-right">
+                <div className=" inline-block rounded-lg text-left">
+                  <audio controls src={item.audio}></audio>
+                </div>
+                <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
+                  Today, 2:01pm
+                </p>
+              </div>
             )
           ) : item.message ? (
             <div className="text-left max-w-[85%]">
               <div className="mb-7">
                 <div className="bg-[#F1F1F1] px-5 py-3 inline-block rounded-lg relative">
-                  <p className="font-pop font-medium text-base text-black">
-                    {item.message}
-                  </p>
+                  <p
+                    dangerouslySetInnerHTML={{ __html: item.message }}
+                    className="font-pop font-medium text-base text-white"
+                  ></p>
                   <BsTriangleFill className="absolute left-[-8px] bottom-0 text-[#F1F1F1]" />
                 </div>
                 <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
@@ -107,7 +115,7 @@ const Chat = () => {
                 </p>
               </div>
             </div>
-          ) : (
+          ) : item.image ? (
             <div className="text-left max-w-[85%]">
               <div className="mb-7">
                 <div className="bg-[#F1F1F1] px-5 py-3 inline-block rounded-lg relative">
@@ -122,6 +130,15 @@ const Chat = () => {
                 </p>
               </div>
             </div>
+          ) : (
+            <div className="mb-7 text-right">
+              <div className="w-64 inline-block rounded-lg text-left">
+                <audio src={item.audio} controls></audio>
+              </div>
+              <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
+                Today, 2:01pm
+              </p>
+            </div>
           )
         )
       ) : (activeChat && data.uid == activeChat.adminId) ||
@@ -132,9 +149,10 @@ const Chat = () => {
                 <div className="text-right max-w-[85%] ml-auto">
                   <div className="mb-7 ">
                     <div className="bg-primary px-5 py-3 inline-block rounded-lg relative text-left">
-                      <p className="font-pop font-medium text-base text-white">
-                        {item.message}
-                      </p>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: item.message }}
+                        className="font-pop font-medium text-base text-white"
+                      ></p>
                       <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                     </div>
                     <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">

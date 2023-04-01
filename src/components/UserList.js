@@ -72,53 +72,58 @@ const UserList = () => {
         All Users
       </h2>
       <Search placeholder={`search here for users`} />
-      <div className="h-[100vh] overflow-y-auto">
-        {userList.length==0? <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">No Block User Found</h1> :
-        userList.map((item) => (
-          <Flex
-            className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
-          >
-            <div className="w-[50px] h-[50px] ">
-              <Images
-                imgSrc={item.profile_picture}
-                className="rounded-full w-full"
-              />
-            </div>
-            <div>
-              <h3 className="text-heading font-semibold text-lg font-pophins">
-                {item.username}
-              </h3>
-              <p className="text-[#767676] font-normal text-sm font-pophins">
-                {item.email}
-              </p>
-            </div>
-            <div className="grow text-right">
-              {blockList.includes(data.uid + item.userId) ||
-              blockList.includes(item.userId + data.uid) ? (
-                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-                  Block
-                </button>
-              ) : friendList.includes(data.uid + item.userId) ||
-                friendList.includes(item.userId + data.uid) ? (
-                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-                  Friend
-                </button>
-              ) : friendRequest.includes(data.uid + item.userId) ||
-                friendRequest.includes(item.userId + data.uid) ? (
-                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
-                  Pending
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleAddFriend(item)}
-                  className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
-                >
-                  Add Friend
-                </button>
-              )}
-            </div>
-          </Flex>
-        ))}
+      <div className="w-[97%] h-[100vh] overflow-y-auto">
+        {userList.length == 0 ? (
+          <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
+            No Block User Found
+          </h1>
+        ) : (
+          userList.map((item) => (
+            <Flex
+              className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
+            >
+              <div className="w-[50px] h-[50px] ">
+                <Images
+                  imgSrc={item.profile_picture}
+                  className="rounded-full w-full"
+                />
+              </div>
+              <div>
+                <h3 className="text-heading font-semibold text-lg font-pophins">
+                  {item.username}
+                </h3>
+                <p className="text-[#767676] font-normal text-sm font-pophins">
+                  {item.email}
+                </p>
+              </div>
+              <div className="grow text-right">
+                {blockList.includes(data.uid + item.userId) ||
+                blockList.includes(item.userId + data.uid) ? (
+                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Block
+                  </button>
+                ) : friendList.includes(data.uid + item.userId) ||
+                  friendList.includes(item.userId + data.uid) ? (
+                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Friend
+                  </button>
+                ) : friendRequest.includes(data.uid + item.userId) ||
+                  friendRequest.includes(item.userId + data.uid) ? (
+                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Pending
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddFriend(item)}
+                    className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
+                  >
+                    Add Friend
+                  </button>
+                )}
+              </div>
+            </Flex>
+          ))
+        )}
       </div>
     </div>
   );

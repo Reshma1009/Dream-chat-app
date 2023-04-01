@@ -1,7 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+.scrollToBottom {
+    height: 100%;
+    overflow-y: auto;
+    width: auto !important;
+    overflow-x: hidden !important;
+}
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
@@ -10,4 +15,15 @@
 .scrollbar-hidden {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+.audio-recorder-mic {
+    cursor: pointer;
+    height: 26px !important;
+    color: #680A83 !important;
+}
+.audio-recorder {
+    background-color: transparent !important;
+    box-shadow: unset !important;
+    width: auto !important;
+    padding: 0 !important;
 }

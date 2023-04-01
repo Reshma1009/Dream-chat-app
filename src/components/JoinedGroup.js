@@ -33,7 +33,7 @@ const JoinedGroups = () => {
       <div className="flex flex-col overflow-hidden h-[100vh] shadow-2xl  pt-0">
         {/* <Search placeholder={`search here for users`} /> */}
 
-        <div className="overflow-y-auto overflow-x-hidden">
+        <div className="scrollbar-hidden overflow-y-auto overflow-x-hidden">
           {joinedGroup.map((item) => (
             <Flex
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}

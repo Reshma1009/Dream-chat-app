@@ -45,7 +45,7 @@ const FriendRequest = () => {
       </h2>
       <Search placeholder={`search here for users`} />
 
-      <div className="h-[100vh] overflow-y-auto">
+      <div className="scrollbar-hidden h-[100vh] overflow-y-auto">
         {friendRequest.length == 0 ? (
           <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
             No Friend Request Available

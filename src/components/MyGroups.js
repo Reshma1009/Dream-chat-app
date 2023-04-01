@@ -132,7 +132,7 @@ const MyGroups = () => {
         )}
       </div>
 
-      <div className="overflow-y-scroll overflow-x-hidden">
+      <div className="scrollbar-hidden overflow-y-scroll overflow-x-hidden">
         {groupList.length == 0 ? (
           <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
             No Groups Available
