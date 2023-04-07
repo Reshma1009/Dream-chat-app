@@ -38,6 +38,18 @@ const FriendRequest = () => {
       setFriendAList(arr);
     });
   }, []);
+  const [blockList, setBlockList] = useState([]);
+  useEffect(() => {
+    const blockRef = ref(db, "block/");
+    onValue(blockRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        console.log("bl", item.val());
+        arr.push(item.val().blockId + item.val().whoBlockId);
+      });
+      setBlockList(arr);
+    });
+  }, []);
   return (
     <div>
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
@@ -70,8 +82,13 @@ const FriendRequest = () => {
                 </p>
               </div>
               <div className="grow text-right">
-                {friendAList.includes(data.uid + item.senderId) ||
-                friendAList.includes(item.senderId + data.uid) ? (
+                {blockList.includes(data.uid + item.senderId) ||
+                blockList.includes(item.senderId + data.uid) ? (
+                  <button className="bg-red-500 py-2 px-3 text-white font-pophins text-sm rounded-md">
+                    Blocked
+                  </button>
+                ) : friendAList.includes(data.uid + item.senderId) ||
+                  friendAList.includes(item.senderId + data.uid) ? (
                   <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
                     Accepted
                   </button>

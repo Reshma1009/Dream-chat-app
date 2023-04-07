@@ -12,24 +12,36 @@ import {
   ref,
   uploadString,
   getDownloadURL,
+  listAll,
 } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
-import {
-  getDatabase,
-  ref as dRef,
-child,
-  update,
-} from "firebase/database";
-const Profile = () =>
-{
-  const auth = getAuth();
-  const db = getDatabase()
-   let data = useSelector((state) => state.allUserSInfo.userInfo);
-    const [isOpen, setIsOpen] = useState(false);
+import { getDatabase, ref as dRef, update, onValue } from "firebase/database";
+import { usersInformation } from "../slices/userSlices";
+const Profile = () => {
+  const storage = getStorage();
+  let dispatch = useDispatch();
 
-    function toggleModal() {
-      setIsOpen(!isOpen);
-    }
+
+  const auth = getAuth();
+  const db = getDatabase();
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
+  const [isOpen, setIsOpen] = useState(false);
+ const [friendList, setFriendList] = useState([]);
+/*  useEffect(() => {
+   const friendsRef = ref(db, "friends/");
+   onValue(friendsRef, (snapshot) => {
+     let arr = [];
+     snapshot.forEach((item) => {
+       console.log(item.val());
+       arr.push(item.val());
+     });
+     setFriendList(arr);
+   });
+ }, []); */
+ console.log(friendList);
+  function toggleModal() {
+    setIsOpen(!isOpen);
+  }
   const items = [{ title: "Info", content: { email: "Email Address" } }];
   const items2 = [
     {
@@ -37,7 +49,60 @@ const Profile = () =>
       content: { editName: "Display Name", editBio: "Edit Your Bio" },
     },
   ];
-   const [image, setImage] = useState("");
+  const [im, setIm] = useState([]);
+  /*  useEffect(() => {
+    const listRef = ref(storage, "/take-photo");
+
+    // Find all the prefixes and items.
+    listAll(listRef)
+      .then((res) => {
+        res.prefixes.forEach((folderRef) => {
+          // All the prefixes under listRef.
+          // You may call listAll() recursively on them.
+          console.log("folderRef", folderRef);
+        });
+        let arr = [];
+        res.items.forEach((itemRef) => {
+          // All the items under listRef.
+          // console.log("itemRef", itemRef);
+          arr.push(itemRef);
+        });
+        setIm(arr);
+      })
+      .then(
+        getDownloadURL(starsRef)
+          .then((url) => {
+            // Insert url into an <img> tag to "download"
+          })
+          .catch((error) => {
+            // A full list of error codes is available at
+            // https://firebase.google.com/docs/storage/web/handle-errors
+            switch (error.code) {
+              case "storage/object-not-found":
+                // File doesn't exist
+                break;
+              case "storage/unauthorized":
+                // User doesn't have permission to access the object
+                break;
+              case "storage/canceled":
+                // User canceled the upload
+                break;
+
+              // ...
+
+              case "storage/unknown":
+                // Unknown error occurred, inspect the server response
+                break;
+            }
+          })
+      )
+      .catch((error) => {
+        // Uh-oh, an error occurred!
+        console.log(error);
+      });
+  }, []); */
+
+  const [image, setImage] = useState("");
   const [cropData, setCropData] = useState("");
   const cropperRef = useRef(null);
   const onChange = (e) => {
@@ -60,27 +125,25 @@ const Profile = () =>
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
     const storage = getStorage();
-    const storageRef = ref(storage, "proflicPic/"+ auth.currentUser.uid);
+    const storageRef = ref(storage, "proflicPic/" + auth.currentUser.uid);
     // Data URL string
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
-        console.log( "File available at", downloadURL );
+        console.log("File available at", downloadURL);
         updateProfile(auth.currentUser, {
-
           photoURL: downloadURL,
         })
-          .then( () =>
-          {
-             setIsOpen(false);
-             setCropData();
+          .then(() => {
+            setIsOpen(false);
+            setCropData();
             update(dRef(db, "users/" + auth.currentUser.uid), {
               profile_picture: downloadURL,
             });
-            /* update(dRef(child(ref(db), "createGroup")).key, {
-              adminPhoto: downloadURL,
+            /* update(dRef(db, "friends/" + receiverPhoto), {
+              profile_picture: downloadURL,
             }); */
-
+            // data2.email;
           })
           .catch((error) => {
             // An error occurred
@@ -150,7 +213,9 @@ const Profile = () =>
         <h2 className="text-3xl font-bold font-pophins mb-5">
           {data && data.displayName}
         </h2>
-        <p className="font-pophins font-medium text-xl">Display Bio</p>
+        <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto text-center">
+          Login Email: {data && data.email}
+        </p>
       </Flex>
       <div className="border-black border-b border-solid mb-5 pb-5 px-5">
         <Accordion items={items} />
@@ -158,6 +223,9 @@ const Profile = () =>
       <div className="px-5">
         <Accordion items={items2} />
       </div>
+      {im.map((item) => (
+        <img src={item._location.path_} alt="at" />
+      ))}
     </>
   );
 };

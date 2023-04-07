@@ -3,10 +3,10 @@ import { BsTriangleFill } from "react-icons/bs";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useSelector } from "react-redux";
 import ModalImage from "react-modal-image";
-import ScrollToBottom from "react-scroll-to-bottom";
+import moment from "moment";
 const Chat = () => {
   const db = getDatabase();
-  let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
   // console.log("login",data);
   let activeChat = useSelector(
     (state) => state.allActiveChatUsers.activeChatUsers
@@ -71,7 +71,7 @@ const Chat = () => {
                     <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                   </div>
                   <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                    Today, 2:01pm
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                   </p>
                 </div>
               </div>
@@ -86,7 +86,7 @@ const Chat = () => {
                     <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                   </div>
                   <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                    Today, 2:01pm
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                   </p>
                 </div>
               </div>
@@ -96,7 +96,7 @@ const Chat = () => {
                   <audio controls src={item.audio}></audio>
                 </div>
                 <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                  Today, 2:01pm
+                  {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                 </p>
               </div>
             )
@@ -111,7 +111,7 @@ const Chat = () => {
                   <BsTriangleFill className="absolute left-[-8px] bottom-0 text-[#F1F1F1]" />
                 </div>
                 <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                  Today, 2:01pm
+                  {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                 </p>
               </div>
             </div>
@@ -126,7 +126,7 @@ const Chat = () => {
                   <BsTriangleFill className="absolute left-[-8px] bottom-0 text-[#F1F1F1]" />
                 </div>
                 <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                  Today, 2:01pm
+                  {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                 </p>
               </div>
             </div>
@@ -136,16 +136,18 @@ const Chat = () => {
                 <audio src={item.audio} controls></audio>
               </div>
               <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                Today, 2:01pm
+                {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
               </p>
             </div>
           )
         )
-      ) : (activeChat && data.uid == activeChat.adminId) ||
-        joinedGroup.includes(activeChat.id + data.uid) ? (
+      ) : activeChat &&
+        (data.uid == activeChat.adminId ||
+          joinedGroup.includes(activeChat.id + data.uid)) ? (
         groupMessageList.map((item) =>
           item.whoSendId == data.uid
-            ? item.whoReceiveId == activeChat.id && (
+            ? item.whoReceiveId == activeChat.id &&
+              (item.message ? (
                 <div className="text-right max-w-[85%] ml-auto">
                   <div className="mb-7 ">
                     <div className="bg-primary px-5 py-3 inline-block rounded-lg relative text-left">
@@ -156,12 +158,33 @@ const Chat = () => {
                       <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                     </div>
                     <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                      Today, 2:01pm
+                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                     </p>
                   </div>
                 </div>
-              )
-            : item.whoReceiveId == activeChat.id && (
+              ) : item.image ? (
+                <div className="mb-7 text-right">
+                  <div className="w-64 bg-primary p-3 inline-block rounded-lg relative text-left">
+                    {<ModalImage small={item.image} large={item.image} />}
+
+                    <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
+                  </div>
+                  <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                  </p>
+                </div>
+              ) : (
+                <div className="mb-7 text-right">
+                  <div className="inline-block rounded-lg text-left">
+                    <audio controls src={item.audio}></audio>
+                  </div>
+                  <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                  </p>
+                </div>
+              ))
+            : item.whoReceiveId == activeChat.id &&
+              (item.message ? (
                 <div className="text-left max-w-[85%]">
                   <div className="mb-7">
                     <p className="font-pop mb-3 italic  font-normal text-sm text-[#5e5555]">
@@ -175,11 +198,31 @@ const Chat = () => {
                       <BsTriangleFill className="absolute left-[-8px] bottom-0 text-[#F1F1F1]" />
                     </div>
                     <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
-                      Today, 2:01pm
+                      {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                     </p>
                   </div>
                 </div>
-              )
+              ) : item.image ? (
+                <div className="mb-7 text-left">
+                  <div className="w-64 bg-[#f1f1f1] p-3 inline-block rounded-lg relative text-left">
+                    {<ModalImage small={item.image} large={item.image} />}
+
+                    <BsTriangleFill className="absolute left-[-8px] bottom-0 text-[#f1f1f1]" />
+                  </div>
+                  <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                  </p>
+                </div>
+              ) : (
+                <div className="mb-7 text-left">
+                  <div className=" inline-block rounded-lg text-left">
+                    <audio controls src={item.audio}></audio>
+                  </div>
+                  <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
+                    {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
+                  </p>
+                </div>
+              ))
         )
       ) : (
         <h1>You are not Member</h1>

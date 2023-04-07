@@ -73,24 +73,27 @@ const Registation = () => {
             photoURL: "images/avatar.jpg",
           })
             .then(() => {
-              toast.success("Registation Successfull. Please Verify Your Email");
-              setName("");
-              setEmail("");
-              setPassword( "" );
-              sendEmailVerification(auth.currentUser);
-              
-              setTimeout(() => {
-                navigate("/login");
-              }, 2500);
-              setLoading(false);
-            })
-            .then(() => {
               set(ref(db, "users/" + user.uid), {
                 username: user.displayName,
                 email: user.email,
                 profile_picture: user.photoURL,
               });
             })
+            .then(() => {
+              toast.success(
+                "Registation Successfull. Please Verify Your Email"
+              );
+              setName("");
+              setEmail("");
+              setPassword("");
+              sendEmailVerification(auth.currentUser);
+
+              setTimeout(() => {
+                navigate("/login");
+              }, 2500);
+              setLoading(false);
+            })
+
             .catch((error) => {});
         })
         .catch((error) => {

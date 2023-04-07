@@ -11,6 +11,7 @@ const Friends = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [friendList, setFriendList] = useState([]);
+  const [usersList, setusersList] = useState([]);
   useEffect(() => {
     const friendsRef = ref(db, "friends/");
     onValue(friendsRef, (snapshot) => {
@@ -26,6 +27,17 @@ const Friends = () => {
       setFriendList(arr);
     });
   }, []);
+  useEffect(() => {
+    const userRef = ref(db, "users/");
+    onValue(userRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        arr.push({ ...item.val(), userId: item.key });
+      });
+      setusersList(arr);
+    });
+  }, []);
+
   let handleSingleMessage = (item) => {
     console.log(item);
     if (data.uid == item.receiverId) {
@@ -55,15 +67,15 @@ const Friends = () => {
           profilePhoto: item.receiverPhoto,
         })
       );
-       localStorage.setItem(
-         "activeChatUser",
-         JSON.stringify({
-           name: item.receiverName,
-           id: item.receiverId,
-           status: "single",
-           profilePhoto: item.receiverPhoto,
-         })
-       );
+      localStorage.setItem(
+        "activeChatUser",
+        JSON.stringify({
+          name: item.receiverName,
+          id: item.receiverId,
+          status: "single",
+          profilePhoto: item.receiverPhoto,
+        })
+      );
     }
   };
   return (

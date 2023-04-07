@@ -72,8 +72,9 @@ const Message = () => {
     // setMessage(message+);
   };
   // Enter Button Sebd Message
+  const textarea = document.querySelector("textArea");
   let handleEnterButn = (e) => {
-    if (e.key == "Enter") {
+    /*  if (e.key == "Enter") {
       if (activeChat && activeChat.status == "single") {
         set(push(ref(db, "singleMessage")), {
           whoSendId: data.uid,
@@ -106,7 +107,10 @@ const Message = () => {
           setMessage("");
         });
       }
-    }
+    } */
+    const scHight = e.target.scrollHeight;
+    textarea.style.height = `50px`;
+    textarea.style.height = `${scHight}px`;
   };
   // Send Emoji
   let sendEmoji = (emoji) => {
@@ -364,7 +368,7 @@ const Message = () => {
     setIsOpen(!isOpen);
   };
   let openFile = () => {
-    setIsOpen2( !isOpen2 );
+    setIsOpen2(!isOpen2);
     setImage("");
   };
 
@@ -421,7 +425,7 @@ const Message = () => {
         </ScrollToBottom>
         {/* Messageing End */}
         {/* Input Text Area End */}
-        {activeChat.status == "single" ? (
+        {activeChat && (activeChat.status == "single" )? (
           <div className="flex items-center gap-x-5 p-5 pb-2 relative">
             {audio && (
               <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">
@@ -518,14 +522,23 @@ const Message = () => {
                   </div>
                 </div>
               )}
-              <input
+              {/* <textA
                 onChange={handleMesage}
                 onFocus={handleOnFocus}
                 onKeyUp={handleEnterButn}
                 value={message}
                 type="text"
                 className="w-full p-3 rounded-lg outline-primary"
-              />
+              /> */}
+              <textarea
+                onChange={handleMesage}
+                onFocus={handleOnFocus}
+                onKeyUp={handleEnterButn}
+                value={message}
+                type="text"
+                className="w-full p-3 pr-[160px] rounded-lg outline-primary resize-none max-h-[150px] h-[50px] scrollbar-hidden"
+                rows="1"
+              ></textarea>
               {!audio && (
                 <div className="flex gap-x-5 absolute right-[110px]">
                   <BsFillCameraFill
@@ -589,7 +602,6 @@ const Message = () => {
         >
           <div>
             <Flex>open Camera</Flex>
-            <Flex>Delete Post</Flex>
 
             <Camera
               onTakePhoto={(dataUri) => {
@@ -639,12 +651,13 @@ const Message = () => {
                 guides={true}
               />
             )}
-            { image && (
-              <><h1>Preview</h1>
-              <div className="w-[100px] h-[100px] mx-auto rounded-full overflow-hidden mb-5">
-                <div className="img-preview w-full h-full"></div>
-              </div></>
-
+            {image && (
+              <>
+                <h1>Preview</h1>
+                <div className="w-[100px] h-[100px] mx-auto rounded-full overflow-hidden mb-5">
+                  <div className="img-preview w-full h-full"></div>
+                </div>
+              </>
             )}
             <input onChange={onChange} type="file" name="" id="" />
           </div>
