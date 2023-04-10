@@ -15,92 +15,41 @@ import {
   listAll,
 } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
-import { getDatabase, ref as dRef, update, onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref as dRef,
+  onValue,
+  query,
+  orderByChild,
+  equalTo,
+  update,
+  off,
+} from "firebase/database";
 import { usersInformation } from "../slices/userSlices";
-const Profile = () => {
+const Profile = () =>
+{
+    const auth = getAuth();
+    const db = getDatabase();
   const storage = getStorage();
   let dispatch = useDispatch();
 
 
-  const auth = getAuth();
-  const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [isOpen, setIsOpen] = useState(false);
- const [friendList, setFriendList] = useState([]);
-/*  useEffect(() => {
-   const friendsRef = ref(db, "friends/");
-   onValue(friendsRef, (snapshot) => {
-     let arr = [];
-     snapshot.forEach((item) => {
-       console.log(item.val());
-       arr.push(item.val());
-     });
-     setFriendList(arr);
-   });
- }, []); */
- console.log(friendList);
+  const [friendList, setFriendList] = useState([]);
+
+  console.log(friendList);
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-  const items = [{ title: "Info", content: { email: "Email Address" } }];
+/*   const items = [{ title: "Info", content: { email: "Email Address" } }];
   const items2 = [
     {
       title: "Settings",
       content: { editName: "Display Name", editBio: "Edit Your Bio" },
     },
-  ];
+  ]; */
   const [im, setIm] = useState([]);
-  /*  useEffect(() => {
-    const listRef = ref(storage, "/take-photo");
-
-    // Find all the prefixes and items.
-    listAll(listRef)
-      .then((res) => {
-        res.prefixes.forEach((folderRef) => {
-          // All the prefixes under listRef.
-          // You may call listAll() recursively on them.
-          console.log("folderRef", folderRef);
-        });
-        let arr = [];
-        res.items.forEach((itemRef) => {
-          // All the items under listRef.
-          // console.log("itemRef", itemRef);
-          arr.push(itemRef);
-        });
-        setIm(arr);
-      })
-      .then(
-        getDownloadURL(starsRef)
-          .then((url) => {
-            // Insert url into an <img> tag to "download"
-          })
-          .catch((error) => {
-            // A full list of error codes is available at
-            // https://firebase.google.com/docs/storage/web/handle-errors
-            switch (error.code) {
-              case "storage/object-not-found":
-                // File doesn't exist
-                break;
-              case "storage/unauthorized":
-                // User doesn't have permission to access the object
-                break;
-              case "storage/canceled":
-                // User canceled the upload
-                break;
-
-              // ...
-
-              case "storage/unknown":
-                // Unknown error occurred, inspect the server response
-                break;
-            }
-          })
-      )
-      .catch((error) => {
-        // Uh-oh, an error occurred!
-        console.log(error);
-      });
-  }, []); */
 
   const [image, setImage] = useState("");
   const [cropData, setCropData] = useState("");
@@ -152,6 +101,57 @@ const Profile = () => {
       });
     });
   };
+  /* Post update */
+
+
+
+  const [ useName, setUseName ] = useState( "" );
+  const [ posts, setPosts ] = useState( [] );
+
+ useEffect(() => {
+   // Create a query to find all posts by the current user
+   const postsQuery = query(
+     dRef(db, "posts/"),
+     orderByChild("userId"),
+     equalTo(auth.currentUser.uid)
+   );
+
+   // Set up a listener for the posts query
+   const postsListener = onValue(postsQuery, (snapshot) => {
+     const postsData = [];
+     snapshot.forEach((childSnapshot) => {
+       const postId = childSnapshot.key;
+       const postData = childSnapshot.val();
+       postsData.push({ id: postId, ...postData });
+     });
+     setPosts(postsData);
+   });
+
+   // Return a cleanup function to detach the listener when the component unmounts
+   return () => {
+     off(postsQuery, "value", postsListener);
+   };
+ }, [db, auth.currentUser]);
+
+  let usernameUpdate = (e) => {
+    setUseName(e.target.value);
+  };
+  let updateProfile = () => {
+   update(dRef(db, "users/" + auth.currentUser.uid), {
+     username: useName,
+   } );
+    // Update the user's info in all their posts
+    const updatedPosts = posts.map((post) => {
+      return {
+        [`/posts/${post.id}/username`]: useName,
+        // [`/posts/${post.id}/authorPhotoUrl`]: newUserInfo.photoURL,
+      };
+    });
+    update(dRef(db), Object.assign({}, ...updatedPosts));
+
+  };
+  console.log("posts", posts);
+
   return (
     <>
       <Flex className="items-center flex flex-col pt-10">
@@ -216,12 +216,20 @@ const Profile = () => {
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto text-center">
           Login Email: {data && data.email}
         </p>
+        <input
+          onChange={usernameUpdate}
+          className="bg-slate-200"
+          type="text"
+          name=""
+          id=""
+        />
+        <button onClick={updateProfile}>update</button>
       </Flex>
       <div className="border-black border-b border-solid mb-5 pb-5 px-5">
-        <Accordion items={items} />
+        {/* <Accordion items={items} /> */}
       </div>
       <div className="px-5">
-        <Accordion items={items2} />
+        {/* <Accordion items={items2} /> */}
       </div>
       {im.map((item) => (
         <img src={item._location.path_} alt="at" />

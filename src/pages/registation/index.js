@@ -50,7 +50,8 @@ const Registation = () => {
     }
     if (!password) {
       setPasswordErr("Password Is Requried");
-    } else {
+    }
+    else {
       if (!/^(?=.*[a-z])/.test(password)) {
         setPasswordErr("Need least 1 lowercase character");
       } else if (!/^(?=.*[A-Z])/.test(password)) {

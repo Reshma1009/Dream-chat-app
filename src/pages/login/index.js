@@ -43,7 +43,8 @@ const Login = () => {
     }
     if (!password) {
       setPasswordErr("Password Is Requried");
-    } else {
+    }
+    /* else {
       if (!/^(?=.*[a-z])/.test(password)) {
         setPasswordErr("Need least 1 lowercase character");
       } else if (!/^(?=.*[A-Z])/.test(password)) {
@@ -55,7 +56,7 @@ const Login = () => {
       } else if (!/^(?=.{8,16})/.test(password)) {
         setPasswordErr("Need 8 to 16 characters");
       }
-    }
+    } */
     if (email && password) {
       setLoading(true);
       signInWithEmailAndPassword(auth, email, password)
