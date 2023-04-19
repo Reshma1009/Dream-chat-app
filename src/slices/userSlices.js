@@ -7,6 +7,7 @@ export const userSlice = createSlice({
       ? JSON.parse(localStorage.getItem("userRegistationIfo"))
       : null,
   },
+
   reducers: {
     usersInformation: (state, action) => {
       state.userInfo = action.payload;
@@ -15,6 +16,7 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { usersInformation } = userSlice.actions;
+export const { usersInformation } =
+  userSlice.actions;
 
 export default userSlice.reducer;

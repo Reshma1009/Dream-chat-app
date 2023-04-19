@@ -30,6 +30,7 @@ import EmojiPicker from "emoji-picker-react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { AudioRecorder } from "react-audio-voice-recorder";
 import Cropper, { ReactCropperElement } from "react-cropper";
+import { getCurrentUser } from "../../Api/Fuctional";
 
 const Message = () => {
   const auth = getAuth();
@@ -371,7 +372,10 @@ const Message = () => {
     setIsOpen2(!isOpen2);
     setImage("");
   };
-
+  const [loginUser, setLoginUser] = useState({});
+  useEffect(() => {
+    getCurrentUser(setLoginUser);
+  }, []);
   return (
     <div className="flex h-screen overflow-hidden ">
       <ToastContainer position="bottom-center" theme="dark" />
@@ -425,7 +429,7 @@ const Message = () => {
         </ScrollToBottom>
         {/* Messageing End */}
         {/* Input Text Area End */}
-        {activeChat && (activeChat.status == "single" )? (
+        {activeChat && activeChat.status == "single" ? (
           <div className="flex items-center gap-x-5 p-5 pb-2 relative">
             {audio && (
               <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">

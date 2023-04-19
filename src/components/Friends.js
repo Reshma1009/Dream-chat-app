@@ -5,6 +5,7 @@ import Search from "./Search";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector, useDispatch } from "react-redux";
 import { activeUsersInfo } from "../slices/activeChatUsers";
+import { getCurrentUser } from "../Api/Fuctional";
 
 const Friends = () => {
   const db = getDatabase();
@@ -39,11 +40,15 @@ const Friends = () => {
   }, []);
 
   let handleSingleMessage = (item) => {
-    console.log(item);
+    console.log(item, "Friends handleSingleMessage");
+    console.log(item.senderName, "Friends handleSingleMessage");
     if (data.uid == item.receiverId) {
       dispatch(
         activeUsersInfo({
-          name: item.senderName,
+          // name: item.senderName,
+          name: loginUser
+            .filter((useritem) => useritem.userId == item.senderId)
+            .map((item) => item.username)[0],
           id: item.senderId,
           status: "single",
           profilePhoto: item.senderPhoto,
@@ -52,7 +57,10 @@ const Friends = () => {
       localStorage.setItem(
         "activeChatUser",
         JSON.stringify({
-          name: item.senderName,
+          // name: item.senderName,
+          name: loginUser
+            .filter((useritem) => useritem.userId == item.senderId)
+            .map((item) => item.username)[0],
           id: item.senderId,
           status: "single",
           profilePhoto: item.senderPhoto,
@@ -61,7 +69,10 @@ const Friends = () => {
     } else {
       dispatch(
         activeUsersInfo({
-          name: item.receiverName,
+          // name: item.receiverName,
+          name: loginUser
+            .filter((useritem) => useritem.userId !== item.senderId)
+            .map((item) => item.username)[0],
           id: item.receiverId,
           status: "single",
           profilePhoto: item.receiverPhoto,
@@ -70,7 +81,10 @@ const Friends = () => {
       localStorage.setItem(
         "activeChatUser",
         JSON.stringify({
-          name: item.receiverName,
+          // name: item.receiverName,
+          name: loginUser
+            .filter((useritem) => useritem.userId !== item.senderId)
+            .map((item) => item.username)[0],
           id: item.receiverId,
           status: "single",
           profilePhoto: item.receiverPhoto,
@@ -78,6 +92,11 @@ const Friends = () => {
       );
     }
   };
+  const [loginUser, setLoginUser] = useState([]);
+
+  useEffect(() => {
+    getCurrentUser( setLoginUser);
+  }, []);
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -98,17 +117,34 @@ const Friends = () => {
                 <Images
                   imgSrc={
                     item.senderId == data.uid
-                      ? item.receiverPhoto
-                      : item.senderPhoto
+                      ? loginUser
+                          .filter(
+                            (useritem) => useritem.userId !== item.senderId
+                          )
+                          .map((item) => item.profile_picture)[0]
+                      : loginUser
+                          .filter(
+                            (useritem) => useritem.userId == item.senderId
+                          )
+                          .map((item) => item.profile_picture)[0]
                   }
                   className="rounded-full w-full"
                 />
               </div>
               <div>
-                <h3 className="text-heading font-medium text-lg font-pophins">
+                <h3 className="text-heading font-bold text-xl font-pophins">
                   {item.senderId == data.uid
-                    ? item.receiverName
-                    : item.senderName}
+                    ? loginUser
+                        .filter((useritem) => useritem.userId !== item.senderId)
+                        .map((item) => item.username)[0]
+                    : loginUser
+                        .filter((useritem) => useritem.userId == item.senderId)
+                        .map((item) => item.username)[0]}
+                  {console.log(
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.senderId)
+                      .map((item) => item.username)[0]
+                  )}
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you

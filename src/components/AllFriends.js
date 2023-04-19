@@ -11,6 +11,7 @@ import {
   remove,
 } from "firebase/database";
 import { useSelector } from "react-redux";
+import { getCurrentUser } from "../Api/Fuctional";
 const AllFriends = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -57,6 +58,11 @@ const AllFriends = () => {
     }
   };
 
+  const [loginUser, setLoginUser] = useState([]);
+
+  useEffect(() => {
+    getCurrentUser( setLoginUser);
+  }, []);
   return (
     <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -77,8 +83,16 @@ const AllFriends = () => {
                 <Images
                   imgSrc={
                     item.senderId == data.uid
-                      ? item.receiverPhoto
-                      : item.senderPhoto
+                      ? loginUser
+                          .filter(
+                            (useritem) => useritem.userId !== item.senderId
+                          )
+                          .map((item) => item.profile_picture)[0]
+                      : loginUser
+                          .filter(
+                            (useritem) => useritem.userId == item.senderId
+                          )
+                          .map((item) => item.profile_picture)[0]
                   }
                   className="rounded-full w-full"
                 />
@@ -86,8 +100,12 @@ const AllFriends = () => {
               <div>
                 <h3 className="text-heading font-bold text-xl font-pophins">
                   {item.senderId == data.uid
-                    ? item.receiverName
-                    : item.senderName}
+                    ? loginUser
+                        .filter((useritem) => useritem.userId !== item.senderId)
+                        .map((item) => item.username)[0]
+                    : loginUser
+                        .filter((useritem) => useritem.userId == item.senderId)
+                        .map((item) => item.username)[0]}
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you

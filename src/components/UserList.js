@@ -10,10 +10,11 @@ const UserList = () => {
   const [userList, setUserList] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
-
+  let dataDisplayName = useSelector((state) => state.allUserSInfo.displayName);
+  let dataPhotoURL = useSelector((state) => state.allUserSInfo.photoURL);
   /* Get Current User From Users Collections Start*/
   useEffect(() => {
-    getCurrentUser(data, setCurrentUser);
+    getCurrentUser( setCurrentUser);
   }, []);
   // console.log("currentUser", currentUser);
   const [currentuserList, setCurrentUserList] = useState({});

@@ -11,6 +11,7 @@ import {
   remove,
 } from "firebase/database";
 import { useSelector } from "react-redux";
+import { getCurrentUser } from "../Api/Fuctional";
 const BlockUser = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -43,6 +44,11 @@ const BlockUser = () => {
       remove(ref(db, "block/" + item.blockListId));
     });
   };
+  const [loginUser, setLoginUser] = useState([]);
+
+  useEffect(() => {
+    getCurrentUser( setLoginUser);
+  }, []);
   return (
     <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7 pt-0">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -64,16 +70,33 @@ const BlockUser = () => {
                   className="rounded-full w-full"
                   imgSrc={
                     item.whoBlockId == data.uid
-                      ? item.blockPhoto
-                      : item.whoBlockPhoto
+                      ? loginUser
+                          .filter(
+                            (useritem) => useritem.userId !== item.whoBlockId
+                          )
+                          .map((item) => item.profile_picture)[0]
+                      : loginUser
+                          .filter(
+                            (useritem) => useritem.userId == item.whoBlockId
+                          )
+                          .map((item) => item.profile_picture)[0]
                   }
                 />
               </div>
               <div>
                 <h3 className="text-heading font-medium text-lg font-pophins">
                   {item.whoBlockId == data.uid
-                    ? item.blockName
-                    : item.whoBlockName}
+                    ? loginUser
+                        .filter(
+                          (useritem) => useritem.userId !== item.whoBlockId
+                        )
+                        .map((item) => item.username)[0]
+                    : loginUser
+                        .filter(
+                          (useritem) => useritem.userId == item.whoBlockId
+                        )
+                        .map((item) => item.username)[0]}
+
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you

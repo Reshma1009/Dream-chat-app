@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Flex from "./Flex";
 import Images from "./Images";
 import { MdCloudUpload } from "react-icons/md";
@@ -12,7 +12,6 @@ import {
   ref,
   uploadString,
   getDownloadURL,
-  listAll,
 } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
 import {
@@ -25,14 +24,11 @@ import {
   update,
   off,
 } from "firebase/database";
-import { usersInformation } from "../slices/userSlices";
-import { getCurrentUser } from "../Api/Fuctional";
+import { getCurrentUser, userSList } from "../Api/Fuctional";
 const Profile = () => {
   const auth = getAuth();
   const db = getDatabase();
-  const storage = getStorage();
   let dispatch = useDispatch();
-
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [isOpen, setIsOpen] = useState(false);
   const [friendList, setFriendList] = useState([]);
@@ -42,11 +38,9 @@ const Profile = () => {
     setIsOpen(!isOpen);
   }
   useEffect(() => {
-    getCurrentUser(data, setLoginUser);
+    getCurrentUser( setLoginUser);
   }, []);
-  const [im, setIm] = useState([]);
-
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [cropData, setCropData] = useState("");
   const cropperRef = useRef(null);
   const onChange = (e) => {
@@ -63,30 +57,32 @@ const Profile = () => {
     };
     reader.readAsDataURL(files[0]);
   };
-
+  const [userList, setUserList] = useState({});
+  useMemo(() => userSList(data, setUserList), []);
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
     const storage = getStorage();
-    const storageRef = ref(storage, "proflicPic/" + data && data.uid);
+    const storageRef = ref(storage, "profilePic/" + data.displayName);
     // Data URL string
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
-        setIsOpen(false);
-        setCropData();
-        update(dRef(db, "users/" + auth.currentUser.uid), {
-          profile_picture: downloadURL,
-        });
-        // Update the user's info in all their posts
-        const updatedPosts = posts.map((post) => {
-          return {
-            // [`/posts/${post.id}/username`]: useName,
-            [`/posts/${post.id}/authorPhotoUrl`]: downloadURL,
-          };
-        });
-        update(dRef(db), Object.assign({}, ...updatedPosts));
+        updateProfile(auth.currentUser, {
+          photoURL: downloadURL,
+        })
+          .then(() => {
+            setCropData("");
+            setImage(null);
+            setIsOpen(false);
+            update(dRef(db, "users/" + auth.currentUser.uid), {
+              profile_picture: downloadURL,
+            } );
+          })
+          .catch((error) => {
+            alert(error);
+          });
       });
     });
   };
@@ -95,7 +91,7 @@ const Profile = () => {
   const [useName, setUseName] = useState("");
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     // Create a query to find all posts by the current user
     const postsQuery = query(
       dRef(db, "posts/"),
@@ -118,45 +114,34 @@ const Profile = () => {
     return () => {
       off(postsQuery, "value", postsListener);
     };
-  }, [db, data]);
+  }, [db, data]);*/
   // console.log("data", data);
   let usernameUpdate = (e) => {
     setUseName(e.target.value);
   };
-  let updateProfile = () => {
-    update(dRef(db, "users/" +  auth.currentUser.uid), {
+  let updateProfileInfo = () => {
+    update(dRef(db, "users/" + auth.currentUser.uid), {
       username: useName,
     });
-    // Update the user's info in all their posts
+
+    /*    // Update the user's info in all their posts
     const updatedPosts = posts.map((post) => {
       return {
         [`/posts/${post.id}/username`]: useName,
         // [`/posts/${post.id}/authorPhotoUrl`]: newUserInfo.photoURL,
       };
     });
-    update(dRef(db), Object.assign({}, ...updatedPosts));
+    update(dRef(db), Object.assign({}, ...updatedPosts)); */
   };
-  console.log("posts", posts);
-  /*  const [userList, setUserList] = useState({});
- useEffect(() => {
-   const usersRef = ref(db, "users/");
-   onValue(usersRef, (snapshot) => {
-     let arr = [];
-     snapshot.forEach((item) => {
-       if (data.uid == item.key) {
-         arr.push({ ...item.val(), userId: item.key });
-       }
-     });
-     setUserList(arr[0]);
-   });
- }, []); */
+  // console.log("posts", posts);
+
   return (
     <>
       <Flex className="items-center flex flex-col pt-10">
         <div className="relative mb-5 group">
           <div className="w-[150px] h-[150px]">
             <Images
-              imgSrc={data && data.photoURL}
+              imgSrc={userList.profile_picture}
               className="rounded-full w-full"
             />
           </div>
@@ -198,7 +183,7 @@ const Profile = () => {
               ) : (
                 <div className="w-[100px] h-[100px]">
                   <Images
-                    imgSrc={data && data.photoURL}
+                    imgSrc={userList.profile_picture}
                     className="rounded-full w-full"
                   />
                 </div>
@@ -209,10 +194,10 @@ const Profile = () => {
           </Modal>
         )}
         <h2 className="text-3xl font-bold font-pophins mb-5">
-          {loginUser.username}
+          {userList.username}
         </h2>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto text-center">
-          Login Email: {data && data.email}
+          Login Email: {userList.email}
         </p>
         <input
           onChange={usernameUpdate}
@@ -221,7 +206,7 @@ const Profile = () => {
           name=""
           id=""
         />
-        <button onClick={updateProfile}>update</button>
+        <button onClick={updateProfileInfo}>update</button>
       </Flex>
       <div className="border-black border-b border-solid mb-5 pb-5 px-5">
         {/* <Accordion items={items} /> */}

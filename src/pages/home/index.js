@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Post from "../../components/Post";
 import Profile from "../../components/Profile";
 import Sidebar from "../../components/Sidebar";
@@ -15,11 +15,10 @@ import {
   onValue,
   serverTimestamp,
 } from "firebase/database";
-
+import { userSList } from "../../Api/Fuctional";
 const Home = () => {
   const auth = getAuth();
   const db = getDatabase();
-  const currentUser = auth.currentUser;
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -47,21 +46,10 @@ const Home = () => {
     setValue(e.target.value);
   };
   const [userList, setUserList] = useState({});
-  useEffect(() => {
-    const usersRef = ref(db, "users/");
-    onValue(usersRef, (snapshot) => {
-      let arr = [];
-      snapshot.forEach((item) => {
-        if (data.uid == item.key) {
-          arr.push({ ...item.val(), userId: item.key });
-        }
-      });
-      setUserList(arr[0]);
-    });
-  }, []);
+  useMemo(() => userSList(data, setUserList), []);
 
   let submitPost = () => {
-    console.log("post");
+    // console.log("post");
     set(push(ref(db, "posts/")), {
       username: userList.username,
       posts: value,
@@ -82,9 +70,15 @@ const Home = () => {
     });
   }, []);
 
-
   return (
     <>
+      {user && !user.emailVerified && (
+        <div className="flex w-full absolute h-screen justify-center items-center z-50 bg-primary">
+          <h3 className="text-5xl bg-white text-primary text-center p-7  font-pop font-bold">
+            please verify your mail
+          </h3>
+        </div>
+      )}
       {user && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
           <div className="col-span-3 relative">
@@ -119,13 +113,6 @@ const Home = () => {
           <div className="col-span-3">
             <Profile />
           </div>
-        </div>
-      )}
-      {user && !user.emailVerified && (
-        <div className="flex w-full h-screen justify-center items-center bg-primary">
-          <h3 className="text-5xl bg-white text-primary text-center p-7  font-pop font-bold">
-            please verify your mail
-          </h3>
         </div>
       )}
     </>

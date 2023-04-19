@@ -11,7 +11,7 @@ import {
 import { getDatabase, ref, set, push } from "firebase/database";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { usersInformation } from "../../slices/userSlices";
+import {  usersInformation } from "../../slices/userSlices";
 import { InfinitySpin, FallingLines } from "react-loader-spinner";
 const Registation = () => {
   const auth = getAuth();
@@ -65,7 +65,17 @@ const Registation = () => {
         setPasswordErr("Need 8 to 16 characters");
       }
     }
-    if (name && email && password) {
+    if (
+      name &&
+      email &&
+      password &&
+      /^(?=.*[a-z])/.test(password) &&
+      /^(?=.*[A-Z])/.test(password) &&
+      /^(?=.*[0-9])/.test(password) &&
+      /^(?=.*[!@#$%^&*])/.test(password) &&
+      /^(?=.{8,16})/.test(password) &&
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+    ) {
       setLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -84,6 +94,7 @@ const Registation = () => {
               sendEmailVerification(auth.currentUser);
               dispatch(usersInformation(user));
               localStorage.setItem("userRegistationIfo", JSON.stringify(user));
+
               setTimeout(() => {
                 navigate("/login");
               }, 2500);
@@ -94,7 +105,6 @@ const Registation = () => {
                 username: user.displayName,
                 email: user.email,
                 profile_picture: user.photoURL,
-                authMethod: "email",
                 userId: user.uid,
               });
             })

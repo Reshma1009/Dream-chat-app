@@ -6,12 +6,11 @@ import Modal from "./Modal";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import { useSelector } from "react-redux";
 import { getCurrentUser } from "../Api/Fuctional";
-const Post = ( { item } ) =>
-{
-  console.log(item);
-  const [ isOpen, setIsOpen ] = useState( false );
+const Post = ({ item }) => {
+  // console.log(item);
+  const [isOpen, setIsOpen] = useState(false);
   let data = useSelector((state) => state.allUserSInfo.userInfo);
-const db = getDatabase();
+  const db = getDatabase();
   function toggleModal() {
     setIsOpen(!isOpen);
   }
@@ -20,26 +19,25 @@ const db = getDatabase();
       userId: item.userId,
     });
   };
-  let submitcomm = () =>
-  {
-    const postcommentsRef = ref(db, "posts/" + item.postId + "/comments")
+  let submitcomm = () => {
+    const postcommentsRef = ref(db, "posts/" + item.postId + "/comments");
 
     set(push(ref(db, "posts/" + item.postId + "/comments")), {
       userId: item.userId,
     });
   };
-   const [loginUser, setLoginUser] = useState([]);
+  const [loginUser, setLoginUser] = useState([]);
 
-   useEffect(() => {
-     getCurrentUser(data, setLoginUser);
-   }, [] );
+  useEffect(() => {
+    getCurrentUser( setLoginUser);
+  }, []);
 
-  console.log(
+  /*  console.log(
     loginUser
       .filter((useritem) => useritem.userId == item.userId)
       .map((item) => item.profile_picture)[0],
     "userList"
-  );
+  ); */
 
   return (
     <div className="px-6 pb-5 border-b border-solid border-black mb-5">
