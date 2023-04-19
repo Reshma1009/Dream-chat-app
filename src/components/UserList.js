@@ -4,20 +4,47 @@ import Images from "./Images";
 import Search from "./Search";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
+import { getCurrentUser } from "../Api/Fuctional";
 const UserList = () => {
   const db = getDatabase();
   const [userList, setUserList] = useState([]);
-  let data = useSelector((state) => state.allUserSInfo.userInfo);
+  const [currentUser, setCurrentUser] = useState({});
+  let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
+
+  /* Get Current User From Users Collections Start*/
+  useEffect(() => {
+    getCurrentUser(data, setCurrentUser);
+  }, []);
+  // console.log("currentUser", currentUser);
+  const [currentuserList, setCurrentUserList] = useState({});
+  useEffect(() => {
+    const usersRef = ref(db, "users/");
+    onValue(usersRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        if (data.uid == item.key) {
+          arr.push({ ...item.val(), userId: item.key });
+        }
+      });
+      setCurrentUserList(arr[0]);
+    });
+  }, []);
+  /* Get Current User From Users Collections End*/
+
+  /* Friend Request Send Start*/
   let handleAddFriend = (item) => {
     set(push(ref(db, "friendRequest")), {
-      senderId: data.uid,
-      senderName: data.displayName,
-      senderPhoto: data.photoURL,
+      senderId: currentuserList.userId,
+      senderName: currentuserList.username,
+      senderPhoto: currentuserList.profile_picture,
       receiverId: item.userId,
       receiverName: item.username,
       receiverPhoto: item.profile_picture,
     });
   };
+  /* Friend Request Send End*/
+
+
   useEffect(() => {
     const usersRef = ref(db, "users/");
     onValue(usersRef, (snapshot) => {
@@ -59,7 +86,7 @@ const UserList = () => {
     onValue(blockRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("block",item.val());
+        console.log("block", item.val());
 
         arr.push(item.val().blockId + item.val().whoBlockId);
       });

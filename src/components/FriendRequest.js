@@ -4,6 +4,7 @@ import Images from "./Images";
 import Search from "./Search";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
+import { getCurrentUser } from "../Api/Fuctional";
 const FriendRequest = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -49,7 +50,22 @@ const FriendRequest = () => {
       });
       setBlockList(arr);
     });
-  }, []);
+  }, [] );
+
+  /*  */
+
+
+   const [loginUser, setLoginUser] = useState([]);
+
+   useEffect(() => {
+     getCurrentUser(data, setLoginUser);
+   }, []);
+
+   /* console.log(
+     loginUser
+       .filter((useritem) => useritem.userId == item.senderId)
+       .map((item) => item.profile_picture)[0]
+   ); */
   return (
     <div>
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
@@ -69,13 +85,23 @@ const FriendRequest = () => {
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
-                  imgSrc={item.senderPhoto}
+                  // imgSrc={item.senderPhoto}
+                  imgSrc={
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.senderId)
+                      .map((item) => item.profile_picture)[0]
+                  }
                   className="rounded-full w-full"
                 />
               </div>
               <div>
                 <h3 className="text-heading font-semibold text-lg font-pophins">
-                  {item.senderName}
+                  {/* {item.senderName}{} */}
+                  {
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.senderId)
+                      .map((item) => item.username)[0]
+                  }
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you

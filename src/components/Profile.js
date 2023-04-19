@@ -26,29 +26,24 @@ import {
   off,
 } from "firebase/database";
 import { usersInformation } from "../slices/userSlices";
-const Profile = () =>
-{
-    const auth = getAuth();
-    const db = getDatabase();
+import { getCurrentUser } from "../Api/Fuctional";
+const Profile = () => {
+  const auth = getAuth();
+  const db = getDatabase();
   const storage = getStorage();
   let dispatch = useDispatch();
-
 
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [isOpen, setIsOpen] = useState(false);
   const [friendList, setFriendList] = useState([]);
-
+  const [loginUser, setLoginUser] = useState({});
   console.log(friendList);
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-/*   const items = [{ title: "Info", content: { email: "Email Address" } }];
-  const items2 = [
-    {
-      title: "Settings",
-      content: { editName: "Display Name", editBio: "Edit Your Bio" },
-    },
-  ]; */
+  useEffect(() => {
+    getCurrentUser(data, setLoginUser);
+  }, []);
   const [im, setIm] = useState([]);
 
   const [image, setImage] = useState("");
@@ -74,72 +69,64 @@ const Profile = () =>
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
     const storage = getStorage();
-    const storageRef = ref(storage, "proflicPic/" + auth.currentUser.uid);
+    const storageRef = ref(storage, "proflicPic/" + data && data.uid);
     // Data URL string
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
-        console.log("File available at", downloadURL);
-        updateProfile(auth.currentUser, {
-          photoURL: downloadURL,
-        })
-          .then(() => {
-            setIsOpen(false);
-            setCropData();
-            update(dRef(db, "users/" + auth.currentUser.uid), {
-              profile_picture: downloadURL,
-            });
-            /* update(dRef(db, "friends/" + receiverPhoto), {
-              profile_picture: downloadURL,
-            }); */
-            // data2.email;
-          })
-          .catch((error) => {
-            // An error occurred
-            // ...
-          });
+        setIsOpen(false);
+        setCropData();
+        update(dRef(db, "users/" + auth.currentUser.uid), {
+          profile_picture: downloadURL,
+        });
+        // Update the user's info in all their posts
+        const updatedPosts = posts.map((post) => {
+          return {
+            // [`/posts/${post.id}/username`]: useName,
+            [`/posts/${post.id}/authorPhotoUrl`]: downloadURL,
+          };
+        });
+        update(dRef(db), Object.assign({}, ...updatedPosts));
       });
     });
   };
   /* Post update */
 
+  const [useName, setUseName] = useState("");
+  const [posts, setPosts] = useState([]);
 
+  useEffect(() => {
+    // Create a query to find all posts by the current user
+    const postsQuery = query(
+      dRef(db, "posts/"),
+      orderByChild("userId"),
+      equalTo(data.uid)
+    );
 
-  const [ useName, setUseName ] = useState( "" );
-  const [ posts, setPosts ] = useState( [] );
+    // Set up a listener for the posts query
+    const postsListener = onValue(postsQuery, (snapshot) => {
+      const postsData = [];
+      snapshot.forEach((childSnapshot) => {
+        const postId = childSnapshot.key;
+        const postData = childSnapshot.val();
+        postsData.push({ id: postId, ...postData });
+      });
+      setPosts(postsData);
+    });
 
- useEffect(() => {
-   // Create a query to find all posts by the current user
-   const postsQuery = query(
-     dRef(db, "posts/"),
-     orderByChild("userId"),
-     equalTo(auth.currentUser.uid)
-   );
-
-   // Set up a listener for the posts query
-   const postsListener = onValue(postsQuery, (snapshot) => {
-     const postsData = [];
-     snapshot.forEach((childSnapshot) => {
-       const postId = childSnapshot.key;
-       const postData = childSnapshot.val();
-       postsData.push({ id: postId, ...postData });
-     });
-     setPosts(postsData);
-   });
-
-   // Return a cleanup function to detach the listener when the component unmounts
-   return () => {
-     off(postsQuery, "value", postsListener);
-   };
- }, [db, auth.currentUser]);
-
+    // Return a cleanup function to detach the listener when the component unmounts
+    return () => {
+      off(postsQuery, "value", postsListener);
+    };
+  }, [db, data]);
+  // console.log("data", data);
   let usernameUpdate = (e) => {
     setUseName(e.target.value);
   };
   let updateProfile = () => {
-   update(dRef(db, "users/" + auth.currentUser.uid), {
-     username: useName,
-   } );
+    update(dRef(db, "users/" +  auth.currentUser.uid), {
+      username: useName,
+    });
     // Update the user's info in all their posts
     const updatedPosts = posts.map((post) => {
       return {
@@ -148,10 +135,21 @@ const Profile = () =>
       };
     });
     update(dRef(db), Object.assign({}, ...updatedPosts));
-
   };
   console.log("posts", posts);
-
+  /*  const [userList, setUserList] = useState({});
+ useEffect(() => {
+   const usersRef = ref(db, "users/");
+   onValue(usersRef, (snapshot) => {
+     let arr = [];
+     snapshot.forEach((item) => {
+       if (data.uid == item.key) {
+         arr.push({ ...item.val(), userId: item.key });
+       }
+     });
+     setUserList(arr[0]);
+   });
+ }, []); */
   return (
     <>
       <Flex className="items-center flex flex-col pt-10">
@@ -211,7 +209,7 @@ const Profile = () =>
           </Modal>
         )}
         <h2 className="text-3xl font-bold font-pophins mb-5">
-          {data && data.displayName}
+          {loginUser.username}
         </h2>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto text-center">
           Login Email: {data && data.email}
@@ -228,12 +226,10 @@ const Profile = () =>
       <div className="border-black border-b border-solid mb-5 pb-5 px-5">
         {/* <Accordion items={items} /> */}
       </div>
-      <div className="px-5">
-        {/* <Accordion items={items2} /> */}
-      </div>
-      {im.map((item) => (
+      <div className="px-5">{/* <Accordion items={items2} /> */}</div>
+      {/* {im.map((item) => (
         <img src={item._location.path_} alt="at" />
-      ))}
+      ))} */}
     </>
   );
 };

@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   sendEmailVerification,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { getDatabase, ref, set, push } from "firebase/database";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,6 +16,7 @@ import { InfinitySpin, FallingLines } from "react-loader-spinner";
 const Registation = () => {
   const auth = getAuth();
   const db = getDatabase();
+  const provider = new GoogleAuthProvider();
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [loading, setLoading] = useState(false);
@@ -50,8 +52,7 @@ const Registation = () => {
     }
     if (!password) {
       setPasswordErr("Password Is Requried");
-    }
-    else {
+    } else {
       if (!/^(?=.*[a-z])/.test(password)) {
         setPasswordErr("Need least 1 lowercase character");
       } else if (!/^(?=.*[A-Z])/.test(password)) {
@@ -74,13 +75,6 @@ const Registation = () => {
             photoURL: "images/avatar.jpg",
           })
             .then(() => {
-              set(ref(db, "users/" + user.uid), {
-                username: user.displayName,
-                email: user.email,
-                profile_picture: user.photoURL,
-              });
-            })
-            .then(() => {
               toast.success(
                 "Registation Successfull. Please Verify Your Email"
               );
@@ -88,11 +82,21 @@ const Registation = () => {
               setEmail("");
               setPassword("");
               sendEmailVerification(auth.currentUser);
-
+              dispatch(usersInformation(user));
+              localStorage.setItem("userRegistationIfo", JSON.stringify(user));
               setTimeout(() => {
                 navigate("/login");
               }, 2500);
               setLoading(false);
+            })
+            .then(() => {
+              set(ref(db, "users/" + user.uid), {
+                username: user.displayName,
+                email: user.email,
+                profile_picture: user.photoURL,
+                authMethod: "email",
+                userId: user.uid,
+              });
             })
 
             .catch((error) => {});
@@ -109,9 +113,9 @@ const Registation = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-full">
+    <div className=" justify-center items-center h-screen w-full  flex  md:mb991:block mb480:flex mb320:block">
       <ToastContainer position="bottom-center" theme="dark" />
-      <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
+      <div className=" bg-white shadow-xl w-[40%] rounded-xl lp1366:w-[90%] mb991:mx-auto">
         <div
           style={{
             backgroundImage: 'url("images/top-curve-bg.png")',

@@ -7,7 +7,14 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { usersInformation } from "../../slices/userSlices";
-import { push, getDatabase, ref, set, onValue } from "firebase/database";
+import {
+  push,
+  getDatabase,
+  ref,
+  set,
+  onValue,
+  serverTimestamp,
+} from "firebase/database";
 
 const Home = () => {
   const auth = getAuth();
@@ -16,24 +23,17 @@ const Home = () => {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
-  console.log(data);
-  console.log("current user", auth.currentUser);
-  const [verify, setVerify] = useState(false);
   const [value, setValue] = useState("");
-  /*    useEffect(() => {
-     if (currentUser && currentUser.emailVerified) {
-       setVerify( true );
-       dispatch(usersInformation(currentUser));
-       localStorage.setItem("userRegistationIfo", JSON.stringify(currentUser));
+  const [user, setUser] = useState(null);
 
-     }
-   }, [] ); */
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user.emailVerified) {
-        setVerify(true);
+      if (user) {
+        setUser(user);
         dispatch(usersInformation(user));
         localStorage.setItem("userRegistationIfo", JSON.stringify(user));
+      } else {
+        setUser(null);
       }
     });
   }, []);
@@ -46,7 +46,7 @@ const Home = () => {
   let sendPost = (e) => {
     setValue(e.target.value);
   };
- const [userList, setUserList] = useState({});
+  const [userList, setUserList] = useState({});
   useEffect(() => {
     const usersRef = ref(db, "users/");
     onValue(usersRef, (snapshot) => {
@@ -60,13 +60,14 @@ const Home = () => {
     });
   }, []);
 
-
   let submitPost = () => {
     console.log("post");
     set(push(ref(db, "posts/")), {
       username: userList.username,
       posts: value,
       userId: data.uid,
+      photo: userList.profile_picture,
+      timeStamp: serverTimestamp(),
     });
   };
   const [allPosts, setAllPosts] = useState([]);
@@ -81,9 +82,10 @@ const Home = () => {
     });
   }, []);
 
+
   return (
     <>
-      {verify ? (
+      {user && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
           <div className="col-span-3 relative">
             <div className="h-[180px]">
@@ -107,21 +109,19 @@ const Home = () => {
               <button onClick={submitPost}>post</button>
             </div>
             <div className="h-[100vh] overflow-x-hidden ">
-              {allPosts.map((item) => (
-                <Post
-                  name={item.username}
-                  profilePic="images/profile.png"
-                  postPic="images/img.png"
-                  content={item.posts}
-                />
-              ))}
+              {allPosts
+                .sort((a, b) => b.timeStamp - a.timeStamp)
+                .map((item) => (
+                  <Post item={item} />
+                ))}
             </div>
           </div>
           <div className="col-span-3">
             <Profile />
           </div>
         </div>
-      ) : (
+      )}
+      {user && !user.emailVerified && (
         <div className="flex w-full h-screen justify-center items-center bg-primary">
           <h3 className="text-5xl bg-white text-primary text-center p-7  font-pop font-bold">
             please verify your mail

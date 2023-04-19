@@ -7,8 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { getDatabase, ref, set, push } from "firebase/database";
-import { useDispatch } from "react-redux";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import { useDispatch, useSelector } from "react-redux";
 import { InfinitySpin, FallingLines } from "react-loader-spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { usersInformation } from "../../slices/userSlices";
@@ -24,7 +24,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [emailErr, setEmailErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
-
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
   let handleEmail = (e) => {
     setEmail(e.target.value);
     setEmailErr("");
@@ -86,26 +86,34 @@ const Login = () => {
         });
     }
   };
-  let handleGoogleLogin = () => {
-    signInWithPopup(auth, provider).then((result) => {
-      // The signed-in user info.
-      const user = result.user;
-      console.log(user);
-      dispatch(usersInformation(user));
-      localStorage.setItem("userRegistationIfo", JSON.stringify(user));
-      navigate("/");
-      set(ref(db, "users/" + user.uid), {
-        userName: user.displayName,
-        email: user.email,
-        profile_picture: user.photoURL,
+
+  let handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      // Check if the user has already created an account using email and password
+      const userRef = ref(db, "users/" + result.user.uid);
+      onValue(userRef, (snapshot) => {
+        const user = snapshot.val();
+
+        if (user && user.authMethod === "email") {
+          alert(
+            "You have already created an account using email and password. Please log in using that method."
+          );
+        } else {
+          navigate("/");
+        }
       });
-    });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   return (
     <>
-      <div className="flex justify-center items-center h-screen w-full">
+      <div className="flex justify-center items-center h-screen w-full md:pad1024:block mb768:flex mb320:block">
         <ToastContainer position="bottom-center" theme="dark" />
-        <div className="bg-white shadow-xl w-[40%]  rounded-xl ">
+        <div className="bg-white shadow-xl w-[40%] pad1024:my-6 rounded-xl lp1366:w-[90%] pad1024:mx-auto">
           <div
             style={{
               backgroundImage: 'url("images/top-curve-bg.png")',
@@ -113,9 +121,9 @@ const Login = () => {
               backgroundSize: "100% 100%",
               backgroundRepeat: "no-repeat",
             }}
-            className=" text-center rounded-xl min-h-[165px]"
+            className=" text-center rounded-xl min-h-[165px] md:pad1024:min-h-[100px]"
           >
-            <h1 className="text-white font-pophins text-3xl text-center pt-7">
+            <h1 className="text-white font-pophins text-3xl text-center pt-7 md:pad1024:pt-2">
               <img src="images/logo.png" alt="" className="m-auto" />
             </h1>
           </div>
