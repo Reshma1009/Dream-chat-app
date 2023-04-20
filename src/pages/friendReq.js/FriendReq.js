@@ -8,7 +8,7 @@ const FriendReq = () => {
 
   return (
     <div className="grid grid-cols-12 h-screen overflow-hidden">
-      <div className="col-span-3 relative">
+      <div className="col-span-3 w-[500px] bg-white relative">
         <div className="h-[180px]">
           <Sidebar active="request" />
         </div>
@@ -27,8 +27,8 @@ const FriendReq = () => {
       >
         <div>
           <AllFriends />
-          <BlockUser/>
-       </div>
+          <BlockUser />
+        </div>
       </div>
       <div className="col-span-3">
         <Profile />

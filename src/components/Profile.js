@@ -13,7 +13,14 @@ import {
   uploadString,
   getDownloadURL,
 } from "firebase/storage";
-import { getAuth, updateProfile } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  getAuth,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  updateEmail,
+  updateProfile,
+} from "firebase/auth";
 import {
   getDatabase,
   ref as dRef,
@@ -25,21 +32,19 @@ import {
   off,
 } from "firebase/database";
 import { getCurrentUser, userSList } from "../Api/Fuctional";
+import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const auth = getAuth();
   const db = getDatabase();
-  let dispatch = useDispatch();
+  let navigate = useNavigate();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [isOpen, setIsOpen] = useState(false);
   const [friendList, setFriendList] = useState([]);
-  const [loginUser, setLoginUser] = useState({});
   console.log(friendList);
   function toggleModal() {
     setIsOpen(!isOpen);
   }
-  useEffect(() => {
-    getCurrentUser(setLoginUser);
-  }, []);
+
   /* Update Info  */
   const [inputInfo, setInputInfo] = useState({
     username: "",
@@ -132,9 +137,14 @@ const Profile = () => {
   // console.log("data", data);
 
   let updateProfileInfo = () => {
-    update(dRef(db, "users/" + auth.currentUser.uid), {
-      username: inputInfo.username,
+    updateProfile(auth.currentUser, {
+      displayName: inputInfo.username,
+    }).then(() => {
+      update(dRef(db, "users/" + auth.currentUser.uid), {
+        username: inputInfo.username,
+      });
     });
+
     inputInfo.username("");
 
     /*    // Update the user's info in all their posts
@@ -147,7 +157,32 @@ const Profile = () => {
     update(dRef(db), Object.assign({}, ...updatedPosts)); */
   };
   // console.log("posts", posts);
-
+  let updateEmailInfo = () => {
+    const credential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      inputInfo.password
+    );
+    updateProfile(auth.currentUser, {
+      email: inputInfo.email,
+    })
+      .then(() => {
+        reauthenticateWithCredential(auth.currentUser, credential).then(() => {
+          updateEmail(auth.currentUser, inputInfo.email)
+            .then(() => {
+              console.log( "Email updated!" );
+              sendEmailVerification(auth.currentUser);
+              update( dRef( db, "users/" + auth.currentUser.uid ), {email:inputInfo.email} );
+              // navigate("/login");
+            })
+            .catch((error) => {
+              alert( error);
+            });
+        });
+      })
+      .catch((error) => {
+        console.log("update email", error);
+      });
+  };
   return (
     <>
       <Flex className="items-center flex flex-col pt-10">
@@ -207,7 +242,7 @@ const Profile = () => {
           </Modal>
         )}
         <h2 className="text-3xl font-bold font-pophins mb-5">
-          {userList.username}
+          {data && data.displayName}
         </h2>
       </Flex>
       <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">
@@ -215,10 +250,10 @@ const Profile = () => {
           Users Info:
         </h3>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto my-2">
-          Name: {userList.username}
+          Name: {data &&data.displayName}
         </p>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto mb-2">
-          Email: {userList.email}
+          Email: {data&&data.email}
         </p>
       </div>
       <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">
@@ -251,35 +286,28 @@ const Profile = () => {
           </p>
           <input
             onChange={changeInfo}
-            className="bg-slate-200 px-5 py-2 rounded-tl-lg rounded-bl-lg w-[60%] ml-5"
+            className="bg-slate-200 px-5 py-2 rounded-lg rounded-bl-lg w-[60%] ml-5"
             type="text"
             value={inputInfo.email}
             placeholder="Email"
             name="email"
           />
-          <button
-            className="bg-primary text-white px-5 py-2 capitalize rounded-tr-lg disabled:cursor-not-allowed disabled:opacity-40 rounded-br-lg font-pophins font-medium"
-            onClick={updateProfileInfo}
-            disabled={!inputInfo.email}
-          >
-            update
-          </button>
         </div>
         <div>
-          <p className="font-pophins font-medium text-base max-w-[400px] mx-auto">
+          {/* <p className="font-pophins font-medium text-base max-w-[400px] mx-auto">
             Change your Password:
-          </p>
+          </p> */}
           <input
             onChange={changeInfo}
-            className="font-pophins font-medium bg-slate-200 px-5 py-2 rounded-tl-lg  rounded-bl-lg w-[60%] ml-5"
+            className="font-pophins font-medium bg-slate-200 px-5 py-2 rounded-lg  rounded-bl-lg w-[60%] ml-5"
             type="text"
             value={inputInfo.password}
             placeholder="Password"
             name="password"
           />
           <button
-            className="bg-primary font-pophins font-medium text-white px-5 py-2 capitalize rounded-tr-lg rounded-br-lg disabled:cursor-not-allowed disabled:opacity-40"
-            onClick={updateProfileInfo}
+            className="bg-primary font-pophins font-medium text-white px-5 py-2 capitalize rounded-tr-lg rounded-lg disabled:cursor-not-allowed disabled:opacity-40 block ml-5 mt-5"
+            onClick={updateEmailInfo}
             disabled={!inputInfo.password}
           >
             update

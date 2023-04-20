@@ -81,7 +81,7 @@ const Home = () => {
       )}
       {user && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
-          <div className="col-span-3 relative">
+          <div className="col-span-3 w-[500px] bg-white relative">
             <div className="h-[180px]">
               <Sidebar active="home" />
             </div>

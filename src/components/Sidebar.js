@@ -100,14 +100,14 @@ const Sidebar = ( { active } ) => {
             />
           </div>
 
-          <div className="relative">
+         {/*  <div className="relative">
             <RiSettings5Line
               className="text-white text-2xl "
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               title="Settings"
             />
-          </div>
+          </div> */}
           <div onClick={handleLogOut} className="relative cursor-pointer">
             <IoMdLogOut
               className="text-white text-2xl "
