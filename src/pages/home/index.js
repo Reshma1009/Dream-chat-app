@@ -16,6 +16,7 @@ import {
   serverTimestamp,
 } from "firebase/database";
 import { userSList } from "../../Api/Fuctional";
+import Loder from "../../components/Loder";
 const Home = () => {
   const auth = getAuth();
   const db = getDatabase();
@@ -69,15 +70,29 @@ const Home = () => {
       setAllPosts(arr);
     });
   }, []);
-
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    onAuthStateChanged(auth, (res) => {
+      if (!res?.accessToken) {
+        navigate("/");
+      } else {
+        setLoading(false);
+      }
+    });
+  }, []);
   return (
     <>
-      {user && !user.emailVerified && (
-        <div className="flex w-full absolute h-screen justify-center items-center z-50 bg-primary">
-          <h3 className="text-5xl bg-white text-primary text-center p-7  font-pop font-bold">
-            please verify your mail
-          </h3>
-        </div>
+      {loading ? (
+        <Loder />
+      ) : (
+        user &&
+        !user.emailVerified && (
+          <div className="flex w-full absolute h-screen justify-center items-center z-50 bg-primary">
+            <h3 className="text-5xl bg-white text-primary text-center p-7  font-pop font-bold">
+              please verify your mail
+            </h3>
+          </div>
+        )
       )}
       {user && (
         <div className="grid grid-cols-12 h-screen overflow-hidden">
@@ -98,16 +113,17 @@ const Home = () => {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div>
+           {/*  <div>
               <input type="text" onChange={sendPost} />
               <button onClick={submitPost}>post</button>
-            </div>
-            <div className="h-[100vh] overflow-x-hidden ">
-              {allPosts
+            </div> */}
+            <div className="h-[100vh] overflow-x-hidden flex justify-center items-center">
+              {/*  {allPosts
                 .sort((a, b) => b.timeStamp - a.timeStamp)
                 .map((item) => (
                   <Post item={item} />
-                ))}
+                ))} */}
+              <h1 className="text-2xl font-pophins font-bold text-primary">Wellcome to Dream Chat {data.displayName}</h1>
             </div>
           </div>
           <div className="col-span-3">
