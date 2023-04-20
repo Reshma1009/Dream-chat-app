@@ -88,8 +88,8 @@ const Home = () => {
         )
       )}
       {user && (
-        <div className="grid grid-cols-12 h-screen overflow-hidden">
-          <div className="col-span-3 w-[500px] bg-white relative">
+        <div className="flex h-screen overflow-hidden">
+          <div className=" w-[500px] bg-white relative">
             <div className="h-[180px]">
               <Sidebar active="home" />
             </div>
@@ -98,7 +98,7 @@ const Home = () => {
             </div>
           </div>
           <div
-            className="col-span-6 pt-5 "
+            className="flex-1 pt-5 "
             style={{
               backgroundImage: 'url("images/bg-color.png")',
               backgroundPosition: "center",
@@ -110,7 +110,7 @@ const Home = () => {
               <input type="text" onChange={sendPost} />
               <button onClick={submitPost}>post</button>
             </div> */}
-            <div className="h-[100vh] overflow-x-hidden flex justify-center items-center">
+            <div className="h-[100vh]  overflow-x-hidden flex justify-center items-center">
               {/*  {allPosts
                 .sort((a, b) => b.timeStamp - a.timeStamp)
                 .map((item) => (
@@ -121,7 +121,7 @@ const Home = () => {
               </h1>
             </div>
           </div>
-          <div className="col-span-3">
+          <div className="w-[400px]">
             <Profile />
           </div>
         </div>

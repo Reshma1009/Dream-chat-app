@@ -23,8 +23,8 @@ const FriendReq = () => {
       {loading ? (
         <Loder />
       ) : (
-        <div className="grid grid-cols-12 h-screen overflow-hidden">
-          <div className="col-span-3 w-[500px] bg-white relative">
+        <div className="flex h-screen overflow-hidden">
+          <div className=" w-[500px] bg-white relative">
             <div className="h-[180px]">
               <Sidebar active="request" />
             </div>
@@ -33,7 +33,7 @@ const FriendReq = () => {
             </div>
           </div>
           <div
-            className="col-span-6 "
+            className="flex-1 "
             style={{
               backgroundImage: 'url("images/bg-color.png")',
               backgroundPosition: "center",
@@ -46,7 +46,7 @@ const FriendReq = () => {
               <BlockUser />
             </div>
           </div>
-          <div className="col-span-3">
+          <div className="w-[400px]">
             <Profile />
           </div>
         </div>
