@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Flex from "./Flex";
 import Images from "./Images";
 import Search from "./Search";
@@ -11,6 +11,7 @@ import {
   remove,
 } from "firebase/database";
 import { useSelector } from "react-redux";
+import { getCurrentUser, userSList } from "../Api/Fuctional";
 const GroupLists = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -19,7 +20,8 @@ const GroupLists = () => {
     const groupRef = ref(db, "createGroup/");
     onValue(groupRef, (snapshot) => {
       let arr = [];
-      snapshot.forEach((item) => {
+      snapshot.forEach( ( item ) =>
+      {
         if (data.uid !== item.val().adminId) {
           arr.push({ ...item.val(), groupId: item.key });
         }
@@ -28,7 +30,7 @@ const GroupLists = () => {
     });
   }, []);
   let handleJoinGroup = (item) => {
-    // console.log("join", item);
+    console.log("join", item);
     set(push(ref(db, "joinGroupReq")), {
       ...item,
       userName: data.displayName,
@@ -71,11 +73,15 @@ const GroupLists = () => {
     });
   }, []);
 
+  const [loginUser, setLoginUser] = useState([]);
+  useEffect(() => {
+    getCurrentUser(setLoginUser);
+  }, []);
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
-        Group Lists
+        All Group Lists
       </h2>
       <div className="scrollbar-hidden overflow-y-scroll overflow-x-hidden">
         {groupList.length == 0 ? (
@@ -89,7 +95,11 @@ const GroupLists = () => {
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
-                  imgSrc={item.adminPhoto}
+                  imgSrc={
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.adminId)
+                      .map((item) => item.profile_picture)[0]
+                  }
                   className="rounded-full w-full"
                 />
               </div>
@@ -101,7 +111,12 @@ const GroupLists = () => {
                   Group Tag: {item.groupTagline}
                 </p>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
-                  Admin: {item.admin}
+                  Admin:{" "}
+                  {
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.adminId)
+                      .map((item) => item.username)[0]
+                  }
                 </p>
               </div>
               <div className="grow text-right">

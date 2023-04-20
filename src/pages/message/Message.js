@@ -75,7 +75,7 @@ const Message = () => {
   // Enter Button Sebd Message
   const textarea = document.querySelector("textArea");
   let handleEnterButn = (e) => {
-    /*  if (e.key == "Enter") {
+     if (e.key == "Enter") {
       if (activeChat && activeChat.status == "single") {
         set(push(ref(db, "singleMessage")), {
           whoSendId: data.uid,
@@ -108,7 +108,7 @@ const Message = () => {
           setMessage("");
         });
       }
-    } */
+    }
     const scHight = e.target.scrollHeight;
     textarea.style.height = `50px`;
     textarea.style.height = `${scHight}px`;
@@ -526,14 +526,6 @@ const Message = () => {
                   </div>
                 </div>
               )}
-              {/* <textA
-                onChange={handleMesage}
-                onFocus={handleOnFocus}
-                onKeyUp={handleEnterButn}
-                value={message}
-                type="text"
-                className="w-full p-3 rounded-lg outline-primary"
-              /> */}
               <textarea
                 onChange={handleMesage}
                 onFocus={handleOnFocus}

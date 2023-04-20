@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Flex from "./Flex";
 import Images from "./Images";
 import Search from "./Search";
@@ -11,6 +11,7 @@ import {
   remove,
 } from "firebase/database";
 import { useSelector } from "react-redux";
+import { getCurrentUser, userSList } from "../Api/Fuctional";
 const MyGroups = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -39,7 +40,7 @@ const MyGroups = () => {
     onValue(groupReqRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log(item.val());
+        console.log(item.val(), "item.val()");
         if (
           data.uid == item.val().adminId &&
           groupItem.groupId == item.val().groupId
@@ -61,7 +62,7 @@ const MyGroups = () => {
     remove(ref(db, "createGroup/" + item.groupId));
   };
   let rejectGroupReq = (item) => {
-    console.log("rej",item);
+    console.log("rej", item);
     set(push(ref(db, "rejectGroupReq")), {
       ...item,
     }).then(() => {
@@ -108,13 +109,23 @@ const MyGroups = () => {
     onValue(accGroupReqRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("acc",item.val());
+        console.log("acc", item.val());
 
         arr.push(item.val().groupReqId + item.val().adminId);
       });
       setAcceptgroupBtn(arr);
     });
-  }, []);
+  }, [] );
+
+  const [loginUser, setLoginUser] = useState({});
+  useEffect(() => {
+    getCurrentUser(setLoginUser);
+  }, [] );
+console.log(loginUser,"myGropus");
+  const [userList, setUserList] = useState({});
+  useMemo(() => userSList(data, setUserList), []);
+
+
   return (
     <div className="flex flex-col overflow-hidden h-[55vh]  p-7 pb-0">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -154,16 +165,35 @@ const MyGroups = () => {
                   >
                     <div className="w-[50px] h-[50px] ">
                       <Images
-                        imgSrc={item.userPhoto}
+                        // imgSrc={item.userPhoto}
+                        imgSrc={
+                          loginUser
+                            .filter(
+                              (useritem) => useritem.userId == item.userId
+                            )
+                            .map((item) => item.profile_picture)[0]
+                        }
                         className="rounded-full w-full"
                       />
+                      {console.log(
+                        loginUser
+                          .filter((useritem) => useritem.userId == item.userId)
+                          .map((item) => item.profile_picture)[0]
+                      )}
                     </div>
                     <div>
                       <h3 className="text-heading font-medium text-lg font-pophins">
                         Group Name: {item.groupName}
                       </h3>
                       <p className="text-[#767676] font-normal text-sm font-pophins">
-                        Request Name: {item.userName}
+                        Request Name:{" "}
+                        {
+                          loginUser
+                            .filter(
+                              (useritem) => useritem.userId == item.userId
+                            )
+                            .map((item) => item.username)[0]
+                        }
                       </p>
                       <p className="text-[#767676] font-normal text-sm font-pophins">
                         Hi Guys, How Are you
@@ -221,7 +251,14 @@ const MyGroups = () => {
                   >
                     <div className="w-[50px] h-[50px] ">
                       <Images
-                        imgSrc={item.userPhoto}
+                        // imgSrc={item.userPhoto}
+                        imgSrc={
+                          loginUser
+                            .filter(
+                              (useritem) => useritem.userId !== item.adminId
+                            )
+                            .map((item) => item.profile_picture)[0]
+                        }
                         className="rounded-full w-full"
                       />
                     </div>
@@ -230,7 +267,14 @@ const MyGroups = () => {
                         Group Name: {item.groupName}
                       </h3>
                       <p className="text-[#767676] font-normal text-sm font-pophins">
-                        Request Name: {item.userName}
+                        Request Name:{" "}
+                        {
+                          loginUser
+                            .filter(
+                              (useritem) => useritem.userId !== item.adminId
+                            )
+                            .map((item) => item.username)[0]
+                        }
                       </p>
                       <p className="text-[#767676] font-normal text-sm font-pophins">
                         Hi Guys, How Are you
@@ -262,7 +306,7 @@ const MyGroups = () => {
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
-                  imgSrc={item.adminPhoto}
+                  imgSrc={userList.profile_picture}
                   className="rounded-full w-full"
                 />
               </div>
@@ -274,7 +318,7 @@ const MyGroups = () => {
                   Group Tag: {item.groupTagline}
                 </p>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
-                  Admin: {item.admin}
+                  Admin: {userList.username}
                 </p>
               </div>
               <div className="grow text-right">

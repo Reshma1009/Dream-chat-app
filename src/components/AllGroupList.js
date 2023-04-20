@@ -6,12 +6,11 @@ import {
   getDatabase,
   ref,
   onValue,
-  set,
-  push,
-  remove,
+
 } from "firebase/database";
 import { useDispatch, useSelector } from "react-redux";
 import { activeUsersInfo } from "../slices/activeChatUsers";
+import { getCurrentUser } from "../Api/Fuctional";
 const AllGroupList = () => {
   const db = getDatabase();
   let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
@@ -49,6 +48,10 @@ const AllGroupList = () => {
      })
    );
   };
+   const [loginUser, setLoginUser] = useState([]);
+   useEffect(() => {
+     getCurrentUser(setLoginUser);
+   }, []);
   return (
     <div className=" scrollbar-hidden flex flex-col overflow-hidden h-[40vh] shadow-2xl p-7 pt-0">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -67,7 +70,11 @@ const AllGroupList = () => {
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
-                  imgSrc={item.adminPhoto}
+                  imgSrc={
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.adminId)
+                      .map((item) => item.profile_picture)[0]
+                  }
                   className="rounded-full w-full"
                 />
               </div>
@@ -79,7 +86,12 @@ const AllGroupList = () => {
                   Group Tag: {item.groupTagline}
                 </p>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
-                  Admin: {item.admin}
+                  Admin:{" "}
+                  {
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.adminId)
+                      .map((item) => item.username)[0]
+                  }
                 </p>
               </div>
               <div className="grow text-right">
