@@ -27,14 +27,12 @@ const Groups = () => {
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
   useEffect(() => {
-    onAuthStateChanged(getAuth(), (res) => {
-      if (!res?.accessToken) {
-        navigate("/");
-      } else {
-        setLoading(false);
-      }
-    });
-  }, []);
+    if (!data) {
+      navigate("/");
+    } else {
+      setLoading(false);
+    }
+  }, [])
   let handleGroupName = (e) => {
     setGroupName(e.target.value);
     setGroupNameErr("");

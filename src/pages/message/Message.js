@@ -46,13 +46,11 @@ const Message = () => {
     const [loading, setLoading] = useState(true);
     let navigate = useNavigate();
     useEffect(() => {
-      onAuthStateChanged(auth, (res) => {
-        if (!res?.accessToken) {
-          navigate("/");
-        } else {
-          setLoading(false);
-        }
-      });
+      if (!data) {
+        navigate("/");
+      } else {
+        setLoading(false);
+      }
     }, []);
 
   const addAudioElement = (blob) => {

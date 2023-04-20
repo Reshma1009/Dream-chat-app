@@ -25,7 +25,7 @@ const Home = () => {
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [value, setValue] = useState("");
   const [user, setUser] = useState(null);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -41,6 +41,8 @@ const Home = () => {
   useEffect(() => {
     if (!data) {
       navigate("/login");
+    } else {
+      setLoading(false);
     }
   }, []);
   let sendPost = (e) => {
@@ -70,16 +72,7 @@ const Home = () => {
       setAllPosts(arr);
     });
   }, []);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    onAuthStateChanged(auth, (res) => {
-      if (!res?.accessToken) {
-        navigate("/");
-      } else {
-        setLoading(false);
-      }
-    });
-  }, []);
+
   return (
     <>
       {loading ? (
@@ -113,7 +106,7 @@ const Home = () => {
               backgroundRepeat: "no-repeat",
             }}
           >
-           {/*  <div>
+            {/*  <div>
               <input type="text" onChange={sendPost} />
               <button onClick={submitPost}>post</button>
             </div> */}
@@ -123,7 +116,9 @@ const Home = () => {
                 .map((item) => (
                   <Post item={item} />
                 ))} */}
-              <h1 className="text-2xl font-pophins font-bold text-primary">Wellcome to Dream Chat {data.displayName}</h1>
+              <h1 className="text-3xl font-pophins font-bold text-primary capitalize">
+                Wellcome to Dream Chat {data.displayName}
+              </h1>
             </div>
           </div>
           <div className="col-span-3">

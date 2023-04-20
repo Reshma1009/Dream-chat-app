@@ -5,19 +5,18 @@ import FriendRequest from "../../components/FriendRequest";
 import BlockUser from "../../components/BlockUser";
 import AllFriends from "../../components/AllFriends";
 import Loder from "../../components/Loder";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const FriendReq = () => {
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
   useEffect(() => {
-    onAuthStateChanged(getAuth(), (res) => {
-      if (!res?.accessToken) {
-        navigate("/");
-      } else {
-        setLoading(false);
-      }
-    });
+    if (!data) {
+      navigate("/");
+    } else {
+      setLoading(false);
+    }
   }, []);
   return (
     <>

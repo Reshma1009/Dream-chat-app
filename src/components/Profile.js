@@ -241,7 +241,7 @@ const Profile = () => {
             </div>
           </Modal>
         )}
-        <h2 className="text-3xl font-bold font-pophins mb-5">
+        <h2 className="text-3xl font-bold font-pophins mb-5 capitalize">
           {data && data.displayName}
         </h2>
       </Flex>
@@ -249,7 +249,7 @@ const Profile = () => {
         <h3 className=" pb-2 border-b border-solid font-pophins font-bold text-lg max-w-[400px] mx-auto text-center">
           Users Info:
         </h3>
-        <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto my-2">
+        <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto my-2 capitalize">
           Name: {data &&data.displayName}
         </p>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto mb-2">
