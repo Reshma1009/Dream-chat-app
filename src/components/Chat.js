@@ -39,7 +39,7 @@ const Chat = () => {
       let arr = [];
       snapshot.forEach( ( item ) =>
       {
-        console.log(item.val(), "item.val() group messahe");
+        // console.log(item.val(), "item.val() group messahe");
         arr.push(item.val());
       });
       setGroupMessageList(arr);

@@ -53,9 +53,11 @@ const JoinedGroups = () => {
                 <div className="w-[50px] h-[50px] ">
                   <Images
                     className="rounded-full w-full"
+                    // imgSrc={item.adminPhoto}
+
                     imgSrc={
                       loginUser
-                        .filter((useritem) => useritem.userId !== item.userId)
+                        .filter((useritem) => useritem.userId == item.adminId)
                         .map((item) => item.profile_picture)[0]
                     }
                   />
@@ -68,7 +70,7 @@ const JoinedGroups = () => {
                     Admin Name:
                     {
                       loginUser
-                        .filter((useritem) => useritem.userId !== item.userId)
+                        .filter((useritem) => useritem.userId == item.adminId)
                         .map((item) => item.username)[0]
                     }
                   </p>

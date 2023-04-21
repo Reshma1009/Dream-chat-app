@@ -83,11 +83,7 @@ const AllFriends = () => {
                 <Images
                   imgSrc={
                     item.senderId == data.uid
-                      ? loginUser
-                          .filter(
-                            (useritem) => useritem.userId !== item.senderId
-                          )
-                          .map((item) => item.profile_picture)[0]
+                      ? item.receiverPhoto
                       : loginUser
                           .filter(
                             (useritem) => useritem.userId == item.senderId
@@ -96,13 +92,12 @@ const AllFriends = () => {
                   }
                   className="rounded-full w-full"
                 />
+
               </div>
               <div>
                 <h3 className="text-heading font-bold text-xl font-pophins">
                   {item.senderId == data.uid
-                    ? loginUser
-                        .filter((useritem) => useritem.userId !== item.senderId)
-                        .map((item) => item.username)[0]
+                    ? item.receiverName
                     : loginUser
                         .filter((useritem) => useritem.userId == item.senderId)
                         .map((item) => item.username)[0]}

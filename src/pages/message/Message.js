@@ -382,7 +382,7 @@ const Message = () => {
     setIsOpen2(!isOpen2);
     setImage("");
   };
-  const [loginUser, setLoginUser] = useState({});
+  const [loginUser, setLoginUser] = useState([]);
   useEffect(() => {
     getCurrentUser(setLoginUser);
   }, []);

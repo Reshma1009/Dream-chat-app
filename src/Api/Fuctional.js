@@ -8,7 +8,7 @@ export function getCurrentUser(setCurrentUser) {
   onValue(useRef, (snapshot) => {
     let arr = [];
     snapshot.forEach((item) => {
-      console.log(item.val());
+      // console.log(item.val());
 
       arr.push({ ...item.val(), userId: item.key });
     });

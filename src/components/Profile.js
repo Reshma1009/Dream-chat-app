@@ -142,10 +142,9 @@ const Profile = () => {
     }).then(() => {
       update(dRef(db, "users/" + auth.currentUser.uid), {
         username: inputInfo.username,
-      });
+      } );
+      console.log("name update", inputInfo.username);
     });
-
-    inputInfo.username("");
 
     /*    // Update the user's info in all their posts
     const updatedPosts = posts.map((post) => {
@@ -242,7 +241,8 @@ const Profile = () => {
           </Modal>
         )}
         <h2 className="text-3xl font-bold font-pophins mb-5 capitalize">
-          {data && data.displayName}
+          {/* {data && data.displayName} */}
+          {userList.username}
         </h2>
       </Flex>
       <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">
@@ -250,10 +250,10 @@ const Profile = () => {
           Users Info:
         </h3>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto my-2 capitalize">
-          Name: {data &&data.displayName}
+          Name: {userList.username}
         </p>
         <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto mb-2">
-          Email: {data&&data.email}
+          Email: {userList.email}
         </p>
       </div>
       <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">

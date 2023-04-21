@@ -45,10 +45,8 @@ const Friends = () => {
     if (data.uid == item.receiverId) {
       dispatch(
         activeUsersInfo({
-          // name: item.senderName,
-          name: loginUser
-            .filter((useritem) => useritem.userId == item.senderId)
-            .map((item) => item.username)[0],
+          name: item.senderName,
+
           id: item.senderId,
           status: "single",
           profilePhoto: item.senderPhoto,
@@ -57,10 +55,8 @@ const Friends = () => {
       localStorage.setItem(
         "activeChatUser",
         JSON.stringify({
-          // name: item.senderName,
-          name: loginUser
-            .filter((useritem) => useritem.userId == item.senderId)
-            .map((item) => item.username)[0],
+          name: item.senderName,
+
           id: item.senderId,
           status: "single",
           profilePhoto: item.senderPhoto,
@@ -69,10 +65,8 @@ const Friends = () => {
     } else {
       dispatch(
         activeUsersInfo({
-          // name: item.receiverName,
-          name: loginUser
-            .filter((useritem) => useritem.userId !== item.senderId)
-            .map((item) => item.username)[0],
+          name: item.receiverName,
+
           id: item.receiverId,
           status: "single",
           profilePhoto: item.receiverPhoto,
@@ -81,10 +75,8 @@ const Friends = () => {
       localStorage.setItem(
         "activeChatUser",
         JSON.stringify({
-          // name: item.receiverName,
-          name: loginUser
-            .filter((useritem) => useritem.userId !== item.senderId)
-            .map((item) => item.username)[0],
+          name: item.receiverName,
+
           id: item.receiverId,
           status: "single",
           profilePhoto: item.receiverPhoto,
@@ -95,8 +87,9 @@ const Friends = () => {
   const [loginUser, setLoginUser] = useState([]);
 
   useEffect(() => {
-    getCurrentUser( setLoginUser);
-  }, []);
+    getCurrentUser(setLoginUser);
+  }, [] );
+  console.log(loginUser, "loginUser friends");
   return (
     <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -117,11 +110,7 @@ const Friends = () => {
                 <Images
                   imgSrc={
                     item.senderId == data.uid
-                      ? loginUser
-                          .filter(
-                            (useritem) => useritem.userId !== item.senderId
-                          )
-                          .map((item) => item.profile_picture)[0]
+                      ? item.receiverPhoto
                       : loginUser
                           .filter(
                             (useritem) => useritem.userId == item.senderId
@@ -130,21 +119,15 @@ const Friends = () => {
                   }
                   className="rounded-full w-full"
                 />
+                {console.log(item, "issssssssss")}
               </div>
               <div>
                 <h3 className="text-heading font-bold text-xl font-pophins">
                   {item.senderId == data.uid
-                    ? loginUser
-                        .filter((useritem) => useritem.userId !== item.senderId)
-                        .map((item) => item.username)[0]
+                    ? item.receiverName
                     : loginUser
                         .filter((useritem) => useritem.userId == item.senderId)
                         .map((item) => item.username)[0]}
-                  {console.log(
-                    loginUser
-                      .filter((useritem) => useritem.userId == item.senderId)
-                      .map((item) => item.username)[0]
-                  )}
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you

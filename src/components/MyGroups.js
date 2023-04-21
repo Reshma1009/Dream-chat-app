@@ -255,12 +255,13 @@ console.log(loginUser,"myGropus");
                         imgSrc={
                           loginUser
                             .filter(
-                              (useritem) => useritem.userId !== item.adminId
+                              (useritem) => useritem.userId == item.userId
                             )
                             .map((item) => item.profile_picture)[0]
                         }
                         className="rounded-full w-full"
                       />
+                      {console.log(item, ";;;;;;;;;;;;;;;;;;;;;;;;;hjghghg")}
                     </div>
                     <div>
                       <h3 className="text-heading font-medium text-lg font-pophins">
@@ -271,7 +272,7 @@ console.log(loginUser,"myGropus");
                         {
                           loginUser
                             .filter(
-                              (useritem) => useritem.userId !== item.adminId
+                              (useritem) => useritem.userId == item.userId
                             )
                             .map((item) => item.username)[0]
                         }

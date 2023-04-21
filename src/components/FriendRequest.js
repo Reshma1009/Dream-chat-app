@@ -58,7 +58,7 @@ const FriendRequest = () => {
    const [loginUser, setLoginUser] = useState([]);
 
    useEffect(() => {
-     getCurrentUser(data, setLoginUser);
+     getCurrentUser(setLoginUser);
    }, []);
 
    /* console.log(
