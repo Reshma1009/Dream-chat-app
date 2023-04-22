@@ -115,16 +115,15 @@ const MyGroups = () => {
       });
       setAcceptgroupBtn(arr);
     });
-  }, [] );
+  }, []);
 
-  const [loginUser, setLoginUser] = useState({});
+  const [loginUser, setLoginUser] = useState([]);
   useEffect(() => {
     getCurrentUser(setLoginUser);
-  }, [] );
-console.log(loginUser,"myGropus");
+  }, []);
+  console.log(loginUser, "myGropus login");
   const [userList, setUserList] = useState({});
   useMemo(() => userSList(data, setUserList), []);
-
 
   return (
     <div className="flex flex-col overflow-hidden h-[55vh]  p-7 pb-0">
@@ -261,7 +260,7 @@ console.log(loginUser,"myGropus");
                         }
                         className="rounded-full w-full"
                       />
-                      {console.log(item, ";;;;;;;;;;;;;;;;;;;;;;;;;hjghghg")}
+
                     </div>
                     <div>
                       <h3 className="text-heading font-medium text-lg font-pophins">
