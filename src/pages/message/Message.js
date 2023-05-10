@@ -83,8 +83,10 @@ const Message = () => {
     // setMessage(message+);
   };
   // Enter Button Sebd Message
-  const textarea = document.querySelector("textArea");
+  const textarea = document.querySelector( "textArea" );
+
   let handleEnterButn = (e) => {
+     console.log("ami enter");
      if (e.key == "Enter") {
       if (activeChat && activeChat.status == "single") {
         set(push(ref(db, "singleMessage")), {
@@ -101,8 +103,10 @@ const Message = () => {
         }).then(() => {
           setMessage("");
         });
-      } else {
-        set(push(ref(db, "groupMessage")), {
+      } else
+      {
+        console.log("ami else");
+         set(push(ref(db, "groupMessage")), {
           whoSendId: data.uid,
           whoSendName: data.displayName,
           whoSendPhoto: data.photoURL,
@@ -119,9 +123,7 @@ const Message = () => {
         });
       }
     }
-    const scHight = e.target.scrollHeight;
-    textarea.style.height = `50px`;
-    textarea.style.height = `${scHight}px`;
+
   };
   // Send Emoji
   let sendEmoji = (emoji) => {
@@ -427,7 +429,7 @@ const Message = () => {
                 <div>
                   <p className="font-pophins text-xl font-medium">
                       { activeChat && activeChat.name }
-                      {console.log(activeChat.name)}
+
                   </p>
                   <p className="font-pophins text-base font-normal">Online</p>
                 </div>
@@ -662,7 +664,7 @@ const Message = () => {
                     background={false}
                     responsive={true}
                     autoCropArea={1}
-                    checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                    checkOrientation={false} 
                     guides={true}
                   />
                 )}

@@ -65,21 +65,32 @@ const Friends = () => {
     } else {
       dispatch(
         activeUsersInfo({
-          name: item.sendRqName,
+          name: loginUser
+            .filter((useritem) => useritem.userId == item.sendRqId)
+            .map((item) => item.username)[0],
+          // name: item.sendRqName,
 
           id: item.sendRqId,
           status: "single",
-          profilePhoto: item.sendRqPhoto,
+          profilePhoto: loginUser
+            .filter((useritem) => useritem.userId == item.sendRqId)
+            .map((item) => item.profile_picture)[0],
+          // profilePhoto: item.sendRqPhoto,
         })
       );
       localStorage.setItem(
         "activeChatUser",
         JSON.stringify({
-          name: item.sendRqName,
+          name: loginUser
+            .filter((useritem) => useritem.userId == item.sendRqId)
+            .map((item) => item.username)[0],
+          // name: item.sendRqName,
 
           id: item.sendRqId,
           status: "single",
-          profilePhoto: item.sendRqPhoto,
+          profilePhoto: loginUser
+            .filter((useritem) => useritem.userId == item.sendRqId)
+            .map((item) => item.profile_picture)[0],
         })
       );
     }

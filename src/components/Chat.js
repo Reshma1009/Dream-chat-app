@@ -19,12 +19,14 @@ const Chat = () => {
     const singleMessageRef = ref(db, "singleMessage/");
     onValue(singleMessageRef, (snapshot) => {
       let arr = [];
-      snapshot.forEach((item) => {
+      snapshot.forEach( ( item ) =>
+      {
+        console.log(item.val(), "item.val()ggggggggggggggggggggg");
         if (
-          (data.uid == item.val().whoSendId &&
-            item.val().whoReceiveId == activeChat.id) ||
-          (data.uid == item.val().whoReceiveId &&
-            item.val().whoSendId == activeChat.id)
+          (data.uid == item.val().whoSendMessId &&
+            item.val().whoReceiveMessId == activeChat.id) ||
+          (data.uid == item.val().whoReceiveMessId &&
+            item.val().whoSendMessId == activeChat.id)
         ) {
           arr.push(item.val());
         }
@@ -61,11 +63,13 @@ const Chat = () => {
   const [loginUser, setLoginUser] = useState([]);
   useEffect(() => {
     getCurrentUser(setLoginUser);
-  }, []);
+  }, [] );
+  console.log(singleMessageList, "singleMessageList");
   return (
     <div>
       {activeChat && activeChat.status == "single" ? (
-        singleMessageList.map((item) =>
+        singleMessageList.map( ( item ) =>
+
           item.whoSendId == data.uid ? (
             item.message ? (
               <div className="text-right max-w-[85%] ml-auto">
