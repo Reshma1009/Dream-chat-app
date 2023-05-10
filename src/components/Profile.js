@@ -100,7 +100,14 @@ const Profile = () => {
             setIsOpen(false);
             update(dRef(db, "users/" + auth.currentUser.uid), {
               profile_picture: downloadURL,
+            } );
+           /*  const updatedPosts = posts.map((post) => {
+              return {
+                [`/friends/${post.id}/userPhoto`]: downloadURL,
+                // [`/posts/${post.id}/authorPhotoUrl`]: newUserInfo.photoURL,
+              };
             });
+            update(dRef(db), Object.assign({}, ...updatedPosts)); */
           })
           .catch((error) => {
             alert(error);
@@ -110,13 +117,13 @@ const Profile = () => {
   };
   /* Post update */
 
-  const [useName, setUseName] = useState("");
+/*   const [useName, setUseName] = useState("");
   const [posts, setPosts] = useState([]);
 
-  /* useEffect(() => {
+   useEffect(() => {
     // Create a query to find all posts by the current user
     const postsQuery = query(
-      dRef(db, "posts/"),
+      dRef(db, "friends/"),
       orderByChild("userId"),
       equalTo(data.uid)
     );
@@ -136,21 +143,21 @@ const Profile = () => {
     return () => {
       off(postsQuery, "value", postsListener);
     };
-  }, [db, data]);*/
+  }, [db, data]); */
   // console.log("data", data);
-  let updateProfileInfo = () => {
-    updateProfile(auth.currentUser, {
+  let updateProfileInfo = async() => {
+   await updateProfile(auth.currentUser, {
       displayName: inputInfo.username,
-    }).then(() => {
-      update(dRef(db, "users/" + auth.currentUser.uid), {
+    }).then( async() => {
+     await update(dRef(db, "users/" + auth.currentUser.uid), {
         username: inputInfo.username,
       });
     });
 
-    /*    // Update the user's info in all their posts
+   /*   // Update the user's info in all their posts
     const updatedPosts = posts.map((post) => {
       return {
-        [`/posts/${post.id}/username`]: useName,
+        [`/friends/${post.id}/userName`]: inputInfo.username,
         // [`/posts/${post.id}/authorPhotoUrl`]: newUserInfo.photoURL,
       };
     });

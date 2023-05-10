@@ -22,7 +22,7 @@ const Friends = () => {
    onValue(friendsRef, (snapshot) => {
      let arr = [];
      snapshot.forEach((item) => {
-       if (data.uid == item.val().userId || data.uid == item.val().sendRqId) {
+       if (data.uid === item.val().userId || data.uid == item.val().sendRqId) {
          arr.push({ ...item.val(), friendId: item.key });
        }
      });
@@ -32,8 +32,7 @@ const Friends = () => {
 
   let handleSingleMessage = ( item ) =>
   {
-    console.log(item, "item''''''''''''");
-    if (data.uid == item.sendRqId) {
+    if (data.uid === item.sendRqId) {
       dispatch(
         activeUsersInfo({
           // name: item.senderName,
@@ -107,9 +106,13 @@ const Friends = () => {
                 <Images
                   imgSrc={
                     item.userId == data.uid
-                      ? item.sendRqPhoto
+                      ? loginUser
+                          .filter(
+                            (useritem) => useritem.userId === item.sendRqId
+                          )
+                          .map((item) => item.profile_picture)[0]
                       : loginUser
-                          .filter((useritem) => useritem.userId == item.userId)
+                          .filter((useritem) => useritem.userId === item.userId)
                           .map((item) => item.profile_picture)[0]
                   }
                   className="rounded-full w-full"
@@ -118,9 +121,11 @@ const Friends = () => {
               <div>
                 <h3 className="text-heading font-bold text-xl font-pophins">
                   {item.userId == data.uid
-                    ? item.sendRqName
+                    ? loginUser
+                        .filter((useritem) => useritem.userId === item.sendRqId)
+                        .map((item) => item.username)[0]
                     : loginUser
-                        .filter((useritem) => useritem.userId == item.userId)
+                        .filter((useritem) => useritem.userId === item.userId)
                         .map((item) => item.username)[0]}
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
