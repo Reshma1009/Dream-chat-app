@@ -77,9 +77,7 @@ const Chat = () => {
                     <p
                       dangerouslySetInnerHTML={{ __html: item.message }}
                       className="font-pop font-medium text-base text-white"
-                    >
-
-                    </p>
+                    ></p>
                     <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                   </div>
                   <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
@@ -197,8 +195,8 @@ const Chat = () => {
               ))
             : item.whoReceiveId == activeChat.id &&
               (item.message ? (
-                <div className="text-left max-w-[85%]">
-                  <div className="mb-7">
+                <div className="text-left max-w-[85%] pl-10">
+                  <div className="mb-7 relative">
                     <p className="font-pop mb-3 italic  font-normal text-sm text-[#5e5555]">
                       {
                         loginUser
@@ -219,16 +217,19 @@ const Chat = () => {
                     <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
                       {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                     </p>
-                    <img
-                      src={
-                        loginUser
-                          .filter(
-                            (useritem) => useritem.userId == item.whoSendId
-                          )
-                          .map((item) => item.profile_picture)[0]
-                      }
-                      alt=""
-                    />
+                    <div className="absolute left-[-50px] bottom-4">
+                      <img
+                        className="w-[30px] rounded-full"
+                        src={
+                          loginUser
+                            .filter(
+                              (useritem) => useritem.userId == item.whoSendId
+                            )
+                            .map((item) => item.profile_picture)[0]
+                        }
+                        alt=""
+                      />
+                    </div>
                   </div>
                 </div>
               ) : item.image ? (
