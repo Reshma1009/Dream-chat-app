@@ -15,7 +15,7 @@ import { getCurrentUser, userSList } from "../Api/Fuctional";
 const MyGroups = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
-  console.log(data.uid);
+  // console.log(data.uid);
   const [showReq, setShowReq] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [groupList, setGroupList] = useState([]);
@@ -174,11 +174,7 @@ const MyGroups = () => {
                         }
                         className="rounded-full w-full"
                       />
-                      {console.log(
-                        loginUser
-                          .filter((useritem) => useritem.userId == item.userId)
-                          .map((item) => item.profile_picture)[0]
-                      )}
+                      
                     </div>
                     <div>
                       <h3 className="text-heading font-medium text-lg font-pophins">

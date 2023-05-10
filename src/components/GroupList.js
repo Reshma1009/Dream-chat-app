@@ -111,7 +111,7 @@ const GroupLists = () => {
                   Group Tag: {item.groupTagline}
                 </p>
                 <p className="text-[#767676] font-normal text-sm font-pophins">
-                  Admin:{" "}
+                  Admin:
                   {
                     loginUser
                       .filter((useritem) => useritem.userId == item.adminId)

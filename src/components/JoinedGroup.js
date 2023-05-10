@@ -35,8 +35,7 @@ const JoinedGroups = () => {
   }, [] );
 
   console.log(loginUser, "myGropus");
-  const [userList, setUserList] = useState({});
-  useMemo(() => userSList(data, setUserList), []);
+  
   return (
     <>
       <div className="flex flex-col overflow-hidden h-[100vh] shadow-2xl  pt-0">

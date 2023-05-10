@@ -133,12 +133,12 @@ const Message = () => {
   let handleSendLike = () => {
     if (activeChat && activeChat.status == "single") {
       set(push(ref(db, "singleMessage")), {
-        whoSendId: data.uid,
-        whoSendName: data.displayName,
-        whoSendPhoto: data.photoURL,
-        whoReceiveId: activeChat.id,
-        whoReceiveName: activeChat.name,
-        whoReceivePhoto: activeChat.profilePhoto,
+        whoSendMessId: data.uid,
+        whoSendMessName: data.displayName,
+        whoSendMessPhoto: data.photoURL,
+        whoReceiveMessId: activeChat.id,
+        whoReceiveMessName: activeChat.name,
+        whoReceiveMessPhoto: activeChat.profilePhoto,
         message: " &#128077;",
         date: `${new Date().getFullYear()}-${
           new Date().getMonth() + 1
@@ -168,12 +168,12 @@ const Message = () => {
     } else {
       if (activeChat && activeChat.status == "single") {
         set(push(ref(db, "singleMessage")), {
-          whoSendId: data.uid,
-          whoSendName: data.displayName,
-          whoSendPhoto: data.photoURL,
-          whoReceiveId: activeChat.id,
-          whoReceiveName: activeChat.name,
-          whoReceivePhoto: activeChat.profilePhoto,
+          whoSendMessId: data.uid,
+          whoSendMessName: data.displayName,
+          whoSendMessPhoto: data.photoURL,
+          whoReceiveMessId: activeChat.id,
+          whoReceiveMessName: activeChat.name,
+          whoReceiveMessPhoto: activeChat.profilePhoto,
           message,
           date: `${new Date().getFullYear()}-${
             new Date().getMonth() + 1
@@ -664,7 +664,7 @@ const Message = () => {
                     background={false}
                     responsive={true}
                     autoCropArea={1}
-                    checkOrientation={false} 
+                    checkOrientation={false}
                     guides={true}
                   />
                 )}

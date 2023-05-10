@@ -40,7 +40,8 @@ const Chat = () => {
     onValue(groupMessageRef, (snapshot) => {
       let arr = [];
       snapshot.forEach( ( item ) =>
-      {
+
+      {console.log(item.val(),"gropList Mess")
         // console.log(item.val(), "item.val() group messahe");
         arr.push(item.val());
       });
@@ -64,13 +65,11 @@ const Chat = () => {
   useEffect(() => {
     getCurrentUser(setLoginUser);
   }, [] );
-  console.log(singleMessageList, "singleMessageList");
   return (
     <div>
       {activeChat && activeChat.status == "single" ? (
-        singleMessageList.map( ( item ) =>
-
-          item.whoSendId == data.uid ? (
+        singleMessageList.map((item) =>
+          item.whoSendMessId == data.uid ? (
             item.message ? (
               <div className="text-right max-w-[85%] ml-auto">
                 <div className="mb-7 ">
@@ -78,7 +77,9 @@ const Chat = () => {
                     <p
                       dangerouslySetInnerHTML={{ __html: item.message }}
                       className="font-pop font-medium text-base text-white"
-                    ></p>
+                    >
+
+                    </p>
                     <BsTriangleFill className="absolute right-[-8px] bottom-0 text-primary" />
                   </div>
                   <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
@@ -218,6 +219,16 @@ const Chat = () => {
                     <p className="font-pop font-medium text-sm text-[rgba(0,0,0,0.25)] mt-2">
                       {moment(item.date, "YYYYMMDD hh:mm").fromNow()}
                     </p>
+                    <img
+                      src={
+                        loginUser
+                          .filter(
+                            (useritem) => useritem.userId == item.whoSendId
+                          )
+                          .map((item) => item.profile_picture)[0]
+                      }
+                      alt=""
+                    />
                   </div>
                 </div>
               ) : item.image ? (
