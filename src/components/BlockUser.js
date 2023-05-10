@@ -34,7 +34,7 @@ const BlockUser = () => {
   }, []);
   let handleUnblock = (item) => {
     set(push(ref(db, "friends")), {
-     
+
       sendRqId: item.whoBlockId,
       sendRqName: item.whoBlockName,
       sendRqPhoto: item.whoBlockPhoto,
@@ -71,7 +71,9 @@ const BlockUser = () => {
                   className="rounded-full w-full"
                   imgSrc={
                     item.whoBlockId == data.uid
-                      ? item.blockPhoto
+                      ? loginUser
+                          .filter((useritem) => useritem.userId == item.blockId)
+                          .map((item) => item.profile_picture)[0]
                       : loginUser
                           .filter(
                             (useritem) => useritem.userId == item.whoBlockId
@@ -82,15 +84,13 @@ const BlockUser = () => {
               </div>
               <div>
                 <h3 className="text-heading font-medium text-lg font-pophins">
-                  {/*  {item.blockId !== data.uid
-                    ? item.blockName
-                    : loginUser
-                        .filter(
-                          (useritem) => useritem.userId == item.blockId
-                        )
-                        .map((item) => item.username)[0]} */}
+                 
                   {item.whoBlockId !== data.uid
-                    ? item.blockName
+                    ? loginUser
+                        .filter(
+                          (useritem) => useritem.userId == item.whoBlockId
+                        )
+                        .map((item) => item.username)[0]
                     : loginUser
                         .filter((useritem) => useritem.userId == item.blockId)
                         .map((item) => item.username)[0]}
