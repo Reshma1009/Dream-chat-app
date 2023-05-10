@@ -21,7 +21,7 @@ const BlockUser = () => {
     onValue(blockRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log(item.val());
+        console.log(item.val(), "Blocklist");
         if (
           data.uid == item.val().whoBlockId ||
           data.uid == item.val().blockId
@@ -34,12 +34,13 @@ const BlockUser = () => {
   }, []);
   let handleUnblock = (item) => {
     set(push(ref(db, "friends")), {
-      receiverId: item.blockId,
-      receiverName: item.blockName,
-      receiverPhoto: item.blockPhoto,
-      senderId: item.whoBlockId,
-      senderName: item.whoBlockName,
-      senderPhoto: item.whoBlockPhoto,
+     
+      sendRqId: item.whoBlockId,
+      sendRqName: item.whoBlockName,
+      sendRqPhoto: item.whoBlockPhoto,
+      userId: item.blockId,
+      userName: item. blockName,
+      userPhoto: item. blockPhoto,
     }).then(() => {
       remove(ref(db, "block/" + item.blockListId));
     });
@@ -47,7 +48,7 @@ const BlockUser = () => {
   const [loginUser, setLoginUser] = useState([]);
 
   useEffect(() => {
-    getCurrentUser( setLoginUser);
+    getCurrentUser(setLoginUser);
   }, []);
   return (
     <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7 pt-0">
@@ -70,11 +71,7 @@ const BlockUser = () => {
                   className="rounded-full w-full"
                   imgSrc={
                     item.whoBlockId == data.uid
-                      ? loginUser
-                          .filter(
-                            (useritem) => useritem.userId !== item.whoBlockId
-                          )
-                          .map((item) => item.profile_picture)[0]
+                      ? item.blockPhoto
                       : loginUser
                           .filter(
                             (useritem) => useritem.userId == item.whoBlockId
@@ -85,19 +82,24 @@ const BlockUser = () => {
               </div>
               <div>
                 <h3 className="text-heading font-medium text-lg font-pophins">
-                  {item.whoBlockId == data.uid
-                    ? loginUser
-                        .filter(
-                          (useritem) => useritem.userId !== item.whoBlockId
-                        )
-                        .map((item) => item.username)[0]
+                  {/*  {item.blockId !== data.uid
+                    ? item.blockName
                     : loginUser
                         .filter(
-                          (useritem) => useritem.userId == item.whoBlockId
+                          (useritem) => useritem.userId == item.blockId
                         )
+                        .map((item) => item.username)[0]} */}
+                  {item.whoBlockId !== data.uid
+                    ? item.blockName
+                    : loginUser
+                        .filter((useritem) => useritem.userId == item.blockId)
                         .map((item) => item.username)[0]}
-
                 </h3>
+                {console.log(
+                  loginUser
+                    .filter((useritem) => useritem.userId == item.blockId)
+                    .map((item) => item.username)[0]
+                )}
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you
                 </p>

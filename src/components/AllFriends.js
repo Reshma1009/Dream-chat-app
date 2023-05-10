@@ -21,10 +21,7 @@ const AllFriends = () => {
     onValue(friendsRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        if (
-          data.uid == item.val().senderId ||
-          data.uid == item.val().receiverId
-        ) {
+        if (data.uid == item.val().userId || data.uid == item.val().sendRqId) {
           arr.push({ ...item.val(), friendId: item.key });
         }
       });
@@ -32,26 +29,25 @@ const AllFriends = () => {
     });
   }, []);
   let handleBlock = (item) => {
-    // console.log(item);
-    if (data.uid == item.senderId) {
+    if (data.uid == item.userId) {
       set(push(ref(db, "block")), {
-        whoBlockId: item.senderId,
-        whoBlockName: item.senderName,
-        whoBlockPhoto: item.senderPhoto,
-        blockId: item.receiverId,
-        blockName: item.receiverName,
-        blockPhoto: item.receiverPhoto,
+        whoBlockId: item.userId,
+        whoBlockName: item.userName,
+        whoBlockPhoto: item.userPhoto,
+        blockId: item.sendRqId,
+        blockName: item.sendRqName,
+        blockPhoto: item.sendRqPhoto,
       }).then(() => {
         remove(ref(db, "friends/" + item.friendId));
       });
     } else {
       set(push(ref(db, "block")), {
-        whoBlockId: item.receiverId,
-        whoBlockName: item.receiverName,
-        whoBlockPhoto: item.receiverPhoto,
-        blockId: item.senderId,
-        blockName: item.senderName,
-        blockPhoto: item.senderPhoto,
+        whoBlockId: item.sendRqId,
+        whoBlockName: item.sendRqName,
+        whoBlockPhoto: item.sendRqPhoto,
+        blockId: item.userId,
+        blockName: item.userName,
+        blockPhoto: item.userPhoto,
       }).then(() => {
         remove(ref(db, "friends/" + item.friendId));
       });
@@ -61,8 +57,9 @@ const AllFriends = () => {
   const [loginUser, setLoginUser] = useState([]);
 
   useEffect(() => {
-    getCurrentUser( setLoginUser);
+    getCurrentUser(setLoginUser);
   }, []);
+
   return (
     <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
@@ -82,24 +79,25 @@ const AllFriends = () => {
               <div className="w-[50px] h-[50px] ">
                 <Images
                   imgSrc={
-                    item.senderId == data.uid
-                      ? item.receiverPhoto
+                    item.userId == data.uid
+                      ? item.sendRqPhoto
                       : loginUser
-                          .filter(
-                            (useritem) => useritem.userId == item.senderId
-                          )
+                          .filter((useritem) => useritem.userId == item.userId)
                           .map((item) => item.profile_picture)[0]
                   }
+                  /* imgSrc={
+                    item.userId == data.uid ? item.sendRqPhoto : item.userPhoto
+                  } */
                   className="rounded-full w-full"
                 />
 
               </div>
               <div>
                 <h3 className="text-heading font-bold text-xl font-pophins">
-                  {item.senderId == data.uid
-                    ? item.receiverName
+                  {item.userId == data.uid
+                    ? item.sendRqName
                     : loginUser
-                        .filter((useritem) => useritem.userId == item.senderId)
+                        .filter((useritem) => useritem.userId == item.userId)
                         .map((item) => item.username)[0]}
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">

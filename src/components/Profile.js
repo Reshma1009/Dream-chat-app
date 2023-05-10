@@ -33,14 +33,17 @@ import {
 } from "firebase/database";
 import { getCurrentUser, userSList } from "../Api/Fuctional";
 import { useNavigate } from "react-router-dom";
+import { activeChatSlice, activeUsersInfo } from "../slices/activeChatUsers";
+import { usersInformation } from "../slices/userSlices";
 const Profile = () => {
   const auth = getAuth();
   const db = getDatabase();
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
   const [isOpen, setIsOpen] = useState(false);
   const [friendList, setFriendList] = useState([]);
-  console.log(friendList);
+  // console.log(friendList);
   function toggleModal() {
     setIsOpen(!isOpen);
   }
@@ -58,7 +61,7 @@ const Profile = () => {
       [name]: value,
     });
   };
-  console.log(inputInfo);
+  // console.log(inputInfo);
   const [image, setImage] = useState(null);
   const [cropData, setCropData] = useState("");
   const cropperRef = useRef(null);
@@ -83,12 +86,12 @@ const Profile = () => {
       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
     }
     const storage = getStorage();
-    const storageRef = ref(storage, "profilePic/" + data.displayName);
+    const storageRef = ref(storage, "profilePic/" + data.uid);
     // Data URL string
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
-      getDownloadURL(storageRef).then((downloadURL) => {
-        updateProfile(auth.currentUser, {
+      getDownloadURL(storageRef).then( async(downloadURL) => {
+       await updateProfile(auth.currentUser, {
           photoURL: downloadURL,
         })
           .then(() => {
@@ -135,15 +138,13 @@ const Profile = () => {
     };
   }, [db, data]);*/
   // console.log("data", data);
-
   let updateProfileInfo = () => {
     updateProfile(auth.currentUser, {
       displayName: inputInfo.username,
     }).then(() => {
       update(dRef(db, "users/" + auth.currentUser.uid), {
         username: inputInfo.username,
-      } );
-      console.log("name update", inputInfo.username);
+      });
     });
 
     /*    // Update the user's info in all their posts
@@ -168,18 +169,20 @@ const Profile = () => {
         reauthenticateWithCredential(auth.currentUser, credential).then(() => {
           updateEmail(auth.currentUser, inputInfo.email)
             .then(() => {
-              console.log( "Email updated!" );
+              // console.log("Email updated!");
               sendEmailVerification(auth.currentUser);
-              update( dRef( db, "users/" + auth.currentUser.uid ), {email:inputInfo.email} );
+              update(dRef(db, "users/" + auth.currentUser.uid), {
+                email: inputInfo.email,
+              });
               // navigate("/login");
             })
             .catch((error) => {
-              alert( error);
+              alert(error);
             });
         });
       })
       .catch((error) => {
-        console.log("update email", error);
+        // console.log("update email", error);
       });
   };
   return (

@@ -90,7 +90,6 @@ const Groups = () => {
                         : "transparent text-primary border-primary border-solid border"
                     }  inline-block py-2 px-5 rounded-md font-medium font-pophins text-lg mr-3`}
                   >
-                    {" "}
                     Joined Group{" "}
                   </button>
                   <button
@@ -103,7 +102,8 @@ const Groups = () => {
                   >
                     Create Group
                   </button>
-                </div>
+                  </div>
+
                 <div>
                   <div className={` ${toggleTab == 1 ? "block" : "hidden"}  `}>
                     <h2 className="mb-5 border-primary border-b border-solid pb-3 font-pophins font-medium text-xl text-primary my-5">

@@ -362,7 +362,7 @@ const Message = () => {
     onValue(acceptReqGroupRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("meme", item.val());
+        // console.log("meme", item.val());
 
         arr.push(item.val().groupId + item.val().userId);
       });
@@ -426,7 +426,8 @@ const Message = () => {
                 </div>
                 <div>
                   <p className="font-pophins text-xl font-medium">
-                    {activeChat && activeChat.name}
+                      { activeChat && activeChat.name }
+                      {console.log(activeChat.name)}
                   </p>
                   <p className="font-pophins text-base font-normal">Online</p>
                 </div>

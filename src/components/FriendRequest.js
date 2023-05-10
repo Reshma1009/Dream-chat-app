@@ -23,9 +23,17 @@ const FriendRequest = () => {
     });
   }, []);
   let handleAcceptFrndReq = (item) => {
-    console.log(item);
-    set(push(ref(db, "friends")), {
-      ...item,
+    console.log(item, "handleAcceptFrndReq");
+    set( push( ref( db, "friends" ) ), {
+      friendReqId: item.friendReqId,
+
+      sendRqId: item.senderId,
+      sendRqName: item.senderName,
+      sendRqPhoto: item.senderPhoto,
+      userId: data.uid,
+      userName: data.displayName,
+      userPhoto: data.photoURL,
+
     });
   };
   const [friendAList, setFriendAList] = useState([]);
@@ -34,7 +42,7 @@ const FriendRequest = () => {
     onValue(friendsRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        arr.push(item.val().senderId + item.val().receiverId);
+        arr.push(item.val().sendRqId + item.val().userId);
       });
       setFriendAList(arr);
     });
@@ -89,18 +97,18 @@ const FriendRequest = () => {
                   imgSrc={
                     loginUser
                       .filter((useritem) => useritem.userId == item.senderId)
-                      .map((item) => item.profile_picture)[0]
+                      .map( (item) => item.profile_picture)[0]
                   }
                   className="rounded-full w-full"
                 />
               </div>
               <div>
                 <h3 className="text-heading font-semibold text-lg font-pophins">
-                  {/* {item.senderName}{} */}
+                  {/* {item.senderName} */}
                   {
                     loginUser
                       .filter((useritem) => useritem.userId == item.senderId)
-                      .map((item) => item.username)[0]
+                      .map( (item) =>  item.username)[0]
                   }
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">

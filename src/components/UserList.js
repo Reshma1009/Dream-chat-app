@@ -10,12 +10,15 @@ const UserList = () => {
   const [userList, setUserList] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
-  let dataDisplayName = useSelector((state) => state.allUserSInfo.displayName);
-  let dataPhotoURL = useSelector((state) => state.allUserSInfo.photoURL);
   /* Get Current User From Users Collections Start*/
   useEffect(() => {
     getCurrentUser( setCurrentUser);
-  }, []);
+  }, [] );
+   const [loginUser, setLoginUser] = useState([]);
+
+   useEffect(() => {
+     getCurrentUser(setLoginUser);
+   }, []);
   // console.log("currentUser", currentUser);
   const [currentuserList, setCurrentUserList] = useState({});
   useEffect(() => {
@@ -33,11 +36,16 @@ const UserList = () => {
   /* Get Current User From Users Collections End*/
 
   /* Friend Request Send Start*/
-  let handleAddFriend = (item) => {
+  let handleAddFriend = ( item ) =>
+  {
+    console.log(item, "item");
     set(push(ref(db, "friendRequest")), {
-      senderId: currentuserList.userId,
-      senderName: currentuserList.username,
-      senderPhoto: currentuserList.profile_picture,
+      senderId: data.uid,
+      // senderName: loginUser
+      //   .filter((useritem) => useritem.userId == item.userId)
+      //   .map((item) => item.username)[0],
+      senderName: data.displayName,
+      senderPhoto: data.photoURL,
       receiverId: item.userId,
       receiverName: item.username,
       receiverPhoto: item.profile_picture,
@@ -76,7 +84,7 @@ const UserList = () => {
     onValue(friendsRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        arr.push(item.val().senderId + item.val().receiverId);
+        arr.push(item.val().userId + item.val().sendRqId);
       });
       setFriendList(arr);
     });
