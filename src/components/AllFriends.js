@@ -74,6 +74,7 @@ const AllFriends = () => {
         ) : (
           friendList.map((item) => (
             <Flex
+              key={item.friendId}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
             >
               <div className="w-[50px] h-[50px] ">

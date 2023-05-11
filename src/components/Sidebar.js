@@ -18,7 +18,7 @@ const Sidebar = ( { active } ) => {
     localStorage.removeItem("userRegistationIfo");
   };
   return (
-    <div className=" max-w-full left-0 top-0">
+    <div>
       <div
         style={{
           backgroundImage: 'url("images/top-curve-bg.png")',
@@ -28,12 +28,12 @@ const Sidebar = ( { active } ) => {
         }}
         className="pb-12 px-7"
       >
-        <div className="max-w-[180px]">
+        <div className="w-[180px] max-mb480:w-[180px] max-mb768:w-[150px]">
           <Link to="/">
             <img src="images/logo.png" alt="" className="pt-5" />
           </Link>
         </div>
-        <div className="flex gap-5 justify-between py-7 items-center ">
+        <div className="flex gap-5 justify-between py-7 max-mb480:py-7 max-mb768:py-2 items-center ">
           <div
             className={`${
               active == "home" ? "before:bg-white" : "before:bg-transparent"
@@ -41,7 +41,7 @@ const Sidebar = ( { active } ) => {
           >
             <Link to="/">
               <AiOutlineHome
-                className={` text-white text-3xl rounded-md `}
+                className={` text-white text-3xl  max-mb768:text-2xl rounded-md `}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
                 title="User Lists"
@@ -100,7 +100,7 @@ const Sidebar = ( { active } ) => {
             />
           </div>
 
-         {/*  <div className="relative">
+          {/*  <div className="relative">
             <RiSettings5Line
               className="text-white text-2xl "
               data-bs-toggle="tooltip"

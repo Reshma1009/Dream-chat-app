@@ -9,16 +9,16 @@ const UserList = () => {
   const db = getDatabase();
   const [userList, setUserList] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
-  let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
   /* Get Current User From Users Collections Start*/
   useEffect(() => {
-    getCurrentUser( setCurrentUser);
-  }, [] );
-   const [loginUser, setLoginUser] = useState([]);
+    getCurrentUser(setCurrentUser);
+  }, []);
+  const [loginUser, setLoginUser] = useState([]);
 
-   useEffect(() => {
-     getCurrentUser(setLoginUser);
-   }, []);
+  useEffect(() => {
+    getCurrentUser(setLoginUser);
+  }, []);
   // console.log("currentUser", currentUser);
   const [currentuserList, setCurrentUserList] = useState({});
   useEffect(() => {
@@ -36,14 +36,10 @@ const UserList = () => {
   /* Get Current User From Users Collections End*/
 
   /* Friend Request Send Start*/
-  let handleAddFriend = ( item ) =>
-  {
-    console.log(item, "item");
+  let handleAddFriend = (item) => {
+    /* console.log(item, "item"); */
     set(push(ref(db, "friendRequest")), {
       senderId: data.uid,
-      // senderName: loginUser
-      //   .filter((useritem) => useritem.userId == item.userId)
-      //   .map((item) => item.username)[0],
       senderName: data.displayName,
       senderPhoto: data.photoURL,
       receiverId: item.userId,
@@ -52,7 +48,6 @@ const UserList = () => {
     });
   };
   /* Friend Request Send End*/
-
 
   useEffect(() => {
     const usersRef = ref(db, "users/");
@@ -95,7 +90,7 @@ const UserList = () => {
     onValue(blockRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("block", item.val());
+        /* console.log("block", item.val()); */
 
         arr.push(item.val().blockId + item.val().whoBlockId);
       });
@@ -104,24 +99,25 @@ const UserList = () => {
   }, []);
   return (
     <div className="">
-      <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
+      <h2 className="font-pophins font-bold text-2xl text-primary mb-5 max-mb480:mb-5 max-mb768:mt-5 max-mb768:mb-2">
         All Users
       </h2>
       <Search placeholder={`search here for users`} />
-      <div className="w-[97%] h-[100vh] overflow-y-auto">
+      <div className="w-[97%] max-pad1280:w-full  scrollbar-hidden h-[90vh] max-mb991:h-[65vh] max-mb768:h-[35vh] max-pad1280:h-[50vh] overflow-x-hidden overflow-y-auto">
         {userList.length == 0 ? (
           <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
-            No Block User Found
+            No User Found
           </h1>
         ) : (
           userList.map((item) => (
             <Flex
-              className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
+              key={item.userId}
+              className={` flex max-pad1280:block gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
                   imgSrc={item.profile_picture}
-                  className="rounded-full w-full"
+                  className="rounded-full w-full border border-solid border-primary"
                 />
               </div>
               <div>
@@ -132,7 +128,7 @@ const UserList = () => {
                   {item.email}
                 </p>
               </div>
-              <div className="grow text-right">
+              <div className="grow text-right max-pad1280:text-left max-pad1280:mt-3">
                 {blockList.includes(data.uid + item.userId) ||
                 blockList.includes(item.userId + data.uid) ? (
                   <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">

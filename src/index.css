@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 .scrollToBottom {
-    height: 100%;
-    overflow-y: auto;
-    width: auto !important;
-    overflow-x: hidden !important;
+  height: 100%;
+  overflow-y: auto;
+  width: auto !important;
+  overflow-x: hidden !important;
 }
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
@@ -13,17 +13,19 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hidden {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 .audio-recorder-mic {
-    cursor: pointer;
-    height: 26px !important;
-    color: #680A83 !important;
+  cursor: pointer;
+  height: 26px !important;
+  color: #680a83 !important;
 }
 .audio-recorder {
-    background-color: transparent !important;
-    box-shadow: unset !important;
-    width: auto !important;
-    padding: 0 !important;
+  background-color: transparent !important;
+  box-shadow: unset !important;
+  width: auto !important;
+  padding: 0 !important;
 }
+
+

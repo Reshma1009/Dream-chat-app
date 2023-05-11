@@ -71,7 +71,6 @@ const Message = () => {
   let activeChat = useSelector(
     (state) => state.allActiveChatUsers.activeChatUsers
   );
-  console.log(activeChat);
   let handleMesage = (e) => {
     setMessage(e.target.value);
   };
@@ -86,7 +85,6 @@ const Message = () => {
   const textarea = document.querySelector( "textArea" );
 
   let handleEnterButn = (e) => {
-     console.log("ami enter");
      if (e.key == "Enter") {
       if (activeChat && activeChat.status == "single") {
         set(push(ref(db, "singleMessage")), {
@@ -105,7 +103,6 @@ const Message = () => {
         });
       } else
       {
-        console.log("ami else");
          set(push(ref(db, "groupMessage")), {
           whoSendId: data.uid,
           whoSendName: data.displayName,
@@ -316,7 +313,7 @@ const Message = () => {
     const storageRef = sRef(storage, "files/" + auth.currentUser.uid);
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
-      console.log("Uploaded a data_url string!");
+
       getDownloadURL(storageRef).then((downloadURL) => {
         if (activeChat && activeChat.status == "single") {
           set(push(ref(db, "singleMessage")), {
@@ -373,8 +370,6 @@ const Message = () => {
   }, []);
 
   function handleTakePhoto(dataUri) {
-    // Do stuff with the photo...
-    console.log("takePhoto");
     setImg(dataUri);
   }
   let openCamera = () => {

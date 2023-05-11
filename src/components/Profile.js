@@ -90,8 +90,8 @@ const Profile = () => {
     // Data URL string
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
-      getDownloadURL(storageRef).then( async(downloadURL) => {
-       await updateProfile(auth.currentUser, {
+      getDownloadURL(storageRef).then(async (downloadURL) => {
+        await updateProfile(auth.currentUser, {
           photoURL: downloadURL,
         })
           .then(() => {
@@ -100,8 +100,8 @@ const Profile = () => {
             setIsOpen(false);
             update(dRef(db, "users/" + auth.currentUser.uid), {
               profile_picture: downloadURL,
-            } );
-           /*  const updatedPosts = posts.map((post) => {
+            });
+            /*  const updatedPosts = posts.map((post) => {
               return {
                 [`/friends/${post.id}/userPhoto`]: downloadURL,
                 // [`/posts/${post.id}/authorPhotoUrl`]: newUserInfo.photoURL,
@@ -117,7 +117,7 @@ const Profile = () => {
   };
   /* Post update */
 
-/*   const [useName, setUseName] = useState("");
+  /*   const [useName, setUseName] = useState("");
   const [posts, setPosts] = useState([]);
 
    useEffect(() => {
@@ -145,16 +145,16 @@ const Profile = () => {
     };
   }, [db, data]); */
   // console.log("data", data);
-  let updateProfileInfo = async() => {
-   await updateProfile(auth.currentUser, {
+  let updateProfileInfo = async () => {
+    await updateProfile(auth.currentUser, {
       displayName: inputInfo.username,
-    }).then( async() => {
-     await update(dRef(db, "users/" + auth.currentUser.uid), {
+    }).then(async () => {
+      await update(dRef(db, "users/" + auth.currentUser.uid), {
         username: inputInfo.username,
       });
     });
 
-   /*   // Update the user's info in all their posts
+    /*   // Update the user's info in all their posts
     const updatedPosts = posts.map((post) => {
       return {
         [`/friends/${post.id}/userName`]: inputInfo.username,
@@ -255,73 +255,75 @@ const Profile = () => {
           {userList.username}
         </h2>
       </Flex>
-      <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">
-        <h3 className=" pb-2 border-b border-solid font-pophins font-bold text-lg max-w-[400px] mx-auto text-center">
-          Users Info:
-        </h3>
-        <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto my-2 capitalize">
-          Name: {userList.username}
-        </p>
-        <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto mb-2">
-          Email: {userList.email}
-        </p>
-      </div>
-      <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">
-        <h3 className=" pb-2 border-b border-solid font-pophins font-bold text-lg max-w-[400px] mx-auto text-center">
-          Update Info:
-        </h3>
-        <div className="my-4">
-          <p className="font-pophins font-medium text-base max-w-[400px] mx-auto ">
-            Change your Name:
+      <div className="overflow-x-hidden max-pad1280:overflow-y-auto max-pad1280:h-[60vh]">
+        <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5 ">
+          <h3 className=" pb-2 border-b border-solid font-pophins font-bold text-lg max-w-[400px] mx-auto text-center">
+            Users Info:
+          </h3>
+          <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto my-2 capitalize">
+            Name: {userList.username}
           </p>
-          <input
-            onChange={changeInfo}
-            className="bg-slate-200 px-5 py-2 rounded-tl-lg rounded-bl-lg w-[60%] ml-5 "
-            type="text"
-            value={inputInfo.username}
-            placeholder="Name"
-            name="username"
-          />
-          <button
-            className="bg-primary capitalize text-white px-5 py-2 rounded-tr-lg rounded-br-lg disabled:cursor-not-allowed disabled:opacity-40"
-            onClick={updateProfileInfo}
-            disabled={!inputInfo.username}
-          >
-            update
-          </button>
-        </div>
-        <div className="my-4">
-          <p className="font-pophins font-medium text-base max-w-[400px] mx-auto">
-            Change your Email:
+          <p className="font-pophins font-medium text-lg max-w-[400px] mx-auto mb-2">
+            Email: {userList.email}
           </p>
-          <input
-            onChange={changeInfo}
-            className="bg-slate-200 px-5 py-2 rounded-lg rounded-bl-lg w-[60%] ml-5"
-            type="text"
-            value={inputInfo.email}
-            placeholder="Email"
-            name="email"
-          />
         </div>
-        <div>
-          {/* <p className="font-pophins font-medium text-base max-w-[400px] mx-auto">
+        <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5">
+          <h3 className=" pb-2 border-b border-solid font-pophins font-bold text-lg max-w-[400px] mx-auto text-center">
+            Update Info:
+          </h3>
+          <div className="my-4">
+            <p className="font-pophins font-medium text-base max-w-[400px] mx-auto ">
+              Change your Name:
+            </p>
+            <input
+              onChange={changeInfo}
+              className="bg-slate-200 px-5 py-2 rounded-tl-lg rounded-bl-lg w-[60%] ml-5 "
+              type="text"
+              value={inputInfo.username}
+              placeholder="Name"
+              name="username"
+            />
+            <button
+              className="bg-primary capitalize text-white px-5 py-2 rounded-tr-lg rounded-br-lg disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={updateProfileInfo}
+              disabled={!inputInfo.username}
+            >
+              update
+            </button>
+          </div>
+          <div className="my-4">
+            <p className="font-pophins font-medium text-base max-w-[400px] mx-auto">
+              Change your Email:
+            </p>
+            <input
+              onChange={changeInfo}
+              className="bg-slate-200 px-5 py-2 rounded-lg rounded-bl-lg w-[60%] ml-5"
+              type="text"
+              value={inputInfo.email}
+              placeholder="Email"
+              name="email"
+            />
+          </div>
+          <div>
+            {/* <p className="font-pophins font-medium text-base max-w-[400px] mx-auto">
             Change your Password:
           </p> */}
-          <input
-            onChange={changeInfo}
-            className="font-pophins font-medium bg-slate-200 px-5 py-2 rounded-lg  rounded-bl-lg w-[60%] ml-5"
-            type="text"
-            value={inputInfo.password}
-            placeholder="Password"
-            name="password"
-          />
-          <button
-            className="bg-primary font-pophins font-medium text-white px-5 py-2 capitalize rounded-tr-lg rounded-lg disabled:cursor-not-allowed disabled:opacity-40 block ml-5 mt-5"
-            onClick={updateEmailInfo}
-            disabled={!inputInfo.password}
-          >
-            update
-          </button>
+            <input
+              onChange={changeInfo}
+              className="font-pophins font-medium bg-slate-200 px-5 py-2 rounded-lg  rounded-bl-lg w-[60%] ml-5"
+              type="text"
+              value={inputInfo.password}
+              placeholder="Password"
+              name="password"
+            />
+            <button
+              className="bg-primary font-pophins font-medium text-white px-5 py-2 capitalize rounded-tr-lg rounded-lg disabled:cursor-not-allowed disabled:opacity-40 block ml-5 mt-5"
+              onClick={updateEmailInfo}
+              disabled={!inputInfo.password}
+            >
+              update
+            </button>
+          </div>
         </div>
       </div>
     </>

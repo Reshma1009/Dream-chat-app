@@ -21,7 +21,7 @@ const BlockUser = () => {
     onValue(blockRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log(item.val(), "Blocklist");
+        /* console.log(item.val(), "Blocklist"); */
         if (
           data.uid == item.val().whoBlockId ||
           data.uid == item.val().blockId
@@ -64,6 +64,7 @@ const BlockUser = () => {
         ) : (
           blockList.map((item) => (
             <Flex
+              key={item.blockListId}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
             >
               <div className="w-[50px] h-[50px] ">
@@ -84,7 +85,6 @@ const BlockUser = () => {
               </div>
               <div>
                 <h3 className="text-heading font-medium text-lg font-pophins">
-                 
                   {item.whoBlockId !== data.uid
                     ? loginUser
                         .filter(
@@ -95,11 +95,7 @@ const BlockUser = () => {
                         .filter((useritem) => useritem.userId == item.blockId)
                         .map((item) => item.username)[0]}
                 </h3>
-                {console.log(
-                  loginUser
-                    .filter((useritem) => useritem.userId == item.blockId)
-                    .map((item) => item.username)[0]
-                )}
+
                 <p className="text-[#767676] font-normal text-sm font-pophins">
                   Hi Guys, How Are you
                 </p>

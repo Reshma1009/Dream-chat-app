@@ -28,7 +28,7 @@ const FriendReq = () => {
             <div className="h-[180px]">
               <Sidebar active="request" />
             </div>
-            <div className="pl-8">
+            <div className="pl-8 max-w-full">
               <FriendRequest />
             </div>
           </div>

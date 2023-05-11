@@ -40,7 +40,7 @@ const MyGroups = () => {
     onValue(groupReqRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log(item.val(), "item.val()");
+        /* console.log(item.val(), "item.val()"); */
         if (
           data.uid == item.val().adminId &&
           groupItem.groupId == item.val().groupId
@@ -52,17 +52,17 @@ const MyGroups = () => {
     });
   };
   let acceptGrpReq = (item) => {
-    console.log(item);
+    /* console.log(item); */
     set(push(ref(db, "acceptGrpReq")), {
       ...item,
     });
   };
   let deleteGroup = (item) => {
-    console.log(item);
+    /* console.log(item); */
     remove(ref(db, "createGroup/" + item.groupId));
   };
   let rejectGroupReq = (item) => {
-    console.log("rej", item);
+    /* console.log("rej", item); */
     set(push(ref(db, "rejectGroupReq")), {
       ...item,
     }).then(() => {
@@ -70,18 +70,18 @@ const MyGroups = () => {
     });
   };
   let seeInfo = (gitem) => {
-    console.log("abs", gitem);
+    /* console.log("abs", gitem); */
     setShowInfo(true);
     const accGroupReqRef = ref(db, "acceptGrpReq/");
     onValue(accGroupReqRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log(item.val());
+        /* console.log(item.val()); */
         if (
           data.uid == item.val().adminId &&
           gitem.groupId == item.val().groupId
         ) {
-          arr.push({ ...item.val() });
+          arr.push({ ...item.val(),id:item.key });
         }
       });
       setAccReqGroupList(arr);
@@ -109,7 +109,7 @@ const MyGroups = () => {
     onValue(accGroupReqRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("acc", item.val());
+        /* console.log("acc", item.val()); */
 
         arr.push(item.val().groupReqId + item.val().adminId);
       });
@@ -121,7 +121,7 @@ const MyGroups = () => {
   useEffect(() => {
     getCurrentUser(setLoginUser);
   }, []);
-  console.log(loginUser, "myGropus login");
+  // console.log(loginUser, "myGropus login");
   const [userList, setUserList] = useState({});
   useMemo(() => userSList(data, setUserList), []);
 
@@ -160,6 +160,7 @@ const MyGroups = () => {
               ) : (
                 groupReqList.map((item) => (
                   <Flex
+                    key={item.groupReqId}
                     className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
                   >
                     <div className="w-[50px] h-[50px] ">
@@ -174,7 +175,6 @@ const MyGroups = () => {
                         }
                         className="rounded-full w-full"
                       />
-                      
                     </div>
                     <div>
                       <h3 className="text-heading font-medium text-lg font-pophins">
@@ -242,6 +242,7 @@ const MyGroups = () => {
               ) : (
                 accGroupReqList.map((item) => (
                   <Flex
+                    key={item.id}
                     className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
                   >
                     <div className="w-[50px] h-[50px] ">
@@ -256,7 +257,6 @@ const MyGroups = () => {
                         }
                         className="rounded-full w-full"
                       />
-
                     </div>
                     <div>
                       <h3 className="text-heading font-medium text-lg font-pophins">
@@ -298,6 +298,7 @@ const MyGroups = () => {
         ) : (
           groupList.map((item) => (
             <Flex
+              key={item.groupId}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
             >
               <div className="w-[50px] h-[50px] ">

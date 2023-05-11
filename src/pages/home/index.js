@@ -88,12 +88,16 @@ const Home = () => {
         )
       )}
       {user && (
-        <div className="flex h-screen overflow-hidden">
-          <div className=" w-[500px] bg-white relative">
-            <div className="h-[180px]">
+        <div className="flex h-screen overflow-hidden  ">
+          <div className=" w-[500px] max-mb480:w-full max-mb768:w-[50%] max-mb991:w-[45%] max-pad1024:w-[50%] max-pad1280:w-[35%] bg-white relative">
+            <div className="h-[180px] max-mb480:h-[180px] max-mb768:h-[100px]">
               <Sidebar active="home" />
             </div>
-            <div className="pl-8">
+            <div className="pl-8 max-pad1280:px-5 max-w-full">
+              <h1 className="hidden max-mb480:block max-mb480:mb-5 max-mb480:pb-3 max-mb480:border-b max-mb480:border-solid max-mb480:border-primary text-3xl font-pophins font-bold text-heading/90 capitalize leading-10">
+                Wellcome to Dream Chat
+                <span className="text-primary"> {data.displayName}</span>
+              </h1>
               <UserList />
             </div>
           </div>
@@ -110,18 +114,18 @@ const Home = () => {
               <input type="text" onChange={sendPost} />
               <button onClick={submitPost}>post</button>
             </div> */}
-            <div className="h-[100vh]  overflow-x-hidden flex justify-center items-center">
+            <div className=" max-mb480:hidden h-[100vh]  overflow-x-hidden flex justify-center items-center">
               {/*  {allPosts
                 .sort((a, b) => b.timeStamp - a.timeStamp)
                 .map((item) => (
                   <Post item={item} />
                 ))} */}
-              <h1 className="text-3xl font-pophins font-bold text-primary capitalize">
+              <h1 className=" max-mb480:hidden  max-pad1280:text-center max-pad1280:leading-10 text-3xl max-pad1280:text-2xl font-pophins font-bold text-primary capitalize">
                 Wellcome to Dream Chat {data.displayName}
               </h1>
             </div>
           </div>
-          <div className="w-[400px]">
+          <div className="w-[400px] max-pad1024:hidden max-pad1280:w-[25%] ">
             <Profile />
           </div>
         </div>

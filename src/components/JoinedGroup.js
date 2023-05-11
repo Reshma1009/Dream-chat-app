@@ -22,7 +22,7 @@ const JoinedGroups = () => {
       let arr = [];
       snapshot.forEach((item) => {
         if (data.uid == item.val().userId) {
-          arr.push(item.val());
+          arr.push({...item.val(),id: item.key});
         }
       });
       setJoinedGroup(arr);
@@ -34,8 +34,8 @@ const JoinedGroups = () => {
     getCurrentUser(setLoginUser);
   }, [] );
 
-  console.log(loginUser, "myGropus");
-  
+  /* console.log(loginUser, "myGropus"); */
+
   return (
     <>
       <div className="flex flex-col overflow-hidden h-[100vh] shadow-2xl  pt-0">
@@ -47,6 +47,7 @@ const JoinedGroups = () => {
           ) : (
             joinedGroup.map((item) => (
               <Flex
+                key={item.id}
                 className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
               >
                 <div className="w-[50px] h-[50px] ">

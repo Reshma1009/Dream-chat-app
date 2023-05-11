@@ -23,7 +23,7 @@ const FriendRequest = () => {
     });
   }, []);
   let handleAcceptFrndReq = (item) => {
-    console.log(item, "handleAcceptFrndReq");
+    /* console.log(item, "handleAcceptFrndReq"); */
     set( push( ref( db, "friends" ) ), {
       friendReqId: item.friendReqId,
 
@@ -53,7 +53,7 @@ const FriendRequest = () => {
     onValue(blockRef, (snapshot) => {
       let arr = [];
       snapshot.forEach((item) => {
-        console.log("bl", item.val());
+        /* console.log("bl", item.val()); */
         arr.push(item.val().blockId + item.val().whoBlockId);
       });
       setBlockList(arr);
@@ -89,6 +89,7 @@ const FriendRequest = () => {
         ) : (
           friendRequest.map((item) => (
             <Flex
+              key={item.friendReqId}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
             >
               <div className="w-[50px] h-[50px] ">
@@ -97,7 +98,7 @@ const FriendRequest = () => {
                   imgSrc={
                     loginUser
                       .filter((useritem) => useritem.userId == item.senderId)
-                      .map( (item) => item.profile_picture)[0]
+                      .map((item) => item.profile_picture)[0]
                   }
                   className="rounded-full w-full"
                 />
@@ -108,7 +109,7 @@ const FriendRequest = () => {
                   {
                     loginUser
                       .filter((useritem) => useritem.userId == item.senderId)
-                      .map( (item) =>  item.username)[0]
+                      .map((item) => item.username)[0]
                   }
                 </h3>
                 <p className="text-[#767676] font-normal text-sm font-pophins">

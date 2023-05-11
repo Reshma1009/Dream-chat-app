@@ -21,7 +21,7 @@ const Chat = () => {
       let arr = [];
       snapshot.forEach( ( item ) =>
       {
-        console.log(item.val(), "item.val()ggggggggggggggggggggg");
+        /* console.log(item.val(), "item.val()ggggggggggggggggggggg"); */
         if (
           (data.uid == item.val().whoSendMessId &&
             item.val().whoReceiveMessId == activeChat.id) ||
@@ -41,7 +41,7 @@ const Chat = () => {
       let arr = [];
       snapshot.forEach( ( item ) =>
 
-      {console.log(item.val(),"gropList Mess")
+      {/* console.log(item.val(),"gropList Mess") */
         // console.log(item.val(), "item.val() group messahe");
         arr.push(item.val());
       });
