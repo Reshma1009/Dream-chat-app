@@ -17,6 +17,9 @@ import {
 } from "firebase/database";
 import { userSList } from "../../Api/Fuctional";
 import Loder from "../../components/Loder";
+import { Transition } from "@headlessui/react";
+import { BsBarChartSteps } from "react-icons/bs";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 const Home = () => {
   const auth = getAuth();
   const db = getDatabase();
@@ -26,6 +29,29 @@ const Home = () => {
   const [value, setValue] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const handleWindowResize = () =>
+    {
+      if (window.innerWidth <= 991) {
+        setIsOpen(true);
+      }
+    };
+
+    // Update the state based on the initial window width
+    handleWindowResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleWindowResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -91,6 +117,19 @@ const Home = () => {
         <div className="flex h-screen overflow-hidden  ">
           <div className=" w-[500px] max-mb480:w-full max-mb768:w-[50%] max-mb991:w-[45%] max-pad1024:w-[50%] max-pad1280:w-[35%] bg-white relative">
             <div className="h-[180px] max-mb480:h-[180px] max-mb768:h-[100px]">
+              <div className=" hidden  justify-end pr-6 max-mb768:flex absolute right-[-25px] top-5">
+                <button
+                  type="button"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white focus:outline-none"
+                  onClick={handleClick}
+                >
+                  {isOpen ? (
+                    <BsBarChartSteps className="text-2xl" />
+                  ) : (
+                    <AiOutlineCloseCircle className="text-2xl" />
+                  )}
+                </button>
+              </div>
               <Sidebar active="home" />
             </div>
             <div className="pl-8 max-pad1280:px-5 max-w-full">
@@ -102,7 +141,7 @@ const Home = () => {
             </div>
           </div>
           <div
-            className="flex-1 pt-5 "
+            className="flex-1 pt-5 relative border-b border-solid border-primary"
             style={{
               backgroundImage: 'url("images/bg-color.png")',
               backgroundPosition: "center",
@@ -114,20 +153,33 @@ const Home = () => {
               <input type="text" onChange={sendPost} />
               <button onClick={submitPost}>post</button>
             </div> */}
+
             <div className=" max-mb480:hidden h-[100vh]  overflow-x-hidden flex justify-center items-center">
               {/*  {allPosts
                 .sort((a, b) => b.timeStamp - a.timeStamp)
                 .map((item) => (
                   <Post item={item} />
                 ))} */}
+
               <h1 className=" max-mb480:hidden  max-pad1280:text-center max-pad1280:leading-10 text-3xl max-pad1280:text-2xl font-pophins font-bold text-primary capitalize">
                 Wellcome to Dream Chat {data.displayName}
               </h1>
             </div>
           </div>
-          <div className="w-[400px] max-pad1024:hidden max-pad1280:w-[25%] ">
-            <Profile />
-          </div>
+          <Transition
+            show={!isOpen}
+            enter="transition duration-300 ease-out transform"
+            enterFrom="translate-x-full opacity-0"
+            enterTo="translate-x-0 opacity-100"
+            leave="transition duration-200 ease-in transform"
+            leaveFrom="translate-x-0 opacity-100"
+            leaveTo="translate-x-full opacity-0"
+            className={`max-mb991:absolute max-mb768:bg-slate-200 max-mb991:top-20`}
+          >
+            <div className="w-[400px]  max-mb480:w-full left-0 max-pad1280:w-[25%] ">
+              <Profile />
+            </div>
+          </Transition>
         </div>
       )}
     </>
