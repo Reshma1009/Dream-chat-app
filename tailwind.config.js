@@ -5,8 +5,8 @@ module.exports = {
     extend: {
       screens: {
         mb320: "320px",
-        mb480: "580px",
-        mb768: "768px",
+        mb580: "580px",
+        mb768: "769px",
         mb991: "991px",
         pad1024: "1024px",
         pad1280: "1280px",

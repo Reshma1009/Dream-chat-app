@@ -28,12 +28,12 @@ const Sidebar = ( { active } ) => {
         }}
         className="pb-12 px-7"
       >
-        <div className="w-[180px] max-mb480:w-[180px] max-mb768:w-[150px]">
+        <div className="w-[180px] max-mb580:w-[180px] max-mb768:w-[150px]">
           <Link to="/">
             <img src="images/logo.png" alt="" className="pt-5" />
           </Link>
         </div>
-        <div className="flex gap-5 justify-between py-7 max-mb480:py-7 max-mb768:py-2 items-center ">
+        <div className="flex gap-5 justify-between py-7 max-mb580:py-7 max-mb768:py-2 items-center ">
           <div
             className={`${
               active == "home" ? "before:bg-white" : "before:bg-transparent"

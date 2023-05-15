@@ -33,7 +33,7 @@ const Home = () => {
   useEffect(() => {
     const handleWindowResize = () =>
     {
-      if (window.innerWidth <= 991) {
+      if (window.innerWidth <= 1280) {
         setIsOpen(true);
       }
     };
@@ -114,13 +114,13 @@ const Home = () => {
         )
       )}
       {user && (
-        <div className="flex h-screen overflow-hidden  ">
-          <div className=" w-[500px] max-mb480:w-full max-mb768:w-[50%] max-mb991:w-[45%] max-pad1024:w-[50%] max-pad1280:w-[35%] bg-white relative">
-            <div className="h-[180px] max-mb480:h-[180px] max-mb768:h-[100px]">
-              <div className=" hidden  justify-end pr-6 max-mb768:flex absolute right-[-25px] top-5">
+        <div className="flex h-screen overflow-hidden  relative ">
+          <div className=" w-[500px] max-mb580:w-full max-mb768:w-[50%] max-mb991:w-[45%] max-pad1024:w-[50%] max-pad1280:w-[35%] bg-white ">
+            <div className="h-[180px] max-mb580:h-[180px] max-mb768:h-[100px]">
+              <div className=" hidden  justify-end pr-6 max-pad1280:flex absolute right-[-25px] max-pad1024:right-0 top-5">
                 <button
                   type="button"
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white focus:outline-none"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white focus:outline-none z-50"
                   onClick={handleClick}
                 >
                   {isOpen ? (
@@ -133,7 +133,7 @@ const Home = () => {
               <Sidebar active="home" />
             </div>
             <div className="pl-8 max-pad1280:px-5 max-w-full">
-              <h1 className="hidden max-mb480:block max-mb480:mb-5 max-mb480:pb-3 max-mb480:border-b max-mb480:border-solid max-mb480:border-primary text-3xl font-pophins font-bold text-heading/90 capitalize leading-10">
+              <h1 className="hidden max-mb580:block max-mb580:mb-5 max-mb580:pb-3 max-mb580:border-b max-mb580:border-solid max-mb580:border-primary text-3xl font-pophins font-bold text-heading/90 capitalize leading-10">
                 Wellcome to Dream Chat
                 <span className="text-primary"> {data.displayName}</span>
               </h1>
@@ -141,7 +141,7 @@ const Home = () => {
             </div>
           </div>
           <div
-            className="flex-1 pt-5 relative border-b border-solid border-primary"
+            className="flex-1 pt-16 relative "
             style={{
               backgroundImage: 'url("images/bg-color.png")',
               backgroundPosition: "center",
@@ -154,14 +154,14 @@ const Home = () => {
               <button onClick={submitPost}>post</button>
             </div> */}
 
-            <div className=" max-mb480:hidden h-[100vh]  overflow-x-hidden flex justify-center items-center">
+            <div className="border-t border-solid border-primary max-mb580:hidden h-[100vh]  overflow-x-hidden flex justify-center items-center">
               {/*  {allPosts
                 .sort((a, b) => b.timeStamp - a.timeStamp)
                 .map((item) => (
                   <Post item={item} />
                 ))} */}
 
-              <h1 className=" max-mb480:hidden  max-pad1280:text-center max-pad1280:leading-10 text-3xl max-pad1280:text-2xl font-pophins font-bold text-primary capitalize">
+              <h1 className=" max-mb580:hidden  max-pad1280:text-center max-pad1280:leading-10 text-3xl max-pad1280:text-2xl font-pophins font-bold text-primary capitalize">
                 Wellcome to Dream Chat {data.displayName}
               </h1>
             </div>
@@ -174,9 +174,9 @@ const Home = () => {
             leave="transition duration-200 ease-in transform"
             leaveFrom="translate-x-0 opacity-100"
             leaveTo="translate-x-full opacity-0"
-            className={`max-mb991:absolute max-mb768:bg-slate-200 max-mb991:top-20`}
+            className={`max-mb768:absolute max-mb768:bg-slate-200 max-mb580:top-20 max-mb580:left-0 max-mb768:left-1/2 h-screen`}
           >
-            <div className="w-[400px]  max-mb480:w-full left-0 max-pad1280:w-[25%] ">
+            <div className="w-[400px] max-pad1024:w-full max-pad1280:w-[300px]">
               <Profile />
             </div>
           </Transition>

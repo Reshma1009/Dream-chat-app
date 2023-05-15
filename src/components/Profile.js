@@ -196,7 +196,7 @@ const Profile = () => {
     <>
       <Flex className="items-center flex flex-col pt-10">
         <div className="relative mb-5 group">
-          <div className="w-[150px] h-[150px]">
+          <div className="w-[150px] max-mb768:w-[100px] h-[150px] max-mb768:h-[100px]">
             <Images
               imgSrc={userList.profile_picture}
               className="rounded-full w-full"
@@ -206,7 +206,7 @@ const Profile = () => {
             onClick={toggleModal}
             className=" transition-all opacity-0 group-hover:opacity-100 absolute w-full h-full bg-[rgba(0,0,0,.4)] rounded-full top-0 left-0 flex justify-center items-center ease-out duration-[.4s] "
           >
-            <MdCloudUpload className="text-4xl text-white" />
+            <MdCloudUpload className="text-4xl max-mb768:text-2xl text-white" />
           </div>
         </div>
         {isOpen && (
@@ -250,12 +250,12 @@ const Profile = () => {
             </div>
           </Modal>
         )}
-        <h2 className="text-3xl font-bold font-pophins mb-5 capitalize">
-          {/* {data && data.displayName} */}
-          {userList.username}
+        <h2 className="text-3xl max-mb768:text-2xl font-bold font-pophins mb-5 capitalize">
+          {data && data.displayName}
+          {/* {userList.username} */}
         </h2>
       </Flex>
-      <div className="overflow-x-hidden max-pad1280:overflow-y-auto max-pad1280:h-[60vh]">
+      <div className="overflow-x-hidden max-pad1280:overflow-y-auto max-mb580:h-[50vh]  max-mb768:h-[49vh] max-pad1280:h-[60vh]">
         <div className="border-black border-t border-solid mb-5 pb-5 px-5 pt-5 ">
           <h3 className=" pb-2 border-b border-solid font-pophins font-bold text-lg max-w-[400px] mx-auto text-center">
             Users Info:
@@ -272,12 +272,12 @@ const Profile = () => {
             Update Info:
           </h3>
           <div className="my-4">
-            <p className="font-pophins font-medium text-base max-w-[400px] mx-auto ">
+            <p className="font-pophins font-medium text-base max-w-[400px] mx-auto mb-3">
               Change your Name:
             </p>
             <input
               onChange={changeInfo}
-              className="bg-slate-200 px-5 py-2 rounded-tl-lg rounded-bl-lg w-[60%] ml-5 "
+              className="bg-slate-200 px-5 py-2 rounded-tl-lg rounded-bl-lg w-[60%]  "
               type="text"
               value={inputInfo.username}
               placeholder="Name"
@@ -297,7 +297,7 @@ const Profile = () => {
             </p>
             <input
               onChange={changeInfo}
-              className="bg-slate-200 px-5 py-2 rounded-lg rounded-bl-lg w-[60%] ml-5"
+              className="bg-slate-200 px-5 py-2 rounded-lg rounded-bl-lg w-[60%] "
               type="text"
               value={inputInfo.email}
               placeholder="Email"
@@ -310,14 +310,14 @@ const Profile = () => {
           </p> */}
             <input
               onChange={changeInfo}
-              className="font-pophins font-medium bg-slate-200 px-5 py-2 rounded-lg  rounded-bl-lg w-[60%] ml-5"
+              className="font-pophins font-medium bg-slate-200 px-5 py-2 rounded-lg  rounded-bl-lg w-[60%] "
               type="text"
               value={inputInfo.password}
               placeholder="Password"
               name="password"
             />
             <button
-              className="bg-primary font-pophins font-medium text-white px-5 py-2 capitalize rounded-tr-lg rounded-lg disabled:cursor-not-allowed disabled:opacity-40 block ml-5 mt-5"
+              className="bg-primary font-pophins font-medium text-white px-5 py-2 capitalize rounded-tr-lg rounded-lg disabled:cursor-not-allowed disabled:opacity-40 block  mt-5"
               onClick={updateEmailInfo}
               disabled={!inputInfo.password}
             >

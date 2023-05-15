@@ -15,7 +15,29 @@ import { getCurrentUser } from "../Api/Fuctional";
 const BlockUser = () => {
   const db = getDatabase();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
-  const [blockList, setBlockList] = useState([]);
+  const [ blockList, setBlockList ] = useState( [] );
+   const [showAll, setShowAll] = useState(true);
+   useEffect(() => {
+     const handleWindowResize = () => {
+       if (window.innerWidth <= 768) {
+         setShowAll(false);
+       }
+     };
+
+     // Update the state based on the initial window width
+     handleWindowResize();
+
+     // Add event listener for window resize
+     window.addEventListener("resize", handleWindowResize);
+
+     // Clean up the event listener when the component unmounts
+     return () => {
+       window.removeEventListener("resize", handleWindowResize);
+     };
+   }, []);
+   const toggleFriendList = () => {
+     setShowAll(!showAll);
+   };
   useEffect(() => {
     const blockRef = ref(db, "block");
     onValue(blockRef, (snapshot) => {
@@ -51,7 +73,7 @@ const BlockUser = () => {
     getCurrentUser(setLoginUser);
   }, []);
   return (
-    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh]  p-7 pt-0">
+    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh] max-mb768:h-[40vh]  p-7 pt-0">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         Block Users
@@ -62,7 +84,7 @@ const BlockUser = () => {
             No Block User Available
           </h1>
         ) : (
-          blockList.map((item) => (
+          blockList.slice(0, showAll ? blockList.length : 2).map((item) => (
             <Flex
               key={item.blockListId}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5`}
@@ -113,6 +135,21 @@ const BlockUser = () => {
             </Flex>
           ))
         )}
+        <div className="hidden max-mb768:block">
+          {blockList.length > 2 && (
+            <button onClick={toggleFriendList}>
+              {showAll ? (
+                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                  See Less
+                </button>
+              ) : (
+                <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                  See More
+                </button>
+              )}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
