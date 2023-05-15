@@ -15,6 +15,8 @@ const FriendRequest = () => {
      const handleWindowResize = () => {
        if (window.innerWidth <= 768) {
          setShowAll(false);
+       } else {
+         setShowAll(true);
        }
      };
 
@@ -103,7 +105,7 @@ const FriendRequest = () => {
       </h2>
       <Search placeholder={`search here for users`} />
 
-      <div className="scrollbar-hidden h-[95vh] max-mb580:h-[50vh] max-mb768:h-[30vh] overflow-y-auto">
+      <div className="scrollbar-hidden h-[95vh] max-mb580:h-[50vh] landscape:max-mb768:h-[80vh]  max-mb768:h-[30vh] overflow-y-auto">
         {friendRequest.length == 0 ? (
           <h1 className="font-blod text-xl bg-primary font-pophins text-white py-3 px-5 rounded-xl">
             No Friend Request Available

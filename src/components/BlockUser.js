@@ -21,6 +21,8 @@ const BlockUser = () => {
      const handleWindowResize = () => {
        if (window.innerWidth <= 768) {
          setShowAll(false);
+       } else {
+         setShowAll(true);
        }
      };
 
@@ -30,10 +32,6 @@ const BlockUser = () => {
      // Add event listener for window resize
      window.addEventListener("resize", handleWindowResize);
 
-     // Clean up the event listener when the component unmounts
-     return () => {
-       window.removeEventListener("resize", handleWindowResize);
-     };
    }, []);
    const toggleFriendList = () => {
      setShowAll(!showAll);
@@ -73,7 +71,7 @@ const BlockUser = () => {
     getCurrentUser(setLoginUser);
   }, []);
   return (
-    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh] max-mb768:h-[40vh]  p-7 pt-0">
+    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh] max-mb768:h-[60vh]  max-mb580:h-[60vh] landscape:max-mb768:h-[100vh] p-7 pt-0">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         Block Users

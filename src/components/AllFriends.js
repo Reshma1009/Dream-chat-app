@@ -21,6 +21,9 @@ const AllFriends = () => {
       const handleWindowResize = () => {
         if (window.innerWidth <= 768) {
           setShowAll(false);
+        } else
+        {
+          setShowAll(true);
         }
       };
 
@@ -29,11 +32,6 @@ const AllFriends = () => {
 
       // Add event listener for window resize
       window.addEventListener("resize", handleWindowResize);
-
-      // Clean up the event listener when the component unmounts
-      return () => {
-        window.removeEventListener("resize", handleWindowResize);
-      };
     }, []);
   const toggleFriendList = () => {
     setShowAll(!showAll);
@@ -83,7 +81,7 @@ const AllFriends = () => {
   }, []);
 
   return (
-    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh] max-mb768:h-[40vh]  p-7">
+    <div className="scrollbar-hidden flex flex-col overflow-hidden h-[50vh] max-mb768:h-[40vh]   max-mb580:h-[60vh] landscape:max-mb768:h-[100vh] p-7">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         All Friends
