@@ -42,16 +42,43 @@ const Message = () => {
   const [isOpen2, setIsOpen2] = useState(false);
   const [img, setImg] = useState("");
   let [blob, setBlob] = useState("");
-  const [ audio, setAudio ] = useState( "" );
-    const [loading, setLoading] = useState(true);
-    let navigate = useNavigate();
-    useEffect(() => {
-      if (!data) {
-        navigate("/");
-      } else {
-        setLoading(false);
-      }
-    }, []);
+  const [audio, setAudio] = useState("");
+  const [ loading, setLoading ] = useState( true );
+
+  const [ selectedFriendId, setSelectedFriendId ] = useState( true );
+   useEffect(() => {
+     const handleWindowResize = () => {
+       if (window.innerWidth <= 1025) {
+         setSelectedFriendId(null);
+
+       } else {
+         setSelectedFriendId(true);
+       }
+     };
+
+     // Update the state based on the initial window width
+     handleWindowResize();
+
+     // Add event listener for window resize
+     window.addEventListener("resize", handleWindowResize);
+
+     // Clean up the event listener when the component unmounts
+     return () => {
+       window.removeEventListener("resize", handleWindowResize);
+     };
+   }, []);
+   const handleFriendClick = (friendId) => {
+     setSelectedFriendId(friendId);
+  };
+
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (!data) {
+      navigate("/");
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
@@ -82,10 +109,10 @@ const Message = () => {
     // setMessage(message+);
   };
   // Enter Button Sebd Message
-  const textarea = document.querySelector( "textArea" );
+  const textarea = document.querySelector("textArea");
 
   let handleEnterButn = (e) => {
-     if (e.key == "Enter") {
+    if (e.key == "Enter") {
       if (activeChat && activeChat.status == "single") {
         set(push(ref(db, "singleMessage")), {
           whoSendMessId: data.uid,
@@ -101,9 +128,8 @@ const Message = () => {
         }).then(() => {
           setMessage("");
         });
-      } else
-      {
-         set(push(ref(db, "groupMessage")), {
+      } else {
+        set(push(ref(db, "groupMessage")), {
           whoSendId: data.uid,
           whoSendName: data.displayName,
           whoSendPhoto: data.photoURL,
@@ -120,7 +146,6 @@ const Message = () => {
         });
       }
     }
-
   };
   // Send Emoji
   let sendEmoji = (emoji) => {
@@ -313,7 +338,6 @@ const Message = () => {
     const storageRef = sRef(storage, "files/" + auth.currentUser.uid);
     const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
     uploadString(storageRef, message4, "data_url").then((snapshot) => {
-
       getDownloadURL(storageRef).then((downloadURL) => {
         if (activeChat && activeChat.status == "single") {
           set(push(ref(db, "singleMessage")), {
@@ -399,10 +423,14 @@ const Message = () => {
                 <AllGroupList />
               </div>
               <div>
-                <Friends />
+                <Friends handleFriendClick={handleFriendClick} />
               </div>
             </div>
-          </div>
+            </div>
+            {/* <div className="block max-pad1280:hidden"> */}
+
+
+            {selectedFriendId &&
           <div
             className="flex-1 flex flex-col overflow-hidden"
             style={{
@@ -423,8 +451,7 @@ const Message = () => {
                 </div>
                 <div>
                   <p className="font-pophins text-xl font-medium">
-                      { activeChat && activeChat.name }
-
+                    {activeChat && activeChat.name}
                   </p>
                   <p className="font-pophins text-base font-normal">Online</p>
                 </div>
@@ -437,10 +464,11 @@ const Message = () => {
               scrollViewClassName={`scrollToBottom scrollbar-hidden px-8`}
               className={`overflow-y-auto overflow-x-hidden scrollbar-hidden pt-5 flex-1 relative`}
             >
+
               <Chat />
             </ScrollToBottom>
             {/* Messageing End */}
-            {/* Input Text Area End */}
+            {/* Input Text Area Start */}
             {activeChat && activeChat.status == "single" ? (
               <div className="flex items-center gap-x-5 p-5 pb-2 relative">
                 {audio && (
@@ -601,7 +629,8 @@ const Message = () => {
 
             {/* Input Text Area End */}
           </div>
-
+}
+{/* </div> */}
           <div className="w-[400px]">
             <Profile />
           </div>

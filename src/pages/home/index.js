@@ -35,6 +35,9 @@ const Home = () => {
     {
       if (window.innerWidth <= 1280) {
         setIsOpen(true);
+      } else
+      {
+        setIsOpen(false);
       }
     };
 

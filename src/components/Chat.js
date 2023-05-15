@@ -19,8 +19,7 @@ const Chat = () => {
     const singleMessageRef = ref(db, "singleMessage/");
     onValue(singleMessageRef, (snapshot) => {
       let arr = [];
-      snapshot.forEach( ( item ) =>
-      {
+      snapshot.forEach((item) => {
         /* console.log(item.val(), "item.val()ggggggggggggggggggggg"); */
         if (
           (data.uid == item.val().whoSendMessId &&
@@ -39,9 +38,8 @@ const Chat = () => {
     const groupMessageRef = ref(db, "groupMessage/");
     onValue(groupMessageRef, (snapshot) => {
       let arr = [];
-      snapshot.forEach( ( item ) =>
-
-      {/* console.log(item.val(),"gropList Mess") */
+      snapshot.forEach((item) => {
+        /* console.log(item.val(),"gropList Mess") */
         // console.log(item.val(), "item.val() group messahe");
         arr.push(item.val());
       });
@@ -60,11 +58,11 @@ const Chat = () => {
       });
       setJoinedGroup(arr);
     });
-  }, [] );
+  }, []);
   const [loginUser, setLoginUser] = useState([]);
   useEffect(() => {
     getCurrentUser(setLoginUser);
-  }, [] );
+  }, []);
   return (
     <div>
       {activeChat && activeChat.status == "single" ? (

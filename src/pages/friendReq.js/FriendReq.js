@@ -13,29 +13,31 @@ import { Transition } from "@headlessui/react";
 const FriendReq = () => {
   const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
-  let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
-    const [isOpen, setIsOpen] = useState(false);
-    useEffect(() => {
-      const handleWindowResize = () => {
-        if (window.innerWidth <= 1280) {
-          setIsOpen(true);
-        }
-      };
-
-      // Update the state based on the initial window width
-      handleWindowResize();
-
-      // Add event listener for window resize
-      window.addEventListener("resize", handleWindowResize);
-
-      // Clean up the event listener when the component unmounts
-      return () => {
-        window.removeEventListener("resize", handleWindowResize);
-      };
-    }, []);
-    const handleClick = () => {
-      setIsOpen(!isOpen);
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (window.innerWidth <= 1280) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
     };
+
+    // Update the state based on the initial window width
+    handleWindowResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleWindowResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
   useEffect(() => {
     if (!data) {
       navigate("/");

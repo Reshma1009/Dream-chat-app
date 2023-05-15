@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { activeUsersInfo } from "../slices/activeChatUsers";
 import { getCurrentUser } from "../Api/Fuctional";
 
-const Friends = () => {
+const Friends = ({ handleFriendClick }) => {
   const db = getDatabase();
   let dispatch = useDispatch();
   let data = useSelector((state) => state.allUserSInfo.userInfo);
@@ -17,21 +17,20 @@ const Friends = () => {
   useEffect(() => {
     getCurrentUser(setLoginUser);
   }, []);
- useEffect(() => {
-   const friendsRef = ref(db, "friends/");
-   onValue(friendsRef, (snapshot) => {
-     let arr = [];
-     snapshot.forEach((item) => {
-       if (data.uid === item.val().userId || data.uid == item.val().sendRqId) {
-         arr.push({ ...item.val(), friendId: item.key });
-       }
-     });
-     setFriendList(arr);
-   });
- }, []);
+  useEffect(() => {
+    const friendsRef = ref(db, "friends/");
+    onValue(friendsRef, (snapshot) => {
+      let arr = [];
+      snapshot.forEach((item) => {
+        if (data.uid === item.val().userId || data.uid == item.val().sendRqId) {
+          arr.push({ ...item.val(), friendId: item.key });
+        }
+      });
+      setFriendList(arr);
+    });
+  }, []);
 
-  let handleSingleMessage = ( item ) =>
-  {
+  let handleSingleMessage = (item) => {
     if (data.uid === item.sendRqId) {
       dispatch(
         activeUsersInfo({
@@ -110,8 +109,9 @@ const Friends = () => {
           </h1>
         ) : (
           friendList.map((item) => (
-            <Flex
+            <div
               key={item.friendId}
+              onClick={() => handleFriendClick(item.friendId)}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
             >
               <div className="w-[50px] h-[50px] ">
@@ -152,7 +152,7 @@ const Friends = () => {
                   Message
                 </button>
               </div>
-            </Flex>
+            </div>
           ))
         )}
       </div>

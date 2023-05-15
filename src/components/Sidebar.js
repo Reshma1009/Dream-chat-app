@@ -33,7 +33,7 @@ const Sidebar = ( { active } ) => {
             <img src="images/logo.png" alt="" className="pt-5" />
           </Link>
         </div>
-        <div className="flex gap-5 justify-between py-7 max-mb580:py-7 max-mb768:py-2 items-center ">
+        <div className="flex landscape:max-mb768:justify-start landscape:max-mb768:gap-10 gap-5 justify-between py-7 max-mb580:py-7 max-mb768:py-2 landscape:max-mb768:py-5 items-center ">
           <div
             className={`${
               active == "home" ? "before:bg-white" : "before:bg-transparent"
