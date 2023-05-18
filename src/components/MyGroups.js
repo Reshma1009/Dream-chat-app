@@ -161,7 +161,7 @@ const MyGroups = () => {
                 groupReqList.map((item) => (
                   <Flex
                     key={item.groupReqId}
-                    className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
+                    className={`flex gap-x-5 max-mb768:flex-col max-mb768:items-start  bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
                   >
                     <div className="w-[50px] h-[50px] ">
                       <Images
@@ -196,7 +196,7 @@ const MyGroups = () => {
                     </div>
                     {acceptgroupBtn.includes(data.uid + item.groupReqId) ||
                     acceptgroupBtn.includes(item.groupReqId + data.uid) ? (
-                      <div className="grow text-right">
+                      <div className="grow text-right max-mb768:my-5">
                         <button className="bg-primary ml-5 py-2 px-3 text-white font-pophins text-sm rounded-md">
                           Accepted
                         </button>
@@ -209,7 +209,7 @@ const MyGroups = () => {
                         </button>
                       </div>
                     ) : (
-                      <div className="grow text-right">
+                      <div className="grow text-right max-mb768:my-5">
                         <button
                           onClick={() => acceptGrpReq(item)}
                           className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
@@ -243,7 +243,7 @@ const MyGroups = () => {
                 accGroupReqList.map((item) => (
                   <Flex
                     key={item.id}
-                    className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
+                    className={`flex max-mb768:flex-col max-mb768:items-start gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
                   >
                     <div className="w-[50px] h-[50px] ">
                       <Images
@@ -276,7 +276,7 @@ const MyGroups = () => {
                         Hi Guys, How Are you
                       </p>
                     </div>
-                    <div className="grow text-right">
+                    <div className="grow text-right max-mb768:my-5">
                       <button
                         // onClick={() => acceptGrpReq(item)}
                         className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"
@@ -299,11 +299,16 @@ const MyGroups = () => {
           groupList.map((item) => (
             <Flex
               key={item.groupId}
-              className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
+              className={`flex max-mb768:flex-col max-mb768:items-start gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
-                  imgSrc={userList.profile_picture}
+                  imgSrc={
+                    loginUser
+                      .filter((useritem) => useritem.userId == item.adminId)
+                      .map((item) => item.profile_picture)[0]
+                  }
+                  // imgSrc={userList.profile_picture} adminId
                   className="rounded-full w-full"
                 />
               </div>
@@ -318,7 +323,7 @@ const MyGroups = () => {
                   Admin: {userList.username}
                 </p>
               </div>
-              <div className="grow text-right">
+              <div className="grow text-right max-mb768:my-5">
                 <button
                   onClick={() => seeInfo(item)}
                   className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md"

@@ -38,7 +38,7 @@ const JoinedGroups = () => {
 
   return (
     <>
-      <div className="flex flex-col overflow-hidden h-[100vh] shadow-2xl  pt-0">
+      <div className="flex flex-col overflow-hidden h-[100vh] max-mb768:h-[40vh] shadow-2xl  pt-0">
         {/* <Search placeholder={`search here for users`} /> */}
 
         <div className="scrollbar-hidden overflow-y-auto overflow-x-hidden">
@@ -48,7 +48,7 @@ const JoinedGroups = () => {
             joinedGroup.map((item) => (
               <Flex
                 key={item.id}
-                className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
+                className={`flex max-mb768:flex-col max-mb768:items-start gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
               >
                 <div className="w-[50px] h-[50px] ">
                   <Images
@@ -76,7 +76,7 @@ const JoinedGroups = () => {
                   </p>
                 </div>
                 <div className="grow text-right">
-                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
+                  <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md max-mb768:my-5">
                     Joined
                   </button>
                 </div>

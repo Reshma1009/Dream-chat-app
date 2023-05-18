@@ -732,7 +732,7 @@ const Message = () => {
               {/* Name Info Start*/}
               <div className="bg-white border-r border-solid border-black">
                 <Flex className="flex gap-x-5 p-6 items-center">
-                  <AiOutlineArrowLeft onClick={closeChatBox} />
+                  <AiOutlineArrowLeft onClick={closeChatBox} className="cursor-pointer"/>
                   <div className="w-[90px] h-[90px] max-pad1024:w-[40px] max-pad1024:h-[40px]">
                     <Images
                       imgSrc={activeChat && activeChat.profilePhoto}

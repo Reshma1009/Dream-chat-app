@@ -92,7 +92,7 @@ const GroupLists = () => {
           groupList.map((item) => (
             <Flex
               key={item.groupId}
-              className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
+              className={`flex max-mb768:flex-col max-mb768:items-start gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
             >
               <div className="w-[50px] h-[50px] ">
                 <Images
@@ -120,7 +120,7 @@ const GroupLists = () => {
                   }
                 </p>
               </div>
-              <div className="grow text-right">
+              <div className="grow text-right max-mb768:my-5">
                 {acceptedReq.includes(data.uid + item.groupId) ||
                 acceptedReq.includes(item.groupId + data.uid) ? (
                   <button className="bg-primary py-2 px-3 text-white font-pophins text-sm rounded-md">
