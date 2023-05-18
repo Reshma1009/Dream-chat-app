@@ -97,7 +97,7 @@ const Friends = ({ handleFriendClick }) => {
 
   // console.log(loginUser, "loginUser friends");
   return (
-    <div className="flex flex-col overflow-hidden h-[45vh]  p-7">
+    <div className="flex flex-col overflow-hidden h-[45vh] landscape:max-mb991:overflow-y-auto landscape:max-mb991:h-[100vh]  p-7">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         Friends

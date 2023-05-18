@@ -7,7 +7,11 @@ import Flex from "../../components/Flex";
 import Images from "../../components/Images";
 import Chat from "../../components/Chat";
 import AllGroupList from "../../components/AllGroupList";
-import { BsFillCameraFill, BsFillMicFill } from "react-icons/bs";
+import {
+  BsBarChartSteps,
+  BsFillCameraFill,
+  BsFillMicFill,
+} from "react-icons/bs";
 import { BiHappy } from "react-icons/bi";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { ImAttachment } from "react-icons/im";
@@ -33,6 +37,8 @@ import Cropper, { ReactCropperElement } from "react-cropper";
 import { getCurrentUser } from "../../Api/Fuctional";
 import { useNavigate } from "react-router-dom";
 import Loder from "../../components/Loder";
+import { AiOutlineArrowLeft, AiOutlineCloseCircle } from "react-icons/ai";
+import { Transition } from "@headlessui/react";
 const Message = () => {
   const auth = getAuth();
   const db = getDatabase();
@@ -43,34 +49,63 @@ const Message = () => {
   const [img, setImg] = useState("");
   let [blob, setBlob] = useState("");
   const [audio, setAudio] = useState("");
-  const [ loading, setLoading ] = useState( true );
+  const [loading, setLoading] = useState(true);
 
-  const [ selectedFriendId, setSelectedFriendId ] = useState( true );
-   useEffect(() => {
-     const handleWindowResize = () => {
-       if (window.innerWidth <= 1025) {
-         setSelectedFriendId(null);
+  const [selectedFriendId, setSelectedFriendId] = useState(false);
+  const [isOpenProfile, setIsOpenProfile] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
-       } else {
-         setSelectedFriendId(true);
-       }
-     };
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (window.innerWidth <= 1280) {
+        setIsOpenProfile(true);
+      } else {
+        setIsOpenProfile(false);
+      }
+    };
 
-     // Update the state based on the initial window width
-     handleWindowResize();
+    // Update the state based on the initial window width
+    handleWindowResize();
 
-     // Add event listener for window resize
-     window.addEventListener("resize", handleWindowResize);
+    // Add event listener for window resize
+    window.addEventListener("resize", handleWindowResize);
 
-     // Clean up the event listener when the component unmounts
-     return () => {
-       window.removeEventListener("resize", handleWindowResize);
-     };
-   }, []);
-   const handleFriendClick = (friendId) => {
-     setSelectedFriendId(friendId);
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+  const handleClick = () => {
+    setIsOpenProfile(!isOpenProfile);
   };
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setIsMobile(window.innerWidth >= 1024);
+      if (window.innerWidth >= 1024) {
+        setSelectedFriendId(true);
+      } else {
+        setSelectedFriendId(false);
+      }
+    };
 
+    // Update the state based on the initial window width
+    handleWindowResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleWindowResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+  const handleFriendClick = (friendId) => {
+    setSelectedFriendId( friendId );
+    console.log(friendId,"jhgg");
+  };
+  let closeChatBox = () => {
+    setSelectedFriendId(false);
+  };
   let navigate = useNavigate();
   useEffect(() => {
     if (!data) {
@@ -403,151 +438,328 @@ const Message = () => {
     setIsOpen2(!isOpen2);
     setImage("");
   };
-  const [loginUser, setLoginUser] = useState([]);
-  useEffect(() => {
-    getCurrentUser(setLoginUser);
-  }, []);
+
   return (
     <>
       {loading ? (
         <Loder />
       ) : (
-        <div className="flex h-screen overflow-hidden ">
+        <div className="flex h-screen overflow-hidden landscape:max-mb991:overflow-y-auto">
           <ToastContainer position="bottom-center" theme="dark" />
-          <div className="relative w-[500px]">
-            <div className="h-[180px]">
-              <Sidebar active={`message`} />
-            </div>
-            <div className="">
-              <div>
-                <AllGroupList />
+          {!isMobile ? (
+            !selectedFriendId && (
+              <div className="relative w-[500px] max-mb768:w-full max-mb991:w-[45%] max-pad1024:w-[50%] max-pad1280:w-[35%] bg-white ">
+                <div className="h-[180px]">
+                  <div className=" hidden  justify-end pr-6 max-pad1280:flex absolute right-[-25px] max-pad1024:right-0 top-5">
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white focus:outline-none z-50"
+                      onClick={handleClick}
+                    >
+                      {isOpenProfile ? (
+                        <BsBarChartSteps className="text-2xl" />
+                      ) : (
+                        <AiOutlineCloseCircle className="text-2xl" />
+                      )}
+                    </button>
+                  </div>
+                  <Sidebar active={`message`} />
+                </div>
+                <div className="">
+                  <div>
+                    <AllGroupList handleFriendClick={handleFriendClick} />
+                  </div>
+                  <div>
+                    <Friends handleFriendClick={handleFriendClick} />
+                  </div>
+                </div>
               </div>
-              <div>
-                <Friends handleFriendClick={handleFriendClick} />
+            )
+          ) : (
+            <div className="relative w-[500px] max-mb768:w-full max-mb991:w-[45%] max-pad1024:w-[50%] max-pad1280:w-[35%] bg-white ">
+              <div className="h-[180px]">
+                <div className=" hidden  justify-end pr-6 max-pad1280:flex absolute right-[-25px] max-pad1024:right-0 top-5">
+                  <button
+                    type="button"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white focus:outline-none z-50"
+                    onClick={handleClick}
+                  >
+                    {isOpenProfile ? (
+                      <BsBarChartSteps className="text-2xl" />
+                    ) : (
+                      <AiOutlineCloseCircle className="text-2xl" />
+                    )}
+                  </button>
+                </div>
+                <Sidebar active={`message`} />
               </div>
-            </div>
-            </div>
-            {/* <div className="block max-pad1280:hidden"> */}
-
-
-            {selectedFriendId &&
-          <div
-            className="flex-1 flex flex-col overflow-hidden"
-            style={{
-              backgroundImage: 'url("images/bg-color.png")',
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            {/* Name Info Start*/}
-            <div className="bg-white border-r border-solid border-black">
-              <Flex className="flex gap-x-5 p-6 items-center">
-                <div className="w-[90px] h-[90px]">
-                  <Images
-                    imgSrc={activeChat && activeChat.profilePhoto}
-                    className="rounded-full w-full"
-                  />
+              <div className="">
+                <div>
+                  <AllGroupList />
                 </div>
                 <div>
-                  <p className="font-pophins text-xl font-medium">
-                    {activeChat && activeChat.name}
-                  </p>
-                  <p className="font-pophins text-base font-normal">Online</p>
+                  <Friends handleFriendClick={handleFriendClick} />
                 </div>
-              </Flex>
+              </div>
             </div>
-            {/* Name Info End*/}
-            {/* Messageing Start */}
+          )}
 
-            <ScrollToBottom
-              scrollViewClassName={`scrollToBottom scrollbar-hidden px-8`}
-              className={`overflow-y-auto overflow-x-hidden scrollbar-hidden pt-5 flex-1 relative`}
-            >
-
-              <Chat />
-            </ScrollToBottom>
-            {/* Messageing End */}
-            {/* Input Text Area Start */}
-            {activeChat && activeChat.status == "single" ? (
-              <div className="flex items-center gap-x-5 p-5 pb-2 relative">
-                {audio && (
-                  <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">
-                    <audio controls src={audio} className="w-[550px]"></audio>
-                    <div className="flex gap-x-5">
-                      <button
-                        onClick={sendRecordingAudio}
-                        className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
-                      >
-                        Send Audio
-                      </button>
-                      <button
-                        onClick={() => setAudio("")}
-                        className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
-                      >
-                        Delete Audio
-                      </button>
+          {isMobile ? (
+            selectedFriendId && (
+              <div
+                className="flex-1 flex flex-col overflow-hidden max-mb768:w-full"
+                style={{
+                  backgroundImage: 'url("images/bg-color.png")',
+                  backgroundPosition: "center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                {/* Name Info Start*/}
+                <div className="bg-white border-r border-solid border-black">
+                  <Flex className="flex gap-x-5 p-6 items-center">
+                    <div className="w-[90px] h-[90px]">
+                      <Images
+                        imgSrc={activeChat && activeChat.profilePhoto}
+                        className="rounded-full w-full"
+                      />
                     </div>
-                  </div>
-                )}
-                <input
-                  onChange={handleMesage}
-                  onFocus={handleOnFocus}
-                  onKeyUp={handleEnterButn}
-                  value={message}
-                  type="text"
-                  className="w-full p-3 rounded-lg outline-primary"
-                />
-                {!audio && (
-                  <div className="flex gap-x-5 absolute right-[110px]">
-                    <BsFillCameraFill
-                      onClick={openCamera}
-                      className="text-primary text-2xl cursor-pointer"
-                    />
-                    <BiHappy
-                      onClick={handleSendEmoji}
-                      className="text-primary text-2xl cursor-pointer"
-                    />
-                    {showEmoji && (
-                      <div className="absolute top-[-465px] right-0">
-                        <EmojiPicker
-                          onEmojiClick={(emoji) => sendEmoji(emoji)}
-                        />
+                    <div>
+                      <p className="font-pophins text-xl font-medium">
+                        {activeChat && activeChat.name}
+                      </p>
+                      <p className="font-pophins text-base font-normal">
+                        Online
+                      </p>
+                    </div>
+                  </Flex>
+                </div>
+                {/* Name Info End*/}
+                {/* Messageing Start */}
+
+                <ScrollToBottom
+                  scrollViewClassName={`scrollToBottom scrollbar-hidden px-8`}
+                  className={`overflow-y-auto overflow-x-hidden scrollbar-hidden pt-5 flex-1 relative`}
+                >
+                  <Chat />
+                </ScrollToBottom>
+
+                {/* Messageing End */}
+                {/* Input Text Area Start */}
+                {activeChat && activeChat.status == "single" ? (
+                  <div className="flex items-center gap-x-5 p-5 pb-2 relative">
+                    {audio && (
+                      <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">
+                        <audio
+                          controls
+                          src={audio}
+                          className="w-[550px]"
+                        ></audio>
+                        <div className="flex gap-x-5">
+                          <button
+                            onClick={sendRecordingAudio}
+                            className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
+                          >
+                            Send Audio
+                          </button>
+                          <button
+                            onClick={() => setAudio("")}
+                            className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
+                          >
+                            Delete Audio
+                          </button>
+                        </div>
                       </div>
                     )}
-                    <ImAttachment
-                      onClick={openFile}
-                      className="text-primary text-2xl cursor-pointer"
+                    <input
+                      onChange={handleMesage}
+                      onFocus={handleOnFocus}
+                      onKeyUp={handleEnterButn}
+                      value={message}
+                      type="text"
+                      className="w-full p-3 rounded-lg outline-primary"
                     />
-                    {/* <BsFillMicFill
+                    {!audio && (
+                      <div className="flex gap-x-5 absolute right-[110px]">
+                        <BsFillCameraFill
+                          onClick={openCamera}
+                          className="text-primary text-2xl cursor-pointer"
+                        />
+                        <BiHappy
+                          onClick={handleSendEmoji}
+                          className="text-primary text-2xl cursor-pointer"
+                        />
+                        {showEmoji && (
+                          <div className="absolute top-[-465px] right-0">
+                            <EmojiPicker
+                              onEmojiClick={(emoji) => sendEmoji(emoji)}
+                            />
+                          </div>
+                        )}
+                        <ImAttachment
+                          onClick={openFile}
+                          className="text-primary text-2xl cursor-pointer"
+                        />
+                        {/* <BsFillMicFill
                 className="text-primary text-2xl cursor-pointer"
               /> */}
-                    {!audio && (
-                      <AudioRecorder onRecordingComplete={addAudioElement} />
+                        {!audio && (
+                          <AudioRecorder
+                            onRecordingComplete={addAudioElement}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {message ? (
+                      <button
+                        onClick={handleSendMessage}
+                        className="bg-primary px-5 py-3 rounded-lg "
+                      >
+                        <RiSendPlaneFill className="text-white text-2xl" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleSendLike}
+                        className="bg-primary px-5 py-2 rounded-lg text-2xl"
+                      >
+                        {/* <RiSendPlaneFill className="text-white text-2xl" /> */}
+                        &#128077;
+                      </button>
                     )}
                   </div>
-                )}
-                {message ? (
-                  <button
-                    onClick={handleSendMessage}
-                    className="bg-primary px-5 py-3 rounded-lg "
-                  >
-                    <RiSendPlaneFill className="text-white text-2xl" />
-                  </button>
                 ) : (
-                  <button
-                    onClick={handleSendLike}
-                    className="bg-primary px-5 py-2 rounded-lg text-2xl"
-                  >
-                    {/* <RiSendPlaneFill className="text-white text-2xl" /> */}
-                    &#128077;
-                  </button>
+                  activeChat &&
+                  (data.uid == activeChat.adminId ||
+                    joinedGroup.includes(activeChat.id + data.uid)) && (
+                    <div className="flex items-center gap-x-5 p-5 pb-2 relative">
+                      {audio && (
+                        <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">
+                          <audio
+                            controls
+                            src={audio}
+                            className="w-[550px]"
+                          ></audio>
+                          <div className="flex gap-x-5">
+                            <button
+                              onClick={sendRecordingAudio}
+                              className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
+                            >
+                              Send Audio
+                            </button>
+                            <button
+                              onClick={() => setAudio("")}
+                              className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
+                            >
+                              Delete Audio
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      <textarea
+                        onChange={handleMesage}
+                        onFocus={handleOnFocus}
+                        onKeyUp={handleEnterButn}
+                        value={message}
+                        type="text"
+                        className="w-full p-3 pr-[160px] rounded-lg outline-primary resize-none max-h-[150px] h-[50px] scrollbar-hidden"
+                        rows="1"
+                      ></textarea>
+                      {!audio && (
+                        <div className="flex gap-x-5 absolute right-[110px]">
+                          <BsFillCameraFill
+                            onClick={openCamera}
+                            className="text-primary text-2xl cursor-pointer"
+                          />
+                          <BiHappy
+                            onClick={handleSendEmoji}
+                            className="text-primary text-2xl cursor-pointer"
+                          />
+                          {showEmoji && (
+                            <div className="absolute top-[-465px] right-0">
+                              <EmojiPicker
+                                onEmojiClick={(emoji) => sendEmoji(emoji)}
+                              />
+                            </div>
+                          )}
+                          <ImAttachment
+                            onClick={openFile}
+                            className="text-primary text-2xl cursor-pointer"
+                          />
+                          {/* <BsFillMicFill
+                className="text-primary text-2xl cursor-pointer"
+              /> */}
+                          {!audio && (
+                            <AudioRecorder
+                              onRecordingComplete={addAudioElement}
+                            />
+                          )}
+                        </div>
+                      )}
+                      {message ? (
+                        <button
+                          onClick={handleSendMessage}
+                          className="bg-primary px-5 py-3 rounded-lg "
+                        >
+                          <RiSendPlaneFill className="text-white text-2xl" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleSendLike}
+                          className="bg-primary px-5 py-2 rounded-lg text-2xl"
+                        >
+                          {/* <RiSendPlaneFill className="text-white text-2xl" /> */}
+                          &#128077;
+                        </button>
+                      )}
+                    </div>
+                  )
                 )}
+                {/* text */}
+
+                {/* Input Text Area End */}
               </div>
-            ) : (
-              activeChat &&
-              (data.uid == activeChat.adminId ||
-                joinedGroup.includes(activeChat.id + data.uid)) && (
+            )
+          ) : (
+            <div
+              className="flex-1 flex flex-col overflow-hidden max-mb768:w-full"
+              style={{
+                backgroundImage: 'url("images/bg-color.png")',
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
+              {/* Name Info Start*/}
+              <div className="bg-white border-r border-solid border-black">
+                <Flex className="flex gap-x-5 p-6 items-center">
+                  <AiOutlineArrowLeft onClick={closeChatBox} />
+                  <div className="w-[90px] h-[90px] max-pad1024:w-[40px] max-pad1024:h-[40px]">
+                    <Images
+                      imgSrc={activeChat && activeChat.profilePhoto}
+                      className="rounded-full w-full"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-pophins text-xl font-medium">
+                      {activeChat && activeChat.name}
+                    </p>
+                    <p className="font-pophins text-base font-normal">Online</p>
+                  </div>
+                </Flex>
+              </div>
+              {/* Name Info End*/}
+              {/* Messageing Start */}
+
+              <ScrollToBottom
+                scrollViewClassName={`scrollToBottom scrollbar-hidden px-8`}
+                className={`overflow-y-auto overflow-x-hidden scrollbar-hidden pt-5 flex-1 relative`}
+              >
+                <Chat />
+              </ScrollToBottom>
+
+              {/* Messageing End */}
+              {/* Input Text Area Start */}
+              {activeChat && activeChat.status == "single" ? (
                 <div className="flex items-center gap-x-5 p-5 pb-2 relative">
                   {audio && (
                     <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">
@@ -568,15 +780,14 @@ const Message = () => {
                       </div>
                     </div>
                   )}
-                  <textarea
+                  <input
                     onChange={handleMesage}
                     onFocus={handleOnFocus}
                     onKeyUp={handleEnterButn}
                     value={message}
                     type="text"
-                    className="w-full p-3 pr-[160px] rounded-lg outline-primary resize-none max-h-[150px] h-[50px] scrollbar-hidden"
-                    rows="1"
-                  ></textarea>
+                    className="w-full p-3 rounded-lg outline-primary"
+                  />
                   {!audio && (
                     <div className="flex gap-x-5 absolute right-[110px]">
                       <BsFillCameraFill
@@ -623,17 +834,113 @@ const Message = () => {
                     </button>
                   )}
                 </div>
-              )
-            )}
-            {/* text */}
+              ) : (
+                activeChat &&
+                (data.uid == activeChat.adminId ||
+                  joinedGroup.includes(activeChat.id + data.uid)) && (
+                  <div className="flex items-center gap-x-5 p-5 pb-2 relative">
+                    {audio && (
+                      <div className="absolute top-[14px] left-[20px] w-[87%] flex justify-between">
+                        <audio
+                          controls
+                          src={audio}
+                          className="w-[550px]"
+                        ></audio>
+                        <div className="flex gap-x-5">
+                          <button
+                            onClick={sendRecordingAudio}
+                            className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
+                          >
+                            Send Audio
+                          </button>
+                          <button
+                            onClick={() => setAudio("")}
+                            className="px-4 py-1 text-sm bg-primary rounded-lg text-white font-bold"
+                          >
+                            Delete Audio
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    <textarea
+                      onChange={handleMesage}
+                      onFocus={handleOnFocus}
+                      onKeyUp={handleEnterButn}
+                      value={message}
+                      type="text"
+                      className="w-full p-3 pr-[160px] rounded-lg outline-primary resize-none max-h-[150px] h-[50px] scrollbar-hidden"
+                      rows="1"
+                    ></textarea>
+                    {!audio && (
+                      <div className="flex gap-x-5 absolute right-[110px]">
+                        <BsFillCameraFill
+                          onClick={openCamera}
+                          className="text-primary text-2xl cursor-pointer"
+                        />
+                        <BiHappy
+                          onClick={handleSendEmoji}
+                          className="text-primary text-2xl cursor-pointer"
+                        />
+                        {showEmoji && (
+                          <div className="absolute top-[-465px] right-0">
+                            <EmojiPicker
+                              onEmojiClick={(emoji) => sendEmoji(emoji)}
+                            />
+                          </div>
+                        )}
+                        <ImAttachment
+                          onClick={openFile}
+                          className="text-primary text-2xl cursor-pointer"
+                        />
+                        {/* <BsFillMicFill
+                className="text-primary text-2xl cursor-pointer"
+              /> */}
+                        {!audio && (
+                          <AudioRecorder
+                            onRecordingComplete={addAudioElement}
+                          />
+                        )}
+                      </div>
+                    )}
+                    {message ? (
+                      <button
+                        onClick={handleSendMessage}
+                        className="bg-primary px-5 py-3 rounded-lg "
+                      >
+                        <RiSendPlaneFill className="text-white text-2xl" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleSendLike}
+                        className="bg-primary px-5 py-2 rounded-lg text-2xl"
+                      >
+                        {/* <RiSendPlaneFill className="text-white text-2xl" /> */}
+                        &#128077;
+                      </button>
+                    )}
+                  </div>
+                )
+              )}
+              {/* text */}
 
-            {/* Input Text Area End */}
-          </div>
-}
-{/* </div> */}
-          <div className="w-[400px]">
-            <Profile />
-          </div>
+              {/* Input Text Area End */}
+            </div>
+          )}
+
+          <Transition
+            show={!isOpenProfile}
+            enter="transition duration-300 ease-out transform"
+            enterFrom="translate-x-full opacity-0"
+            enterTo="translate-x-0 opacity-100"
+            leave="transition duration-200 ease-in transform"
+            leaveFrom="translate-x-0 opacity-100"
+            leaveTo="translate-x-full opacity-0"
+            className={`max-mb768:absolute max-mb768:bg-slate-200 max-mb580:top-20 max-mb580:left-0 max-mb768:left-1/2 h-screen`}
+          >
+            <div className="w-[400px] max-pad1024:w-full max-pad1280:w-[300px]">
+              <Profile />
+            </div>
+          </Transition>
           {isOpen && (
             <Modal
               onClick={toggleModal}

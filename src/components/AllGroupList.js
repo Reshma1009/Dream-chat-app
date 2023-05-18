@@ -11,10 +11,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { activeUsersInfo } from "../slices/activeChatUsers";
 import { getCurrentUser } from "../Api/Fuctional";
-const AllGroupList = () => {
+const AllGroupList = ({ handleFriendClick }) => {
   const db = getDatabase();
-  let data = useSelector( ( state ) => state.allUserSInfo.userInfo );
-  let dispatch=useDispatch()
+  let data = useSelector((state) => state.allUserSInfo.userInfo);
+  let dispatch = useDispatch();
   const [groupList, setGroupList] = useState([]);
   useEffect(() => {
     const groupRef = ref(db, "createGroup/");
@@ -28,32 +28,32 @@ const AllGroupList = () => {
   }, []);
   let handleGroupMessage = (item) => {
     // console.log( item );
-   dispatch(
-     activeUsersInfo({
-       name: item.groupName,
-       id: item.groupId,
-       status: "group",
-       profilePhoto: item.adminPhoto,
-       adminId: item.adminId,
-     })
-   );
-   localStorage.setItem(
-     "activeChatUser",
-     JSON.stringify({
-       name: item.groupName,
-       id: item.groupId,
-       status: "group",
-       profilePhoto: item.adminPhoto,
-       adminId: item.adminId,
-     })
-   );
+    dispatch(
+      activeUsersInfo({
+        name: item.groupName,
+        id: item.groupId,
+        status: "group",
+        profilePhoto: item.adminPhoto,
+        adminId: item.adminId,
+      })
+    );
+    localStorage.setItem(
+      "activeChatUser",
+      JSON.stringify({
+        name: item.groupName,
+        id: item.groupId,
+        status: "group",
+        profilePhoto: item.adminPhoto,
+        adminId: item.adminId,
+      })
+    );
   };
-   const [loginUser, setLoginUser] = useState([]);
-   useEffect(() => {
-     getCurrentUser(setLoginUser);
-   }, []);
+  const [loginUser, setLoginUser] = useState([]);
+  useEffect(() => {
+    getCurrentUser(setLoginUser);
+  }, []);
   return (
-    <div className=" scrollbar-hidden flex flex-col overflow-hidden h-[40vh] shadow-2xl p-7 pt-0">
+    <div className=" scrollbar-hidden flex flex-col overflow-hidden landscape:max-mb991:overflow-y-auto h-[40vh] shadow-2xl p-7 pt-0 landscape:max-mb991:h-[100vh]">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         All Groups
@@ -65,7 +65,9 @@ const AllGroupList = () => {
           </h1>
         ) : (
           groupList.map((item) => (
-            <Flex
+            <div
+              key={item.groupId}
+              onClick={() => handleFriendClick(item.groupId)}
               className={`flex gap-x-5 bg-slate-100 p-4 items-center rounded-md hover:cursor-pointer hover:shadow-lg hover:scale-[1.02] transition ease-out duration-[.4s] mb-5 `}
             >
               <div className="w-[50px] h-[50px] ">
@@ -102,7 +104,7 @@ const AllGroupList = () => {
                   Meesage
                 </button>
               </div>
-            </Flex>
+            </div>
           ))
         )}
       </div>

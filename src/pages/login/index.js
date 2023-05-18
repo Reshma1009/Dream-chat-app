@@ -190,9 +190,9 @@ const Login = () => {
   };
   return (
     <>
-      <div className="flex justify-center items-center h-screen w-full md:pad1024:block mb768:flex mb320:block">
+      <div className="flex justify-center items-center h-screen w-full max-pad1024:block max-mb768:flex max-mb320:block">
         <ToastContainer position="bottom-center" theme="dark" />
-        <div className="bg-white shadow-xl w-[40%] pad1024:my-6 rounded-xl lp1366:w-[90%] pad1024:mx-auto">
+        <div className="bg-white shadow-xl w-[40%] pad1024:my-6 rounded-xl max-lp1366:w-[90%] max-pad1024:mx-auto">
           <div
             style={{
               backgroundImage: 'url("images/top-curve-bg.png")',

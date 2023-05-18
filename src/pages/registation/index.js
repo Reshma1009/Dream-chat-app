@@ -123,9 +123,9 @@ const Registation = () => {
   };
 
   return (
-    <div className=" justify-center items-center h-screen w-full  flex  md:mb991:block mb480:flex mb320:block">
+    <div className=" justify-center items-center h-screen w-full  flex  max-mb991:block max-mb480:flex max-mb320:block">
       <ToastContainer position="bottom-center" theme="dark" />
-      <div className=" bg-white shadow-xl w-[40%] rounded-xl lp1366:w-[90%] mb991:mx-auto">
+      <div className=" bg-white shadow-xl w-[40%] rounded-xl max-lp1366:w-[90%] max-mb991:mx-auto">
         <div
           style={{
             backgroundImage: 'url("images/top-curve-bg.png")',
