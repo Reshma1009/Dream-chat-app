@@ -114,7 +114,7 @@ const Groups = () => {
               </div>
               <Sidebar active="group" />
             </div>
-            <div className="pl-8 pr-5">
+            <div className="pl-8 pr-5 max-mb768:mt-5 landscape:max-mb768:mt-10">
               <p className="font-pophins font-bold text-2xl text-primary mb-5 border-primary border-b border-solid pb-3">
                 {" "}
                 Groups

@@ -78,7 +78,7 @@ const GroupLists = () => {
     getCurrentUser(setLoginUser);
   }, []);
   return (
-    <div className="flex flex-col overflow-hidden h-[50vh]  p-7">
+    <div className="flex flex-col overflow-hidden h-[50vh] landscape:max-mb768:h-[100vh] p-7">
       {/* <Search placeholder={`search here for users`} /> */}
       <h2 className="font-pophins font-bold text-2xl text-primary mb-5">
         All Group Lists

@@ -38,7 +38,7 @@ const JoinedGroups = () => {
 
   return (
     <>
-      <div className="flex flex-col overflow-hidden h-[100vh] max-mb768:h-[40vh] shadow-2xl  pt-0">
+      <div className="flex flex-col overflow-hidden h-[100vh] max-mb768:h-[40vh] landscape:max-mb768:h-[80vh] shadow-2xl  pt-0">
         {/* <Search placeholder={`search here for users`} /> */}
 
         <div className="scrollbar-hidden overflow-y-auto overflow-x-hidden">

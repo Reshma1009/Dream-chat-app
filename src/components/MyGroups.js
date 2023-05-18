@@ -126,7 +126,7 @@ const MyGroups = () => {
   useMemo(() => userSList(data, setUserList), []);
 
   return (
-    <div className="flex flex-col overflow-hidden h-[55vh]  p-7 pb-0">
+    <div className="flex flex-col overflow-hidden h-[55vh] landscape:max-mb768:h-[100vh]  p-7 pb-0">
       {/* <Search placeholder={`search here for users`} /> */}
       <div className="flex justify-between mb-5">
         <h2 className="font-pophins font-bold text-2xl text-primary ">
